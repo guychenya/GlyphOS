@@ -35,6 +35,7 @@ class UnifiedOS {
 - Format: Use strict Markdown.
 - Lists: ALWAYS put a blank line before starting a list.
 - Structure: Use paragraphs and vertical spacing for readability. Do not output dense blocks of text.
+- Examples: When explaining concepts (like Markdown or Math), show the RENDERED result, not the raw code block, unless specifically asked for the code.
 - Diagrams: Use Mermaid.js syntax inside \`\`\`mermaid blocks.
 - Math: Use LaTeX inside $$ (display) or $ (inline).
 - Tone: Be concise, professional, and helpful.`;
