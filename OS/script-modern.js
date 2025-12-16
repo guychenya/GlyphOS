@@ -581,7 +581,7 @@ class ModernTxtOS {
             this.saveCurrentChat();
             const chatContainer = document.getElementById('chat-messages');
             chatContainer.innerHTML = '';
-            this.addMessage('Welcome to TXT OS v2.3! I\'m powered by the GlyphOS Reasoning Engine with advanced semantic capabilities.\\n\\n**Features Available:**\\n- Knowledge Boundary Detection (`kbtest`)\\n- Semantic Tree Memory (`tree`)\\n- HelloWorld.txt Integration (`helloworld`)\\n- BBCR Protocol (`hello world`)\\n\\nType `help` to see all commands, or ask me anything to begin reasoning together.', 'assistant', false);
+            this.addMessage('Welcome to GlyphOS v2.0! I\'m powered by the GlyphOS Reasoning Engine with advanced semantic capabilities.\\n\\n**Features Available:**\\n- Knowledge Boundary Detection (`kbtest`)\\n- Semantic Tree Memory (`tree`)\\n- HelloWorld.txt Integration (`helloworld`)\\n- BBCR Protocol (`hello world`)\\n\\nType `help` to see all commands, or ask me anything to begin reasoning together.', 'assistant', false);
         }
     }
 
@@ -1343,7 +1343,7 @@ Groq provides extremely fast inference with no local setup required!
 
         if (navigator.share) {
             navigator.share({
-                title: 'TXT OS Message',
+                title: 'GlyphOS Message',
                 text: text
             }).catch(() => {
                 this.fallbackShare(text);
@@ -1402,7 +1402,7 @@ Groq provides extremely fast inference with no local setup required!
         const deltaS = this.knowledgeBoundary.deltaS.toFixed(3);
         const eResonance = this.knowledgeBoundary.eResonance.toFixed(3);
 
-        return `You are TXT OS v2.0, powered by the GlyphOS Reasoning Engine - an advanced semantic operating system.
+        return `You are GlyphOS v2.0, powered by the GlyphOS Reasoning Engine - an advanced semantic operating system.
 
 GlyphOS CORE PARAMETERS:
 - ΔS (Semantic Uncertainty): ${deltaS}
@@ -1655,7 +1655,7 @@ You are not just an AI assistant - you are a reasoning operating system. Provide
     }
 
     initializeGlyphOSSystem() {
-        this.addMessage('system', `🏛️ **TXT OS v2.0 Initialized**
+        this.addMessage('system', `🏛️ **GlyphOS v2.0 Initialized**
 
 **GlyphOS Reasoning Engine Active**
 - Semantic Tree Memory: Online
@@ -1824,7 +1824,7 @@ Ready for enhanced semantic reasoning with HelloWorld protocols.`);
     }
 
     showHelp() {
-        this.addMessage('system', `🏛️ **TXT OS v2.0 Help**
+        this.addMessage('system', `🏛️ **GlyphOS v2.0 Help**
 
 **Special Commands:**
 - \`hello world\` - Initialize GlyphOS Reasoning Engine
@@ -1987,9 +1987,8 @@ function exportChat() {
         })
         .join('\n\n');
 
-    const exportData = `TXT OS Chat Export
-Generated: ${new Date().toLocaleString()}
-Service: ${txtOS.currentService === 'groq' ? 'Groq' : 'Ollama'}
+            const exportData = `GlyphOS Chat Export
+    Generated: ${new Date().toLocaleString()}Service: ${txtOS.currentService === 'groq' ? 'Groq' : 'Ollama'}
 Model: ${txtOS.currentService === 'groq' ? txtOS.groqModel : txtOS.currentModel}
 
 ${messages}`;
