@@ -25,7 +25,7 @@ class UnifiedOS {
         this.models = {
             ollama: 'llama2',
             groq: 'mixtral-8x7b-32768',
-            openai: 'gpt-4-turbo',
+            openai: 'gpt-3.5-turbo',
             gemini: 'gemini-pro',
             openrouter: 'anthropic/claude-3-opus'
         };
@@ -473,99 +473,89 @@ class UnifiedOS {
     }
 
     async streamOpenAIStyle(url, key, prompt, model, temp, onUpdate) {
-        if (!key) throw new Error('API Key missing.');
-        
-        const headers = {
-            'Authorization': `Bearer ${key}`,
-            'Content-Type': 'application/json'
-        };
-        // OpenRouter needs extra headers
-        if (url.includes('openrouter')) {
-            headers['HTTP-Referer'] = window.location.href;
-            headers['X-Title'] = 'GlyphOS';
-        }
+        try {
+            if (!key) throw new Error('API Key missing.');
+            
+            const headers = {
+                'Authorization': `Bearer ${key}`,
+                'Content-Type': 'application/json'
+            };
+            if (url.includes('openrouter')) {
+                headers['HTTP-Referer'] = window.location.href;
+                headers['X-Title'] = 'GlyphOS';
+            }
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify({
-                messages: [
-                    { role: 'system', content: this.systemPrompt },
-                    { role: 'user', content: prompt }
-                ],
-                model: model,
-                temperature: temp,
-                stream: true
-            })
-        });
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    messages: [
+                        { role: 'system', content: this.systemPrompt },
+                        { role: 'user', content: prompt }
+                    ],
+                    model: model,
+                    temperature: temp,
+                    stream: true
+                })
+            });
 
-        if (!response.ok) {
-            const err = await response.text();
-            throw new Error(`API Error (${response.status}): ${err}`);
-        }
+            if (!response.ok) {
+                const err = await response.text();
+                throw new Error(`API Error (${response.status}): ${err}`);
+            }
 
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let fullText = '';
-        let buffer = '';
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let fullText = '';
+            let buffer = '';
 
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) {
-                // Process any remaining buffer
-                if (buffer.trim()) {
-                    const lines = [buffer];
-                    for (const line of lines) {
-                        if (line.trim().startsWith('data: ')) {
-                            const dataStr = line.replace('data: ', '').trim();
-                            if (dataStr !== '[DONE]') {
-                                try {
-                                    const json = JSON.parse(dataStr);
-                                    if (json.choices && json.choices.length > 0 && json.choices[0].delta) {
-                                        const content = json.choices[0].delta.content;
-                                        if (content) { 
-                                            fullText += content; 
-                                            onUpdate(fullText); 
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) {
+                    if (buffer.trim()) {
+                        const lines = [buffer];
+                        for (const line of lines) {
+                            if (line.trim().startsWith('data: ')) {
+                                const dataStr = line.replace('data: ', '').trim();
+                                if (dataStr !== '[DONE]') {
+                                    try {
+                                        const json = JSON.parse(dataStr);
+                                        if (json.choices && json.choices.length > 0 && json.choices[0].delta) {
+                                            const content = json.choices[0].delta.content;
+                                            if (content) { fullText += content; onUpdate(fullText); }
                                         }
-                                    }
-                                } catch (e) { console.warn('Final Buffer Parse Error:', e); }
+                                    } catch (e) { console.warn('Final Buffer Parse Error:', e); }
+                                }
                             }
                         }
                     }
+                    break;
                 }
-                break;
-            }
-            
-            // Decode with stream:true to handle multi-byte characters split across chunks
-            buffer += decoder.decode(value, { stream: true });
-            
-            const lines = buffer.split('\n');
-            buffer = lines.pop(); // Keep incomplete line
-            
-            for (const line of lines) {
-                if (line.trim().startsWith('data: ')) {
-                    const dataStr = line.replace('data: ', '').trim();
-                    if (dataStr === '[DONE]') break;
-                    try {
-                        const json = JSON.parse(dataStr);
-                        // Check for valid content in delta
-                        if (json.choices && json.choices.length > 0 && json.choices[0].delta) {
-                            const content = json.choices[0].delta.content;
-                            if (content) { 
-                                fullText += content; 
-                                onUpdate(fullText); 
+                
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop(); 
+                
+                for (const line of lines) {
+                    if (line.trim().startsWith('data: ')) {
+                        const dataStr = line.replace('data: ', '').trim();
+                        if (dataStr === '[DONE]') break;
+                        try {
+                            const json = JSON.parse(dataStr);
+                            if (json.choices && json.choices.length > 0 && json.choices[0].delta) {
+                                const content = json.choices[0].delta.content;
+                                if (content) { fullText += content; onUpdate(fullText); }
                             }
-                        }
-                    } catch (e) {
-                        console.warn('Stream Parse Error:', e);
+                        } catch (e) { console.warn('Stream Parse Error:', e); }
                     }
                 }
             }
-        }
-        
-        // Check if we received anything
-        if (!fullText) {
-            throw new Error('Provider returned empty response (Stream ended without content).');
+            
+            if (!fullText) throw new Error('Empty response from provider.');
+            
+        } catch (error) {
+            onUpdate(`**⚠️ Connection Error:** ${error.message}\n\n*Check console for details.*`);
+            console.error('Stream Error:', error);
         }
     }
 
