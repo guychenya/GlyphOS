@@ -3,768 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GlyphOS - Modern AI Reasoning System</title>
-    <link rel="stylesheet" href="styles-modern.css">
+    <title>GlyphOS Unified</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-unified.css">
+    
+    <!-- Markdown Support -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Mermaid Diagram Support -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
-    <!-- Unified App Layout -->
-    <div class="app-layout">
-        <!-- Left Sidebar Navigation -->
-        <nav class="sidebar-nav">
-            <div class="nav-header">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <path d="M9 9h6v6H9z"></path>
+
+    <div class="app-grid" id="app-grid">
+        
+        <!-- TOP: Command Bar -->
+        <header class="command-bar-area">
+            <div class="command-wrapper">
+                <div class="command-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="4 17 10 11 4 5"></polyline>
+                        <line x1="12" y1="19" x2="20" y2="19"></line>
+                    </svg>
+                </div>
+                <input type="text" class="command-input" id="cmd-input" placeholder="Type a command or message... (Try /help)" autocomplete="off" autofocus>
+                <div class="command-actions">
+                    <span class="command-badge hidden" id="cmd-badge"></span>
+                    <button class="icon-btn" title="Command Palette (Cmd+K)" onclick="toggleCommandPalette()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
                         </svg>
-                    </div>
-                    <span class="logo-text">GlyphOS</span>
-                    <span class="version">v2.3</span>
+                    </button>
                 </div>
             </div>
-            
-            <div class="nav-items">
-                <button class="nav-item active" data-pane="chat">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    <span>Chat</span>
-                </button>
-                
-                <button class="nav-item" data-pane="history">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="M12 6v6l4 2"></path>
-                    </svg>
-                    <span>History</span>
-                </button>
-                
-                <button class="nav-item" data-pane="dashboard">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="20" x2="18" y2="10"></line>
-                        <line x1="12" y1="20" x2="12" y2="4"></line>
-                        <line x1="6" y1="20" x2="6" y2="14"></line>
-                    </svg>
-                    <span>Dashboard</span>
-                </button>
-                
-                <button class="nav-item" data-pane="settings">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M12 1v6m0 6v6"></path>
-                        <path d="M12 1v6m0 6v6" transform="rotate(60 12 12)"></path>
-                        <path d="M12 1v6m0 6v6" transform="rotate(120 12 12)"></path>
-                    </svg>
-                    <span>Settings</span>
-                </button>
-                
-                <button class="nav-item" data-pane="help">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="M9,9a3,3 0 1,1 6,0c0,2-3,3-3,3"></path>
-                        <path d="M12,17h.01"></path>
-                    </svg>
-                    <span>Help</span>
+        </header>
+
+        <!-- LEFT: Context Sidebar -->
+        <aside class="sidebar" id="sidebar-left">
+            <div class="sidebar-header">
+                <span>Workspace</span>
+                <button class="icon-btn-small" onclick="toggleSidebar('left')" title="Toggle Sidebar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
                 </button>
             </div>
             
-            <div class="nav-footer">
-                <div class="status-indicators">
-                    <div class="status-item">
-                        <span class="status-dot" id="connection-status"></span>
-                        <span>Service</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-dot" id="memory-status"></span>
-                        <span>Memory</span>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Main Content Area -->
-        <main class="main-pane">
-            <!-- System Status Bar -->
-            <div class="system-status-bar">
-                <div class="status-item">
-                    <span class="status-icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
+            <div class="sidebar-section">
+                <div class="sidebar-item" onclick="createNewDoc()">
+                    <span class="sidebar-item-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
                     </span>
-                    <span class="status-label">Hallucination Detection</span>
-                    <span class="status-badge enabled" id="hallucination-status-bar">ENABLED</span>
+                    <span>New Thread</span>
                 </div>
-                <div class="status-item">
-                    <span class="status-icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        </svg>
+                <div class="sidebar-item" onclick="triggerFileUpload()">
+                    <span class="sidebar-item-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                     </span>
-                    <span class="status-label">Knowledge Boundary</span>
-                    <span class="status-badge inactive" id="boundary-status-bar">INACTIVE</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7,10 12,15 17,10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                    </span>
-                    <span class="status-label">Memory Export</span>
-                    <span class="status-badge available" id="memory-export-status-bar">AVAILABLE</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M12 6v6l4 2"></path>
-                        </svg>
-                    </span>
-                    <span class="status-label">Service</span>
-                    <span class="status-badge" id="service-status-bar">OLLAMA</span>
+                    <span>Upload Context</span>
+                    <input type="file" id="file-upload-hidden" style="display:none" multiple>
                 </div>
             </div>
 
-            <!-- Chat Pane -->
-            <div class="pane active" id="chat-pane">
-                <div class="pane-header">
-                    <h2>Chat</h2>
-                    <div class="header-actions">
-                        <button class="action-btn" data-action="newChat" title="New Chat">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 5v14m-7-7h14"></path>
-                            </svg>
-                        </button>
-                        <button class="action-btn" data-action="saveChat" title="Save Chat">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                                <polyline points="17,21 17,13 7,13 7,21"></polyline>
-                                <polyline points="7,3 7,8 15,8"></polyline>
-                            </svg>
-                        </button>
-                        <button class="action-btn" data-action="exportChat" title="Export">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7,10 12,15 17,10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                        </button>
-                    </div>
+            <div class="sidebar-header mt-4">
+                <span>History</span>
+            </div>
+            <div class="sidebar-section scrollable-list" id="history-list">
+                <!-- History items injected here -->
+                <div class="sidebar-item active">
+                    <span class="sidebar-item-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </span>
+                    <span>Welcome Session</span>
                 </div>
+            </div>
+        </aside>
+
+        <!-- CENTER: Main Canvas -->
+        <main class="main-canvas" id="main-canvas">
+            <div class="canvas-content" id="canvas-content">
                 
-                <div class="chat-container">
-                    <div class="chat-messages" id="chat-messages">
-                        <div class="message assistant">
-                            <div class="message-bubble">
-                                <div class="message-content">Welcome to GlyphOS v2.3! I'm powered by the GlyphOS Reasoning Engine with advanced semantic capabilities.
-
-**Features Available:**
-- Knowledge Boundary Detection (`kbtest`)
-- Semantic Tree Memory (`tree`)
-- HelloWorld.txt Integration (`helloworld`)
-- BBCR Protocol (`hello world`)
-
-Type `help` to see all commands, or ask me anything to begin reasoning together.</div>
-                                <div class="message-actions">
-                                    <button class="action-btn" data-action="copyText" title="Copy message">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Initial Onboarding Card -->
+                <div class="onboarding-container" id="onboarding-card">
+                    <div class="onboarding-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                     </div>
+                    <h1>GlyphOS Unified</h1>
+                    <p class="subtitle">The text-first operating system for AI reasoning.</p>
                     
-                    <div class="chat-input-area">
-                        <div class="input-container">
-                            <textarea 
-                                class="chat-input" 
-                                id="chat-input" 
-                                placeholder="Type your message..."
-                                rows="1"
-                                aria-label="Chat input"
-                            ></textarea>
-                            <button class="send-button" id="send-button" data-action="sendMessage">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 2L11 13"></path>
-                                    <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
-                                </svg>
-                            </button>
+                    <div class="shortcut-grid">
+                        <div class="shortcut-item">
+                            <span class="key">/</span>
+                            <span class="desc">Commands</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="key">@</span>
+                            <span class="desc">Switch Provider</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="key">Enter</span>
+                            <span class="desc">Run</span>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- History Pane -->
-            <div class="pane" id="history-pane">
-                <div class="pane-header">
-                    <h2>Chat History</h2>
-                    <div class="header-actions">
-                        <button class="action-btn" data-action="clearHistory" title="Clear History">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3,6 5,6 21,6"></polyline>
-                                <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"></path>
-                            </svg>
-                        </button>
+                    <div class="action-buttons">
+                        <button class="primary-btn" onclick="document.getElementById('cmd-input').focus()">Start Typing</button>
+                        <button class="secondary-btn" onclick="window.os.handleCommand('help')">View Documentation</button>
                     </div>
                 </div>
+
+                <!-- Chat content anchors here -->
                 
-                <div class="history-content">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search conversations..." id="history-search">
-                    </div>
-                    <div class="history-list" id="history-list">
-                        <div class="history-item">
-                            <div class="history-preview">Welcome to GlyphOS v2.3...</div>
-                            <div class="history-meta">Today, 12:30 PM</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dashboard Pane -->
-            <div class="pane" id="dashboard-pane">
-                <div class="pane-header">
-                    <h2>Dashboard</h2>
-                    <div class="header-actions">
-                        <button class="action-btn" data-action="refreshDashboard" title="Refresh">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="23,4 23,10 17,10"></polyline>
-                                <polyline points="1,20 1,14 7,14"></polyline>
-                                <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="dashboard-content">
-                    <div class="dashboard-tabs">
-                        <button class="tab-btn active" data-tab="semantic">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="3"></circle>
-                                <path d="M12 1v6m0 6v6"></path>
-                                <path d="M12 1v6m0 6v6" transform="rotate(60 12 12)"></path>
-                                <path d="M12 1v6m0 6v6" transform="rotate(120 12 12)"></path>
-                            </svg>
-                            Semantic Core
-                        </button>
-                        <button class="tab-btn" data-tab="reasoning">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2L2 7L12 12L22 7L12 2Z"></path>
-                                <path d="M2 17L12 22L22 17"></path>
-                                <path d="M2 12L12 17L22 12"></path>
-                            </svg>
-                            Reasoning
-                        </button>
-                        <button class="tab-btn" data-tab="operational">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                            Operational
-                        </button>
-                    </div>
-                    
-                    <div class="dashboard-kpis">
-                        <!-- Semantic Core KPIs Tab -->
-                        <div class="tab-content active" id="semantic-tab">
-                            <div class="kpi-grid">
-                                <!-- Delta S (Semantic Uncertainty) -->
-                                <div class="kpi-card primary">
-                                    <div class="kpi-header">
-                                        <div class="kpi-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                                                <polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
-                                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                                            </svg>
-                                        </div>
-                                        <div class="kpi-title">
-                                            <h4>ΔS Uncertainty
-                                                <span class="tooltip-trigger" data-tooltip="Measures the uncertainty in semantic understanding - lower values indicate higher confidence">
-                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                        <circle cx="12" cy="12" r="10"></circle>
-                                                        <path d="M9,9a3,3 0 1,1 6,0c0,2-3,3-3,3"></path>
-                                                        <path d="M12,17h.01"></path>
-                                                    </svg>
-                                                </span>
-                                            </h4>
-                                            <span class="kpi-subtitle">Semantic confidence</span>
-                                        </div>
-                                    </div>
-                                    <div class="progress-ring-container">
-                                        <svg class="progress-ring" width="80" height="80">
-                                            <circle cx="40" cy="40" r="35" stroke="#e2e8f0" stroke-width="6" fill="none"></circle>
-                                            <circle cx="40" cy="40" r="35" stroke="#3b82f6" stroke-width="6" fill="none" 
-                                                    stroke-dasharray="220" stroke-dashoffset="220" id="delta-s-ring"></circle>
-                                        </svg>
-                                        <div class="progress-value" id="delta-s-value">0.000</div>
-                                    </div>
-                                </div>
-
-                                <!-- Temperature -->
-                                <div class="kpi-card danger">
-                                    <div class="kpi-header">
-                                        <div class="kpi-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="kpi-title">
-                                            <h4>Temperature
-                                                <span class="tooltip-trigger" data-tooltip="Controls creativity and randomness in AI responses - higher values produce more diverse outputs">
-                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                        <circle cx="12" cy="12" r="10"></circle>
-                                                        <path d="M9,9a3,3 0 1,1 6,0c0,2-3,3-3,3"></path>
-                                                        <path d="M12,17h.01"></path>
-                                                    </svg>
-                                                </span>
-                                            </h4>
-                                            <span class="kpi-subtitle">Creativity level</span>
-                                        </div>
-                                    </div>
-                                    <div class="temp-container">
-                                        <div class="temp-bar">
-                                            <div class="temp-fill" id="temp-fill"></div>
-                                        </div>
-                                        <div class="temp-value" id="temp-display">0.2</div>
-                                    </div>
-                                </div>
-
-                                <!-- Memory Export -->
-                                <div class="kpi-card success">
-                                    <div class="kpi-header">
-                                        <div class="kpi-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                                <polyline points="7,10 12,15 17,10"></polyline>
-                                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                                            </svg>
-                                        </div>
-                                        <div class="kpi-title">
-                                            <h4>Memory Export</h4>
-                                            <span class="kpi-subtitle">Data availability</span>
-                                        </div>
-                                    </div>
-                                    <div class="export-status">
-                                        <div class="status-badge" id="export-status">AVAILABLE</div>
-                                        <div class="export-stats">
-                                            <span>Size: <span id="memory-size">0 KB</span></span>
-                                            <span>Nodes: <span id="memory-nodes">0</span></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Real-time Activity -->
-                                <div class="kpi-card primary full-width">
-                                    <div class="kpi-header">
-                                        <div class="kpi-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <line x1="18" y1="20" x2="18" y2="10"></line>
-                                                <line x1="12" y1="20" x2="12" y2="4"></line>
-                                                <line x1="6" y1="20" x2="6" y2="14"></line>
-                                            </svg>
-                                        </div>
-                                        <div class="kpi-title">
-                                            <h4>Real-time Activity</h4>
-                                            <span class="kpi-subtitle">System performance</span>
-                                        </div>
-                                    </div>
-                                    <div class="activity-chart">
-                                        <div class="chart-bars" id="activity-bars">
-                                            <div class="bar" style="height: 20%"></div>
-                                            <div class="bar" style="height: 40%"></div>
-                                            <div class="bar" style="height: 60%"></div>
-                                            <div class="bar" style="height: 30%"></div>
-                                            <div class="bar" style="height: 80%"></div>
-                                            <div class="bar" style="height: 50%"></div>
-                                            <div class="bar" style="height: 70%"></div>
-                                            <div class="bar" style="height: 90%"></div>
-                                        </div>
-                                        <div class="chart-labels">
-                                            <span>Messages</span>
-                                            <span>Reasoning</span>
-                                            <span>Memory</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Reasoning Tab -->
-                        <div class="tab-content" id="reasoning-tab">
-                            <div class="kpi-grid">
-                                <!-- BBCR Protocol -->
-                                <div class="kpi-card primary">
-                                    <div class="kpi-header">
-                                        <div class="kpi-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <polyline points="23,4 23,10 17,10"></polyline>
-                                                <polyline points="1,20 1,14 7,14"></polyline>
-                                                <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="kpi-title">
-                                            <h4>BBCR Protocol
-                                                <span class="tooltip-trigger" data-tooltip="Boundary-Based Coherence Resolution - monitors consistency in reasoning chains">
-                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                        <circle cx="12" cy="12" r="10"></circle>
-                                                        <path d="M9,9a3,3 0 1,1 6,0c0,2-3,3-3,3"></path>
-                                                        <path d="M12,17h.01"></path>
-                                                    </svg>
-                                                </span>
-                                            </h4>
-                                            <span class="kpi-subtitle">Coherence resolution</span>
-                                        </div>
-                                    </div>
-                                    <div class="protocol-status">
-                                        <div class="status-badge available" id="bbcr-status">MONITORING</div>
-                                        <div class="protocol-details">
-                                            <span>Pivots: <strong id="bbcr-pivots">0</strong></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Semantic Tree -->
-                                <div class="kpi-card success">
-                                    <div class="kpi-header">
-                                        <div class="kpi-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M14 20v-4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v4"></path>
-                                                <path d="M3 22h18"></path>
-                                                <path d="M7 12V2h10v10"></path>
-                                                <path d="M7 7h10"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="kpi-title">
-                                            <h4>Semantic Tree
-                                                <span class="tooltip-trigger" data-tooltip="Hierarchical memory structure for contextual understanding and knowledge navigation">
-                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                        <circle cx="12" cy="12" r="10"></circle>
-                                                        <path d="M9,9a3,3 0 1,1 6,0c0,2-3,3-3,3"></path>
-                                                        <path d="M12,17h.01"></path>
-                                                    </svg>
-                                                </span>
-                                            </h4>
-                                            <span class="kpi-subtitle">Memory navigation</span>
-                                        </div>
-                                    </div>
-                                    <div class="tree-visualization">
-                                        <div class="tree-nodes" id="tree-nodes">
-                                            <div class="tree-node active"></div>
-                                            <div class="tree-node"></div>
-                                            <div class="tree-node"></div>
-                                        </div>
-                                        <div class="tree-stats">
-                                            <span>Nodes: <strong id="tree-count">0</strong></span>
-                                            <span>Depth: <strong id="tree-depth">0</strong></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Resonance Amplification -->
-                                <div class="kpi-card warning">
-                                    <div class="kpi-header">
-                                        <div class="kpi-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
-                                            </svg>
-                                        </div>
-                                        <div class="kpi-title">
-                                            <h4>Resonance Amplification</h4>
-                                            <span class="kpi-subtitle">Pathway strengthening</span>
-                                        </div>
-                                    </div>
-                                    <div class="amplification-display">
-                                        <div class="amplification-bar">
-                                            <div class="amplification-fill" id="amplification-fill"></div>
-                                        </div>
-                                        <div class="amplification-value" id="amplification-level">1.0x</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Operational Tab -->
-                        <div class="tab-content" id="operational-tab">
-                            <div class="kpi-grid">
-                                <!-- Hallucination Detection -->
-                                <div class="kpi-card info">
-                                    <div class="kpi-header">
-                                        <div class="kpi-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                                <circle cx="12" cy="12" r="3"></circle>
-                                            </svg>
-                                        </div>
-                                        <div class="kpi-title">
-                                            <h4>Hallucination Detection</h4>
-                                            <span class="kpi-subtitle">Truth monitoring</span>
-                                        </div>
-                                    </div>
-                                    <div class="detection-status">
-                                        <div class="status-badge available" id="hallucination-status">ENABLED</div>
-                                        <div class="confidence-meter">
-                                            <div class="confidence-fill" id="confidence-fill"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Knowledge Boundary -->
-                                <div class="kpi-card warning">
-                                    <div class="kpi-header">
-                                        <div class="kpi-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="kpi-title">
-                                            <h4>Knowledge Boundary</h4>
-                                            <span class="kpi-subtitle">Safety monitoring</span>
-                                        </div>
-                                    </div>
-                                    <div class="boundary-status">
-                                        <div class="status-badge" id="boundary-status">INACTIVE</div>
-                                        <div class="boundary-details">
-                                            <span>Monitors: <strong id="boundary-monitors">0</strong></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Settings Pane -->
-            <div class="pane" id="settings-pane">
-                <div class="pane-header">
-                    <h2>Settings</h2>
-                </div>
-                
-                <div class="settings-content">
-                    <div class="settings-group">
-                        <div class="settings-group-header">
-                            <h3>AI Service Configuration</h3>
-                            <span class="settings-group-description">Choose and configure your AI service provider</span>
-                        </div>
-                        <div class="setting-item">
-                            <label class="setting-label">
-                                Service Provider
-                                <span class="tooltip-trigger" data-tooltip="Select between local Ollama server or cloud-based Groq service">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <path d="M9,9a3,3 0 1,1 6,0c0,2-3,3-3,3"></path>
-                                        <path d="M12,17h.01"></path>
-                                    </svg>
-                                </span>
-                            </label>
-                            <select class="setting-input" id="service-select" aria-label="AI Service Provider">
-                                <option value="ollama">Ollama (Local Server)</option>
-                                <option value="groq">Groq (Cloud Service)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="settings-group" id="ollama-settings">
-                        <h3>Ollama Configuration</h3>
-                        <div class="setting-item">
-                            <label class="setting-label">Server URL</label>
-                            <input type="text" class="setting-input" id="ollama-url" value="http://127.0.0.1:11434">
-                        </div>
-                        <div class="setting-item">
-                            <label class="setting-label">Model</label>
-                            <select class="setting-input" id="model-select">
-                                <option value="llama2">llama2</option>
-                                <option value="mistral">mistral</option>
-                                <option value="codellama">codellama</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="settings-group" id="groq-settings" style="display: none;">
-                        <h3>Groq Configuration</h3>
-                        <div class="setting-item">
-                            <label class="setting-label">API Key</label>
-                            <div class="api-key-container">
-                                <input type="password" class="setting-input api-key-input" id="groq-api-key" placeholder="gsk_...">
-                                <button class="api-validate-btn" id="groq-validate-btn" data-action="validateGroqApiKey" title="Validate API Key">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                        <path d="M12 1v6m0 6v6"></path>
-                                        <path d="M12 1v6m0 6v6" transform="rotate(60 12 12)"></path>
-                                        <path d="M12 1v6m0 6v6" transform="rotate(120 12 12)"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="setting-item">
-                            <label class="setting-label">Model</label>
-                            <select class="setting-input" id="groq-model-select">
-                                <option value="mixtral-8x7b-32768">Mixtral 8x7B (Recommended)</option>
-                                <option value="llama3-70b-8192">Llama 3 70B</option>
-                                <option value="llama3-8b-8192">Llama 3 8B (Fastest)</option>
-                                <option value="gemma-7b-it">Gemma 7B</option>
-                                <option value="llama2-70b-4096">Llama 2 70B</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="settings-group">
-                        <div class="settings-group-header">
-                            <h3>General Settings</h3>
-                            <span class="settings-group-description">Configure AI behavior and system preferences</span>
-                        </div>
-                        <div class="setting-item">
-                            <label class="setting-label">
-                                Temperature: <span id="temp-value" class="setting-value">0.2</span>
-                                <span class="tooltip-trigger" data-tooltip="Controls response creativity: 0.0 = deterministic, 1.0 = highly creative">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <path d="M9,9a3,3 0 1,1 6,0c0,2-3,3-3,3"></path>
-                                        <path d="M12,17h.01"></path>
-                                    </svg>
-                                </span>
-                            </label>
-                            <input type="range" class="setting-input temperature-slider" id="temperature" min="0" max="1" step="0.1" value="0.2" aria-label="Temperature setting">
-                            <div class="slider-labels">
-                                <span>Focused</span>
-                                <span>Balanced</span>
-                                <span>Creative</span>
-                            </div>
-                        </div>
-                        <div class="setting-item">
-                            <button class="action-btn primary" data-action="testConnection" id="test-btn">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M9 12l2 2 4-4"></path>
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                </svg>
-                                Test Connection
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="settings-group">
-                        <h3>Memory & Performance</h3>
-                        <div class="setting-item">
-                            <label class="setting-label">Memory Nodes: <span id="memory-count">0</span></label>
-                        </div>
-                        <div class="setting-item">
-                            <button class="action-btn" data-action="exportMemory">Export Memory</button>
-                        </div>
-                        <div class="setting-item">
-                            <button class="action-btn" data-action="clearChat">Clear Chat</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Help Pane -->
-            <div class="pane" id="help-pane">
-                <div class="pane-header">
-                    <h2>Help & Documentation</h2>
-                </div>
-                
-                <div class="help-content">
-                    <div class="help-section">
-                        <h3>Getting Started</h3>
-                        <div class="help-card">
-                            <h4>First Time Setup</h4>
-                            <ol>
-                                <li>Choose your AI service in Settings (Ollama or Groq)</li>
-                                <li>Configure connection settings</li>
-                                <li>Test the connection</li>
-                                <li>Start chatting!</li>
-                            </ol>
-                        </div>
-                    </div>
-
-                    <div class="help-section">
-                        <h3>Features</h3>
-                        <div class="help-card">
-                            <h4>Chat Commands</h4>
-                            <ul>
-                                <li><code>help</code> - Show available commands</li>
-                                <li><code>kbtest</code> - Test knowledge boundary detection</li>
-                                <li><code>tree</code> - Access semantic tree memory</li>
-                                <li><code>helloworld</code> - HelloWorld.txt integration</li>
-                                <li><code>hello world</code> - Activate BBCR protocol</li>
-                            </ul>
-                        </div>
-
-                        <div class="help-card">
-                            <h4>Dashboard Metrics</h4>
-                            <ul>
-                                <li><strong>ΔS Uncertainty:</strong> Measures semantic understanding confidence</li>
-                                <li><strong>Temperature:</strong> Controls response creativity and randomness</li>
-                                <li><strong>BBCR Protocol:</strong> Boundary-Based Coherence Resolution system</li>
-                                <li><strong>Semantic Tree:</strong> Hierarchical memory structure</li>
-                                <li><strong>Hallucination Detection:</strong> Truth monitoring system</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="help-section">
-                        <h3>Troubleshooting</h3>
-                        <div class="help-card">
-                            <h4>Common Issues</h4>
-                            <div class="troubleshooting-item">
-                                <strong>Connection Failed:</strong>
-                                <p>Ensure Ollama is running locally or check your Groq API key.</p>
-                            </div>
-                            <div class="troubleshooting-item">
-                                <strong>CORS Errors:</strong>
-                                <p>Restart Ollama with CORS enabled using the test connection button.</p>
-                            </div>
-                            <div class="troubleshooting-item">
-                                <strong>Slow Responses:</strong>
-                                <p>Try reducing temperature or switching to a faster model.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="help-section">
-                        <h3>Keyboard Shortcuts</h3>
-                        <div class="help-card">
-                            <div class="shortcut-grid">
-                                <div class="shortcut-item">
-                                    <kbd>Enter</kbd>
-                                    <span>Send message</span>
-                                </div>
-                                <div class="shortcut-item">
-                                    <kbd>Shift + Enter</kbd>
-                                    <span>New line</span>
-                                </div>
-                                <div class="shortcut-item">
-                                    <kbd>Tab</kbd>
-                                    <span>Navigate interface</span>
-                                </div>
-                                <div class="shortcut-item">
-                                    <kbd>Esc</kbd>
-                                    <span>Cancel operation</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </main>
+
+        <!-- RIGHT: Tools Sidebar -->
+        <aside class="sidebar sidebar-right" id="sidebar-right">
+            <div class="sidebar-header">
+                <span>Control Panel</span>
+                <button class="icon-btn-small" onclick="toggleSidebar('right')" title="Toggle Sidebar">
+                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+                </button>
+            </div>
+            
+            <div class="sidebar-section">
+                <!-- Provider Card -->
+                <div class="tool-card">
+                    <div class="card-label">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                        Intelligence
+                    </div>
+                    <select id="provider-select" class="modern-select">
+                        <option value="ollama">Ollama (Local)</option>
+                        <option value="groq">Groq (Cloud)</option>
+                    </select>
+                    
+                    <div id="model-list" class="model-tags">
+                        <!-- Models injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Style -->
+                <div class="tool-card">
+                    <div class="card-label">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="14.31" y1="8" x2="20.05" y2="17.94"></line><line x1="9.69" y1="8" x2="21.17" y2="8"></line><line x1="7.38" y1="12" x2="13.12" y2="2.06"></line><line x1="9.69" y1="16" x2="3.95" y2="6.06"></line><line x1="14.31" y1="16" x2="2.83" y2="16"></line><line x1="16.62" y1="12" x2="10.88" y2="21.94"></line></svg>
+                        Temperature
+                    </div>
+                    <div class="style-selector">
+                        <button class="style-btn" onclick="setStyle('focused')">Focused</button>
+                        <button class="style-btn active" onclick="setStyle('balanced')">Balanced</button>
+                        <button class="style-btn" onclick="setStyle('creative')">Creative</button>
+                    </div>
+                </div>
+
+                <!-- Advanced Settings -->
+                <div class="sidebar-header mt-4">
+                    <span>System Preferences</span>
+                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </div>
+                <div class="sidebar-item hover-effect">
+                    <input type="checkbox" id="chk-stream" checked>
+                    <span>Stream Responses</span>
+                </div>
+                <div class="sidebar-item hover-effect">
+                    <input type="checkbox" id="chk-focus" checked>
+                    <span>Ambient Focus Mode</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- BOTTOM: Status Bar -->
+        <footer class="status-bar">
+            <div class="status-left">
+                <div class="status-pill" id="status-pill">
+                    <span class="status-dot active" id="status-conn"></span>
+                    <span id="status-text">Ready</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Provider:</span>
+                    <span id="status-provider" class="status-value">Ollama</span>
+                </div>
+            </div>
+            <div class="status-right">
+                <div class="status-item">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                    <span>GlyphOS v2.6 (Rich Text)</span>
+                </div>
+            </div>
+        </footer>
+
     </div>
 
-    <!-- Version Footer -->
-    <div class="version-footer">
-        <span class="version-text">v2.3</span>
-        <span class="version-date">Updated: <span id="version-date"></span></span>
-    </div>
-
-    <script src="script-modern.js"></script>
+    <script src="script-unified.js"></script>
 </body>
 </html>
