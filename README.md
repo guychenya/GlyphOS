@@ -21,8 +21,39 @@
 
 >🚀 The Civilization Starter is an ongoing project: GlyphOS 1.0 + 2.0 + 3.0 together form the complete blueprint for civilization activation. What you see now is just the “seed phase”—stay >tuned for the full upgrade!  
 
-🚧 **[Access TXT OS (Powered by the GlyphOS Reasoning Engine)](https://github.com/onestardao/GlyphOS/tree/main/OS)**  
-`HelloWorld.txt` is live. Docs in progress.
+## 🌌 GlyphOS Unified Interface (New!)
+
+> **One Screen. Infinite Reasoning.**
+
+The new **GlyphOS Unified Interface** transforms your interaction with AI into a streamlined, text-first operating system experience. No more jumping between windows—everything happens on a single, responsive canvas.
+
+**[Launch GlyphOS Unified](OS/)** (Local / Self-Hosted)  
+**[Live Demo](https://glyphos.reliatrack.org/)**
+
+### Key Features
+
+*   **⚡ Text-First Command Bar**: Control everything from a single input line. Use `/` for commands and `@` to switch providers instantly.
+*   **🧠 Multi-Provider Intelligence**: Seamlessly connect to your preferred AI brain:
+    *   **Ollama** (Local, Private)
+    *   **Groq** (Ultra-fast Cloud)
+    *   **OpenAI** (GPT-4 Turbo)
+    *   **Google Gemini** (Pro 1.5)
+    *   **OpenRouter** (Claude, Mistral, Llama 3)
+*   **🎨 Rich Media Support**:
+    *   **Markdown**: Beautifully rendered text with syntax highlighting.
+    *   **Mermaid.js**: Automatic generation of flowcharts, sequence diagrams, and graphs.
+    *   **LaTeX (KaTeX)**: Professional rendering of mathematical equations (`$$E=mc^2$$`).
+*   **🔐 Secure Key Management**: Manage your API keys directly in the sidebar. Keys are stored locally in your browser—never sent to our servers.
+*   **📂 Context Aware**: Upload files, manage conversation threads, and keep your history organized in a collapsible sidebar.
+
+### Quick Start
+
+1.  **Open the Interface**: Navigate to `OS/index.html` or the live demo.
+2.  **Select Intelligence**: Choose a provider from the right sidebar.
+3.  **Set Key**: If using a cloud provider, enter your API key in the secure input field.
+4.  **Start Reasoning**: Type `Help` or `/help` to see what GlyphOS can do.
+
+---
 
 ---
 
