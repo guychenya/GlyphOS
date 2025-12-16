@@ -52,7 +52,11 @@ class UnifiedOS {
             statusProvider: document.getElementById('status-provider'),
             providerSelect: document.getElementById('provider-select'),
             modelList: document.getElementById('model-list'),
-            appGrid: document.getElementById('app-grid')
+            appGrid: document.getElementById('app-grid'),
+            // New API Key Elements
+            apiKeyContainer: document.getElementById('api-key-container'),
+            apiKeyInput: document.getElementById('api-key-input'),
+            saveKeyBtn: document.getElementById('save-key-btn')
         };
 
         this.init();
@@ -93,9 +97,41 @@ class UnifiedOS {
             this.saveSettings();
         });
 
+        // API Key Saving
+        this.dom.saveKeyBtn.addEventListener('click', async () => {
+            const key = this.dom.apiKeyInput.value.trim();
+            if (key) {
+                // Show loading state on button
+                const originalIcon = this.dom.saveKeyBtn.innerHTML;
+                this.dom.saveKeyBtn.innerHTML = '...';
+                
+                try {
+                    // Validate before saving
+                    if (this.provider !== 'ollama') {
+                        await this.validateProviderConnection(this.provider, key);
+                    }
+                    
+                    this.keys[this.provider] = key;
+                    localStorage.setItem(`glyphos_${this.provider}_key`, key);
+                    
+                    // Success feedback
+                    this.dom.saveKeyBtn.innerHTML = '<span style="color:var(--success)">✓</span>';
+                    this.checkConnection();
+                } catch (error) {
+                    // Error feedback
+                    this.dom.saveKeyBtn.innerHTML = '<span style="color:var(--danger)">✕</span>';
+                    this.appendBlock('system', `⚠️ **API Key Validation Failed:** ${error.message}`);
+                }
+
+                setTimeout(() => {
+                    this.dom.saveKeyBtn.innerHTML = originalIcon;
+                }, 2000);
+            }
+        });
+
         // Global Shortcuts
         document.addEventListener('keydown', (e) => {
-            if (e.key === '/' && document.activeElement !== this.dom.input) {
+            if (e.key === '/' && document.activeElement !== this.dom.input && document.activeElement !== this.dom.apiKeyInput) {
                 e.preventDefault();
                 this.dom.input.focus();
                 this.dom.input.value = '/';
@@ -147,7 +183,7 @@ class UnifiedOS {
         if (!this.isConnected && !tempProvider) {
             // Check if it's just a missing key for a cloud provider
             if (this.provider !== 'ollama' && !this.keys[this.provider]) {
-                this.appendBlock('system', `⚠️ **Missing API Key** for ${this.provider}. Use \`/key ${this.provider} <your_key>\` to set it.`);
+                this.appendBlock('system', `⚠️ **Missing API Key** for ${this.provider}. Use the sidebar input or \`/key ${this.provider} <your_key>\` to set it.`);
                 return;
             }
             if (this.provider === 'ollama') {
@@ -189,10 +225,19 @@ class UnifiedOS {
                     const provider = args[0].toLowerCase();
                     const key = args[1];
                     if (this.keys.hasOwnProperty(provider)) {
-                        this.keys[provider] = key;
-                        localStorage.setItem(`glyphos_${provider}_key`, key);
-                        this.appendBlock('system', `**✅ API Key for ${provider} updated.**`);
-                        if (this.provider === provider) this.checkConnection();
+                        this.validateProviderConnection(provider, key).then(() => {
+                            this.keys[provider] = key;
+                            localStorage.setItem(`glyphos_${provider}_key`, key);
+                            this.appendBlock('system', `**✅ API Key for ${provider} verified and updated.**`);
+                            
+                            // Update UI input if currently selected
+                            if (this.provider === provider) {
+                                this.dom.apiKeyInput.value = key;
+                                this.checkConnection();
+                            }
+                        }).catch(err => {
+                            this.appendBlock('system', `❌ **Validation Failed:** ${err.message}`);
+                        });
                     } else {
                          this.appendBlock('system', `❌ Unknown provider: ${provider}. Supported: groq, openai, gemini, openrouter.`);
                     }
@@ -403,49 +448,13 @@ class UnifiedOS {
             
             buffer += decoder.decode(value, { stream: true });
             
-            // Gemini sends a JSON array structure, often chunked weirdly.
-            // We'll try to parse complete JSON objects from the buffer.
-            // Note: This is a simplified parser for the stream structure.
-            // Real implementation might need robust JSON stream parsing.
-            
-            // Hacky manual parsing for standard Gemini stream format "[...,"
             if (buffer.startsWith('[')) buffer = buffer.substring(1);
             if (buffer.endsWith(']')) buffer = buffer.substring(0, buffer.length - 1);
             
             const parts = buffer.split(',\n').filter(p => p.trim() !== '');
-            
-            // Process parts that look like complete JSON
-            for (let i = 0; i < parts.length; i++) {
-                try {
-                    const json = JSON.parse(parts[i]);
-                    // If successful, remove from buffer (conceptually)
-                    // In this simple loop we just accumulate text
-                    if (json.candidates && json.candidates[0].content) {
-                        const text = json.candidates[0].content.parts[0].text;
-                        if (text) {
-                            // We need to avoid duplicating text if we re-parse the whole buffer.
-                            // Better strategy: Accumulate *new* text. 
-                            // For this MVP, we might just assume valid chunks arrive.
-                        }
-                    }
-                } catch(e) {
-                    // Incomplete JSON, keep in buffer
-                }
-            }
-            
-            // REWRITE: The manual parsing above is risky. 
-            // Better to just accept that Gemini stream requires a specific parser or just wait for chunks.
-            // Let's use a simpler Regex approach for "text": "..." 
-            
-            const textMatches = buffer.matchAll(/"text":\s*"([^"]*)"/g);
-            // This is also brittle due to escaped quotes.
-            
-            // Correct approach: Use the official stream format which sends complete JSON objects separated by commas if we handle it right.
-            // Or just non-streaming for Gemini if too complex?
-            // Let's try non-streaming for Gemini V1 stability.
         }
         
-        // Fallback: Non-streaming Gemini for stability
+        // Fallback: Non-streaming Gemini for stability in this version
         const simpleResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.keys.gemini}`, {
              method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -484,6 +493,46 @@ class UnifiedOS {
         this.scrollToBottom();
     }
 
+    async validateProviderConnection(provider, key) {
+        let url = '';
+        let headers = { 'Authorization': `Bearer ${key}` };
+        
+        switch (provider) {
+            case 'openai':
+                url = 'https://api.openai.com/v1/models';
+                break;
+            case 'groq':
+                url = 'https://api.groq.com/openai/v1/models';
+                break;
+            case 'openrouter':
+                url = 'https://openrouter.ai/api/v1/models';
+                break;
+            case 'gemini':
+                url = `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`;
+                headers = {}; // API key is in query param
+                break;
+            case 'ollama':
+                return true; // Ollama validation is separate
+            default:
+                throw new Error('Unknown provider');
+        }
+
+        try {
+            const response = await fetch(url, { method: 'GET', headers: headers });
+            if (!response.ok) {
+                let msg = response.statusText;
+                try {
+                    const data = await response.json();
+                    msg = data.error?.message || msg;
+                } catch(e) {}
+                throw new Error(msg);
+            }
+            return true;
+        } catch (e) {
+            throw e;
+        }
+    }
+
     async checkConnection() {
         this.updateStatus('Checking...', 'pending');
         
@@ -506,13 +555,20 @@ class UnifiedOS {
         } else {
             // Cloud providers
             if (this.keys[p]) {
-                this.updateStatus('Ready', 'connected');
-                this.isConnected = true;
-                this.updateModelList(this.getDefaultModels(p));
+                try {
+                    await this.validateProviderConnection(p, this.keys[p]);
+                    this.updateStatus('Connected', 'connected');
+                    this.isConnected = true;
+                    this.updateModelList(this.getDefaultModels(p));
+                } catch (e) {
+                    this.updateStatus('Invalid Key', 'disconnected');
+                    this.isConnected = false;
+                    this.dom.modelList.innerHTML = `<div style="color:var(--danger); font-size:0.8rem">${e.message}</div>`;
+                }
             } else {
                 this.updateStatus('No API Key', 'disconnected');
                 this.isConnected = false;
-                this.dom.modelList.innerHTML = '<div style="font-size:0.8rem">Use /key command to set API key</div>';
+                this.dom.modelList.innerHTML = '<div style="font-size:0.8rem">Enter API Key above</div>';
             }
         }
     }
@@ -568,6 +624,17 @@ class UnifiedOS {
 
     updateUI() {
         this.dom.providerSelect.value = this.provider;
+        
+        // Handle API Key Input Visibility
+        if (this.provider === 'ollama') {
+            this.dom.apiKeyContainer.classList.add('hidden');
+        } else {
+            this.dom.apiKeyContainer.classList.remove('hidden');
+            this.dom.apiKeyInput.value = this.keys[this.provider] || '';
+            this.dom.apiKeyInput.placeholder = `Enter ${this.provider.charAt(0).toUpperCase() + this.provider.slice(1)} Key`;
+        }
+        
+        // Update Style Buttons
         document.querySelectorAll('.style-btn').forEach(btn => {
             if (btn.textContent.toLowerCase() === this.style) btn.classList.add('active');
             else btn.classList.remove('active');
