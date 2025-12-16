@@ -511,7 +511,30 @@ class UnifiedOS {
 
         while (true) {
             const { done, value } = await reader.read();
-            if (done) break;
+            if (done) {
+                // Process any remaining buffer
+                if (buffer.trim()) {
+                    const lines = [buffer];
+                    for (const line of lines) {
+                        if (line.trim().startsWith('data: ')) {
+                            const dataStr = line.replace('data: ', '').trim();
+                            if (dataStr !== '[DONE]') {
+                                try {
+                                    const json = JSON.parse(dataStr);
+                                    if (json.choices && json.choices.length > 0 && json.choices[0].delta) {
+                                        const content = json.choices[0].delta.content;
+                                        if (content) { 
+                                            fullText += content; 
+                                            onUpdate(fullText); 
+                                        }
+                                    }
+                                } catch (e) { console.warn('Final Buffer Parse Error:', e); }
+                            }
+                        }
+                    }
+                }
+                break;
+            }
             
             // Decode with stream:true to handle multi-byte characters split across chunks
             buffer += decoder.decode(value, { stream: true });
