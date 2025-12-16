@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple HTTP server for TXT OS
+Simple HTTP server for GlyphOS
 Run this instead of opening the HTML file directly to avoid CORS issues.
 It also acts as a proxy for the Ollama server to avoid CORS issues.
 """
@@ -81,7 +81,7 @@ def main():
     handler = MyHTTPRequestHandler
     
     with socketserver.TCPServer(('', PORT), handler) as httpd:
-        print(f"🚀 TXT OS Server starting...")
+        print(f"🚀 GlyphOS Server starting...")
         print(f"📍 Serving at: http://localhost:{PORT}")
         print(f"🎯 Main app: http://localhost:{PORT}/index.html")
         print(f"⚡️ Proxying /ollama/ to {OLLAMA_API_BASE}")

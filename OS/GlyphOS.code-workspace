@@ -1,7 +1,7 @@
 {
     "folders": [
         {
-            "name": "🚀 TXT OS - Main Project",
+            "name": "🚀 GlyphOS - Main Project",
             "path": "."
         },
         {
@@ -339,20 +339,20 @@
         "version": "0.2.0",
         "configurations": [
             {
-                "name": "🚀 Launch TXT OS (Modern)",
+                "name": "🚀 Launch GlyphOS (Modern)",
                 "type": "chrome",
                 "request": "launch",
                 "url": "http://localhost:5500/index-modern.html",
-                "webRoot": "${workspaceFolder:TXT OS - Main Project}",
-                "userDataDir": "${workspaceFolder:TXT OS - Main Project}/.vscode/chrome-debug-profile"
+                "webRoot": "${workspaceFolder:GlyphOS - Main Project}",
+                "userDataDir": "${workspaceFolder:GlyphOS - Main Project}/.vscode/chrome-debug-profile"
             },
             {
-                "name": "🎯 Launch TXT OS (Legacy)",
+                "name": "🎯 Launch GlyphOS (Legacy)",
                 "type": "chrome",
                 "request": "launch",
                 "url": "http://localhost:5500/index.html",
-                "webRoot": "${workspaceFolder:TXT OS - Main Project}",
-                "userDataDir": "${workspaceFolder:TXT OS - Main Project}/.vscode/chrome-debug-profile-legacy"
+                "webRoot": "${workspaceFolder:GlyphOS - Main Project}",
+                "userDataDir": "${workspaceFolder:GlyphOS - Main Project}/.vscode/chrome-debug-profile-legacy"
             }
         ]
     },
@@ -360,7 +360,7 @@
         "version": "2.0.0",
         "tasks": [
             {
-                "label": "🚀 Start Modern TXT OS",
+                "label": "🚀 Start Modern GlyphOS",
                 "type": "shell",
                 "command": "python3 -m http.server 5500",
                 "group": "build",
@@ -372,11 +372,11 @@
                 },
                 "isBackground": true,
                 "options": {
-                    "cwd": "${workspaceFolder:TXT OS - Main Project}"
+                    "cwd": "${workspaceFolder:GlyphOS - Main Project}"
                 }
             },
             {
-                "label": "🎯 Start Legacy TXT OS",
+                "label": "🎯 Start Legacy GlyphOS",
                 "type": "shell",
                 "command": "python3 -m http.server 5501",
                 "group": "build",
@@ -388,7 +388,7 @@
                 },
                 "isBackground": true,
                 "options": {
-                    "cwd": "${workspaceFolder:TXT OS - Main Project}"
+                    "cwd": "${workspaceFolder:GlyphOS - Main Project}"
                 }
             }
         ]

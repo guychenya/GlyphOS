@@ -1,4 +1,4 @@
-// Advanced TXT OS - Modern UI with Enhanced Features
+// Advanced GlyphOS - Modern UI with Enhanced Features
 class ModernTxtOS {
     constructor() {
         this.isConnected = false;
@@ -388,7 +388,7 @@ class ModernTxtOS {
         document.body.style.animation = 'rainbow 3s ease-in-out';
         
         // Show special message
-        this.showNotification('🎉 You found the Easter egg! Welcome to TXT OS Pro Mode! 🚀', 'success');
+        this.showNotification('🎉 You found the Easter egg! Welcome to GlyphOS Pro Mode! 🚀', 'success');
         
         // Add rainbow animation styles if not exist
         if (!document.querySelector('#easter-egg-styles')) {
@@ -1345,7 +1345,7 @@ class ModernTxtOS {
     }
 }
 
-// Initialize the modern TXT OS
+// Initialize the modern GlyphOS
 document.addEventListener('DOMContentLoaded', () => {
     window.txtOS = new ModernTxtOS();
 });

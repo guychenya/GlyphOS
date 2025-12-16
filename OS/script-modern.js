@@ -1,4 +1,4 @@
-// Modern TXT OS - Ultra-fast AI Reasoning System
+// Modern GlyphOS - Ultra-fast AI Reasoning System
 class ModernTxtOS {
     constructor() {
         this.ollamaUrl = 'http://127.0.0.1:11434';
@@ -1802,7 +1802,7 @@ ${deltaS > this.knowledgeBoundary.lambdaObserve ?
 Simulating TXT file integration...
 
 \`\`\`
-# TXT OS Core Boot Sequence
+# GlyphOS Core Boot Sequence
 Loading semantic protocols...
 Initializing memory tree...
 Activating boundary detection...
@@ -2071,7 +2071,7 @@ function toggleDarkMode() {
 }
 
 function showHelp() {
-    txtOS.addMessage('system', `🏛️ **TXT OS v2.0 Help & Shortcuts**
+    txtOS.addMessage('system', `🏛️ **GlyphOS v2.0 Help & Shortcuts**
 
 **Toolbar Icons:**
 - ➕ **New Chat** - Start a fresh conversation
@@ -2098,7 +2098,7 @@ function showHelp() {
 - \`tree\` - View semantic memory tree
 - \`help\` - Show command help
 
-Type any question to start reasoning with TXT OS!`);
+Type any question to start reasoning with GlyphOS!`);
 }
 
 // Drag and Drop functionality

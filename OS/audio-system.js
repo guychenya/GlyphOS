@@ -1,4 +1,4 @@
-// Advanced Audio System for TXT OS
+// Advanced Audio System for GlyphOS
 // Sophisticated sound design with Web Audio API
 
 class TxtOSAudioSystem {

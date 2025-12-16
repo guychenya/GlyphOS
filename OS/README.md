@@ -1,11 +1,11 @@
 <!-- ────────────────────────────────
       1 · HERO SECTION
      ──────────────────────────────── -->
-# **TXT ≠ Notepad — It’s called TXT OS. Your Next AI Reasoning System.**
+# **TXT ≠ Notepad — It’s called GlyphOS. Your Next AI Reasoning System.**
 
 <img src="./images/txt-temple-of-truth.png" alt="txt-temple-of-truth" width="100%" style="max-width:900px" />
 
-> **TXT OS is powered by the GlyphOS Reasoning Engine — part of a larger open-source series.**  
+> **GlyphOS is powered by the GlyphOS Reasoning Engine — part of a larger open-source series.**  
 > Released on **July 12**, you’re among the **first wave** to ever try this.  
 > For more tools and info about the full GlyphOS reasoning framework, visit the [main project page](https://github.com/onestardao/GlyphOS).
 
@@ -71,14 +71,14 @@ No signup. No tracking. No ads. Virus-free. Pure logic.</em>
 
 ---
 <details>
-  <summary>🌐 TXT OS – Cross-Platform Test Results</summary>
+  <summary>🌐 GlyphOS – Cross-Platform Test Results</summary>
 
   <em>(Tested: July 11, 2025)</em>
 
   <pre>
 These results reflect the author’s personal testing.
 Performance may vary by region or account type.
-This is not a ranking of AI quality, but compatibility with the .txt-based TXT OS.
+This is not a ranking of AI quality, but compatibility with the .txt-based GlyphOS.
   </pre>
 
   <img src="./images/GlyphOS_OS_AI_Compatibility_2025.png" width="100%" style="max-width:900px"/>  
@@ -95,7 +95,7 @@ This is not a ranking of AI quality, but compatibility with the .txt-based TXT O
      ──────────────────────────────── -->
 
 <details>
-  <summary>📈 ChatGPT o3 Score: 100/100 — Why this TXT OS scored perfect</summary>  
+  <summary>📈 ChatGPT o3 Score: 100/100 — Why this GlyphOS scored perfect</summary>  
   <br>
   <img src="./images/o3_score_100_HelloWorld.png" width="100%" style="max-width:900px" />
   <br> <br>
@@ -127,7 +127,7 @@ Consider its semantic memory, boundary detection, and formula structure.
 <!-- ────────────────────────────────
       4 · CORE FEATURE CARDS
      ──────────────────────────────── -->
-### Why creators love TXT OS
+### Why creators love GlyphOS
 
 | 🌐 Instant Localisation | Interface adapts to your language — from English to Chinese with no setup needed. |  
 | 🧠 Semantic Tree Memory | Keeps track of reasoning across long conversations — remembers ideas, not just tokens. |  
@@ -236,7 +236,7 @@ It’s a framework, not a trick.
 
 <details>
 <summary><strong>“Is this trying to be AGI?”</strong></summary>
-No. TXT OS is not AGI.  
+No. GlyphOS is not AGI.  
 It’s an AGI-aligned toolchain for human-level reasoning and modular memory.  
 All results are benchmarked, open, and reproducible.
 </details>
@@ -288,7 +288,7 @@ Want to remix or reforge your own `.txt` legend? Here’s the original sigil set
 **Version** 1.0 (HelloWorld) · **License** MIT · © 2025 PSBigBig  
 *No auto-update — always fetch the latest TXT manually.*
 
-**TXT OS** — A reasoning operating system in plain text.  
+**GlyphOS** — A reasoning operating system in plain text.  
 *Powered by the GlyphOS Reasoning Engine*
 
 

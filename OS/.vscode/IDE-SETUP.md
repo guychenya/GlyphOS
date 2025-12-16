@@ -1,7 +1,7 @@
-# 🚀 TXT OS - IDE Setup Guide
+# 🚀 GlyphOS - IDE Setup Guide
 
 ## Overview
-This comprehensive IDE setup enhances your development experience for the TXT OS project with optimized configurations, debugging tools, and automated workflows.
+This comprehensive IDE setup enhances your development experience for the GlyphOS project with optimized configurations, debugging tools, and automated workflows.
 
 ## 📁 Configuration Files Created
 
@@ -14,7 +14,7 @@ This comprehensive IDE setup enhances your development experience for the TXT OS
 - **Theme & UI**: Dark theme with proper syntax highlighting
 
 ### 2. **extensions.json** - Recommended Extensions
-Essential extensions for TXT OS development:
+Essential extensions for GlyphOS development:
 - **Live Server**: Real-time preview of your HTML changes
 - **Auto Rename Tag**: Automatically rename paired HTML tags
 - **Path Intellisense**: Intelligent path completion
@@ -27,8 +27,8 @@ Essential extensions for TXT OS development:
 
 ### 3. **launch.json** - Debug Configurations
 Multiple launch configurations for different scenarios:
-- **🚀 Launch TXT OS (Modern)**: Debug modern interface (port 5500)
-- **🎯 Launch TXT OS (Legacy)**: Debug legacy interface (port 5501)
+- **🚀 Launch GlyphOS (Modern)**: Debug modern interface (port 5500)
+- **🎯 Launch GlyphOS (Legacy)**: Debug legacy interface (port 5501)
 - **🐍 Launch Python Server**: Debug Flask server
 - **🔧 Debug Connection Test**: Test connection functionality
 - **🐛 Debug Chat Interface**: Debug chat components
@@ -49,16 +49,16 @@ Pre-configured tasks for common operations:
 
 ### 5. **GlyphOS-OS.code-workspace** - Workspace Configuration
 Multi-folder workspace with:
-- **Main Project**: Core TXT OS files
+- **Main Project**: Core GlyphOS files
 - **Project Images**: Image assets folder
 - **Documentation**: Documentation files
-- **Custom Theme**: TXT OS branded color scheme
+- **Custom Theme**: GlyphOS branded color scheme
 - **Integrated Launch/Task Configs**: Workspace-specific debugging and tasks
 
 ## 🎨 Visual Features
 
 ### Custom Color Theme
-The workspace includes a custom dark theme with TXT OS branding:
+The workspace includes a custom dark theme with GlyphOS branding:
 - **Primary Blue**: #1e40af (title bar, status bar)
 - **Dark Background**: #0f172a (editor, terminal)
 - **Accent Colors**: Blue theme with proper contrast
@@ -82,7 +82,7 @@ The workspace includes a custom dark theme with TXT OS branding:
 ### Running the Application
 1. **Method 1 - Using Debug Panel**:
    - Press `F5` or go to Run & Debug panel
-   - Select \"🚀 Launch TXT OS (Modern)\"
+   - Select \"🚀 Launch GlyphOS (Modern)\"
    - Click the play button
 
 2. **Method 2 - Using Tasks**:
@@ -116,7 +116,7 @@ The workspace includes a custom dark theme with TXT OS branding:
 Ctrl+Shift+P → Tasks: Run Task → serve-modern
 
 # Or use the debug configuration
-F5 → Launch TXT OS (Modern)
+F5 → Launch GlyphOS (Modern)
 ```
 
 ### 2. Code Quality Check
@@ -209,7 +209,7 @@ Modify the `workbench.colorCustomizations` section in the workspace file to chan
 - Integrated testing environments
 
 ### Custom Color Themes
-- TXT OS branded interface
+- GlyphOS branded interface
 - Improved readability
 - Consistent visual identity
 
@@ -229,4 +229,4 @@ Modify the `workbench.colorCustomizations` section in the workspace file to chan
 
 **Happy Coding! 🎉**
 
-This IDE setup is specifically tailored for the TXT OS project to provide the best development experience possible. All configurations are optimized for web development with modern tools and workflows.
+This IDE setup is specifically tailored for the GlyphOS project to provide the best development experience possible. All configurations are optimized for web development with modern tools and workflows.

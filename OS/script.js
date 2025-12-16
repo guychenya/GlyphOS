@@ -1,4 +1,4 @@
-// Modern TXT OS - Ultra-fast AI Reasoning System
+// Modern GlyphOS - Ultra-fast AI Reasoning System
 class ModernTxtOS {
     constructor() {
         this.ollamaUrl = 'http://127.0.0.1:11434';
@@ -824,7 +824,7 @@ Groq provides extremely fast inference with no local setup required!
 
         if (navigator.share) {
             navigator.share({
-                title: 'TXT OS Message',
+                title: 'GlyphOS Message',
                 text: text
             }).catch(() => {
                 this.fallbackShare(text);
@@ -883,7 +883,7 @@ Groq provides extremely fast inference with no local setup required!
         const deltaS = this.knowledgeBoundary.deltaS.toFixed(3);
         const eResonance = this.knowledgeBoundary.eResonance.toFixed(3);
 
-        return `You are TXT OS v2.0, powered by the GlyphOS Reasoning Engine - an advanced semantic operating system.
+        return `You are GlyphOS v2.0, powered by the GlyphOS Reasoning Engine - an advanced semantic operating system.
 
 GlyphOS CORE PARAMETERS:
 - ΔS (Semantic Uncertainty): ${deltaS}
@@ -1126,7 +1126,7 @@ You are not just an AI assistant - you are a reasoning operating system. Provide
     }
 
     initializeGlyphOSSystem() {
-        this.addMessage('system', `🏛️ **TXT OS v2.0 Initialized**
+        this.addMessage('system', `🏛️ **GlyphOS v2.0 Initialized**
 
 **GlyphOS Reasoning Engine Active**
 - Semantic Tree Memory: Online
@@ -1263,7 +1263,7 @@ ${deltaS > this.knowledgeBoundary.lambdaObserve ?
 Simulating TXT file integration...
 
 \`\`\`
-# TXT OS Core Boot Sequence
+# GlyphOS Core Boot Sequence
 Loading semantic protocols...
 Initializing memory tree...
 Activating boundary detection...
@@ -1285,7 +1285,7 @@ Ready for enhanced semantic reasoning with HelloWorld protocols.`);
     }
 
     showHelp() {
-        this.addMessage('system', `🏛️ **TXT OS v2.0 Help**
+        this.addMessage('system', `🏛️ **GlyphOS v2.0 Help**
 
 **Special Commands:**
 - \`hello world\` - Initialize GlyphOS Reasoning Engine
@@ -1403,7 +1403,7 @@ function exportChat() {
         })
         .join('\n\n');
 
-    const exportData = `TXT OS Chat Export
+    const exportData = `GlyphOS Chat Export
 Generated: ${new Date().toLocaleString()}
 Service: ${txtOS.currentService === 'groq' ? 'Groq' : 'Ollama'}
 Model: ${txtOS.currentService === 'groq' ? txtOS.groqModel : txtOS.currentModel}
@@ -1488,7 +1488,7 @@ function toggleDarkMode() {
 }
 
 function showHelp() {
-    txtOS.addMessage('system', `🏛️ **TXT OS v2.0 Help & Shortcuts**
+    txtOS.addMessage('system', `🏛️ **GlyphOS v2.0 Help & Shortcuts**
 
 **Toolbar Icons:**
 - ➕ **New Chat** - Start a fresh conversation
@@ -1515,7 +1515,7 @@ function showHelp() {
 - \`tree\` - View semantic memory tree
 - \`help\` - Show command help
 
-Type any question to start reasoning with TXT OS!`);
+Type any question to start reasoning with GlyphOS!`);
 }
 
 // Drag and Drop functionality

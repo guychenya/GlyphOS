@@ -1,4 +1,4 @@
-// Enhanced Clean TXT OS - Multi-Provider with File Upload and History
+// Enhanced Clean GlyphOS - Multi-Provider with File Upload and History
 class CleanTxtOS {
     constructor() {
         this.isConnected = false;

@@ -1,4 +1,4 @@
-// Advanced TXT OS - Modern UI with Enhanced Features
+// Advanced GlyphOS - Modern UI with Enhanced Features
 class ModernTxtOS {
     constructor() {
         this.isConnected = false;
@@ -1135,7 +1135,7 @@ class ModernTxtOS {
     }
 }
 
-// Initialize the modern TXT OS
+// Initialize the modern GlyphOS
 document.addEventListener('DOMContentLoaded', () => {
     window.txtOS = new ModernTxtOS();
 });

@@ -7,7 +7,7 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "🚀 Launch TXT OS (Modern) - Chrome",
+            "name": "🚀 Launch GlyphOS (Modern) - Chrome",
             "url": "http://localhost:5500/index-modern.html",
             "webRoot": "${workspaceFolder}",
             "sourceMaps": true,
@@ -23,7 +23,7 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "🎯 Launch TXT OS (Legacy) - Chrome",
+            "name": "🎯 Launch GlyphOS (Legacy) - Chrome",
             "url": "http://localhost:5500/index.html",
             "webRoot": "${workspaceFolder}",
             "sourceMaps": true,
@@ -111,7 +111,7 @@
             "name": "🚀 Launch Full Stack (Modern + Python)",
             "configurations": [
                 "🐍 Launch Python Server",
-                "🚀 Launch TXT OS (Modern) - Chrome"
+                "🚀 Launch GlyphOS (Modern) - Chrome"
             ],
             "presentation": {
                 "hidden": false,
