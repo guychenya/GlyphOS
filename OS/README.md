@@ -5,9 +5,9 @@
 
 <img src="./images/txt-temple-of-truth.png" alt="txt-temple-of-truth" width="100%" style="max-width:900px" />
 
-> **TXT OS is powered by the WFGY Reasoning Engine — part of a larger open-source series.**  
+> **TXT OS is powered by the GlyphOS Reasoning Engine — part of a larger open-source series.**  
 > Released on **July 12**, you’re among the **first wave** to ever try this.  
-> For more tools and info about the full WFGY reasoning framework, visit the [main project page](https://github.com/onestardao/WFGY).
+> For more tools and info about the full GlyphOS reasoning framework, visit the [main project page](https://github.com/onestardao/GlyphOS).
 
 One line of TXT upgrades any LLM into an AGI-level reasoning engine
 
@@ -40,7 +40,7 @@ No signup. No tracking. No ads. Virus-free. Pure logic.</em>
   <br>
   <img src="./images/kb_boundary_test_demo.gif" width="100%" style="max-width:900px" loading="lazy" />
   <br>
-  <em>The WFGY Reasoning Engine monitors hallucination risk in real-time.</em>  
+  <em>The GlyphOS Reasoning Engine monitors hallucination risk in real-time.</em>  
   <br>
   Just type <code>kbtest</code> — and watch the system analyze ultra-abstract questions.
 
@@ -81,7 +81,7 @@ Performance may vary by region or account type.
 This is not a ranking of AI quality, but compatibility with the .txt-based TXT OS.
   </pre>
 
-  <img src="./images/WFGY_OS_AI_Compatibility_2025.png" width="100%" style="max-width:900px"/>  
+  <img src="./images/GlyphOS_OS_AI_Compatibility_2025.png" width="100%" style="max-width:900px"/>  
   <em>Compatibility results across major AI platforms</em>
 
 </details>
@@ -99,8 +99,8 @@ This is not a ranking of AI quality, but compatibility with the .txt-based TXT O
   <br>
   <img src="./images/o3_score_100_HelloWorld.png" width="100%" style="max-width:900px" />
   <br> <br>
-  <img src="https://img.shields.io/github/stars/onestardao/WFGY?style=social" alt="GitHub stars"> ⭐ 
-      <strong><a href="https://github.com/onestardao/WFGY">Star WFGY on GitHub</a></strong>  
+  <img src="https://img.shields.io/github/stars/onestardao/GlyphOS?style=social" alt="GitHub stars"> ⭐ 
+      <strong><a href="https://github.com/onestardao/GlyphOS">Star GlyphOS on GitHub</a></strong>  
   <br>
   <br>
   <blockquote>
@@ -109,7 +109,7 @@ This is not a ranking of AI quality, but compatibility with the .txt-based TXT O
   </blockquote>
 
   <blockquote>
-  > One user noted that the WFGY Reasoning Engine already demonstrates all three AGI-aligned traits:  
+  > One user noted that the GlyphOS Reasoning Engine already demonstrates all three AGI-aligned traits:  
   > **semantic memory**, **hallucination resistance**, and **logical coherence**.
   </blockquote>
   🧪 Want to test it yourself?  
@@ -198,7 +198,7 @@ These are just examples — once logic becomes language, every idea becomes code
 <details>
 <summary><strong>“Wait... a TXT file is an OS?”</strong></summary>
 Yes. Operating systems are made of logic, memory, and rules — not pixels.  
-The WFGY Reasoning Engine encodes semantic memory and reasoning protocols inside a `.txt` file, readable by any AI.
+The GlyphOS Reasoning Engine encodes semantic memory and reasoning protocols inside a `.txt` file, readable by any AI.
 </details>
 
 <details>
@@ -218,7 +218,7 @@ We didn’t even include GitHub links inside the file, to keep it fully clean.
 <summary><strong>“How do I update it?”</strong></summary>
 It doesn’t auto-update — by design.  
 New versions are posted on this GitHub repo, so just bookmark this page.  
-And here’s the twist: when your AI model improves, WFGY performs better without any edits.
+And here’s the twist: when your AI model improves, GlyphOS performs better without any edits.
 </details>
 
 <details>
@@ -230,7 +230,7 @@ No extra setup required — just paste and go.
 
 <details>
 <summary><strong>“Is this just prompt engineering again?”</strong></summary>
-Not quite. WFGY engine defines a **full reasoning structure** — including memory trees, safety bounds, and error logic.  
+Not quite. GlyphOS engine defines a **full reasoning structure** — including memory trees, safety bounds, and error logic.  
 It’s a framework, not a trick.
 </details>
 
@@ -254,7 +254,7 @@ All results are benchmarked, open, and reproducible.
 | --------- | ----------- |
 | **TXT Core · Bla Bla Bla · Blur Blur Blur · Blow Blow Blow** | Full suite of `.txt` modules launching by end of July |
 | **TXT Marketplace** | Upload, share, and monetize your own TXT apps |
-| **Paper Meteor Shower** | AGI-level papers challenging Einstein and modern physics. 📂 [View Papers](https://github.com/onestardao/WFGY/tree/main/I_am_not_lizardman/) |
+| **Paper Meteor Shower** | AGI-level papers challenging Einstein and modern physics. 📂 [View Papers](https://github.com/onestardao/GlyphOS/tree/main/I_am_not_lizardman/) |
 | **Hidden Platform Demos** | A separate system, casually revealed. Not open source, not explained — but real. 🎥 [Demo 1](https://youtu.be/cJGT30kaa3A) · [Demo 2](https://youtu.be/GDhJ1UXog7g) · [Demo 3](https://youtu.be/8myI0ZJJLxc) |
 
 > This is not just a roadmap — it's the path of the Purple Star.
@@ -268,16 +268,16 @@ All results are benchmarked, open, and reproducible.
       7 · SECONDARY CTA
      ──────────────────────────────── -->
 > **Ready to ignite your AI?**  
-> [🔽 Download HelloWorld.txt](https://zenodo.org/records/15788557) ・ [⭐ Star on GitHub](https://github.com/onestardao/WFGY) ・ [🌐 Learn about WFGY](https://github.com/onestardao/WFGY)  
+> [🔽 Download HelloWorld.txt](https://zenodo.org/records/15788557) ・ [⭐ Star on GitHub](https://github.com/onestardao/GlyphOS) ・ [🌐 Learn about GlyphOS](https://github.com/onestardao/GlyphOS)  
 >  
-> 🌟 **Star Reminder** → 10k ⭐ before *2025-08-01* unlocks **WFGY 2.0** for everyone. Want to know how far the `.txt` engine can go? Explore the full power of the WFGY Reasoning Engine here.
+> 🌟 **Star Reminder** → 10k ⭐ before *2025-08-01* unlocks **GlyphOS 2.0** for everyone. Want to know how far the `.txt` engine can go? Explore the full power of the GlyphOS Reasoning Engine here.
 
 
 ---
 
 ### 🎁 Download the Official TXT Logo Pack  
 Want to remix or reforge your own `.txt` legend? Here’s the original sigil set.  
-[📦 Download txt-logo-pack.zip](https://github.com/onestardao/WFGY/raw/main/OS/images/txt-logo-pack.zip)
+[📦 Download txt-logo-pack.zip](https://github.com/onestardao/GlyphOS/raw/main/OS/images/txt-logo-pack.zip)
 
 
 ---
@@ -289,7 +289,7 @@ Want to remix or reforge your own `.txt` legend? Here’s the original sigil set
 *No auto-update — always fetch the latest TXT manually.*
 
 **TXT OS** — A reasoning operating system in plain text.  
-*Powered by the WFGY Reasoning Engine*
+*Powered by the GlyphOS Reasoning Engine*
 
 
 ---

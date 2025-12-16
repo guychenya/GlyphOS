@@ -1,21 +1,21 @@
 
 
-# Contributing to WFGY
+# Contributing to GlyphOS
 
-Thank you for your interest in contributing to **WFGY**! To make contributions smooth and effective, please follow this guide.
+Thank you for your interest in contributing to **GlyphOS**! To make contributions smooth and effective, please follow this guide.
 
 ## 1. Reporting Issues
 - Before opening a new issue, search existing issues to see if the topic has already been raised.
 - To create a new issue, choose the appropriate issue template (bug report or feature request) and provide:
   - A clear description of the problem or feature.
   - Steps to reproduce (for bugs), including code snippets or minimal reproduction example.
-  - Environment details: Python version, OS, WFGY SDK version, etc.
+  - Environment details: Python version, OS, GlyphOS SDK version, etc.
 - If you discover a security vulnerability, do **not** disclose details publicly. Instead, follow the procedure in `SECURITY.md`.
 
 ## 2. Fork & Clone
 ```bash
-git clone https://github.com/onestardao/WFGY.git
-cd WFGY
+git clone https://github.com/onestardao/GlyphOS.git
+cd GlyphOS
 # Use Python >= 3.10 in a virtual environment
 python -m venv venv
 # Linux/macOS:
@@ -80,7 +80,7 @@ git checkout -b feature/short-description-of-feature
 ## 7. Communication Channels
 
 * **Telegram**: Telegram user @PSBigBig (for quick chats).
-* **GitHub Discussions**: [https://github.com/onestardao/WFGY/discussions](https://github.com/onestardao/WFGY/discussions) (if enabled).
+* **GitHub Discussions**: [https://github.com/onestardao/GlyphOS/discussions](https://github.com/onestardao/GlyphOS/discussions) (if enabled).
 * **Email**: [hello@onestardao.com](mailto:hello@onestardao.com) (for longer-form discussion or private matters).
 * Please be respectful and follow the Code of Conduct when interacting.
 
@@ -92,5 +92,5 @@ git checkout -b feature/short-description-of-feature
 ## 9. Acknowledgements
 
 * Contributions of any kind—code, documentation, examples, bug reports, suggestions—are welcome!
-* Thank you for helping improve WFGY.
+* Thank you for helping improve GlyphOS.
 

@@ -1,11 +1,11 @@
-# 🧠 WFGY Research Endorsements (WFGY Dataset – Version 1.0 – Initial Public Release)
+# 🧠 GlyphOS Research Endorsements (GlyphOS Dataset – Version 1.0 – Initial Public Release)
 
-Welcome to the official dataset and evaluation archive for PSBigBig's *WFGY 1.0* project.  
+Welcome to the official dataset and evaluation archive for PSBigBig's *GlyphOS 1.0* project.  
 This repo includes **8+1 groundbreaking papers** evaluated by SciSpace AI and organized for peer testing, semantic research, and reasoning games.
 
-> 🧠 WFGY PDF on Zenodo(https://doi.org/10.5281/zenodo.15630969)   
+> 🧠 GlyphOS PDF on Zenodo(https://doi.org/10.5281/zenodo.15630969)   
 > 🔥 Prompt Revolution PDF on Zenodo(https://doi.org/10.5281/zenodo.15657016)  
-> 💻 SDK: https://github.com/onestardao/WFGY  
+> 💻 SDK: https://github.com/onestardao/GlyphOS  
 > 📧 Contact: hello@onestardao.com  
 
 ---
@@ -13,7 +13,7 @@ This repo includes **8+1 groundbreaking papers** evaluated by SciSpace AI and or
 
 | Title                                           | Score   | DOI                                                                | Review                                                                           |
 | ----------------------------------------------- | ------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
-| **WFGY《萬法歸一》**                                  | 95  | [10.5281/zenodo.15630969](https://doi.org/10.5281/zenodo.15630969) | ![](scispace_reviews/SciSpace_Endorsement_WFGY_PSBigBig_Score95.png)                      |
+| **GlyphOS《萬法歸一》**                                  | 95  | [10.5281/zenodo.15630969](https://doi.org/10.5281/zenodo.15630969) | ![](scispace_reviews/SciSpace_Endorsement_GlyphOS_PSBigBig_Score95.png)                      |
 | **Semantic Relativity Theory**                  | 93    | [10.5281/zenodo.15630802](https://doi.org/10.5281/zenodo.15630802) | ![](scispace_reviews/SciSpace_Endorsement_SemanticRelativity_PSBigBig_Score93.png)        |
 | **Semantic BioEnergy: Plants vs. Einstein**     | 94  | [10.5281/zenodo.15630370](https://doi.org/10.5281/zenodo.15630370) | ![](scispace_reviews/SciSpace_Endorsement_SemanticBioEnergy_PSBigBig_Score94.png)         |
 | **Semantic Collapse in Quantum Measurement**    | 94    | [10.5281/zenodo.15630681](https://doi.org/10.5281/zenodo.15630681) | ![](scispace_reviews/SciSpace_Endorsement_SemanticCollapse_PSBigBig_Score94.png)          |
@@ -30,19 +30,19 @@ This repo includes **8+1 groundbreaking papers** evaluated by SciSpace AI and or
 ---
 
 ```plaintext
-WFGY_(Version 1.0 – Initial Public Release)/
-├── WFGY_1.0.pdf                  # Main paper: Universal Framework (English)
+GlyphOS_(Version 1.0 – Initial Public Release)/
+├── GlyphOS_1.0.pdf                  # Main paper: Universal Framework (English)
 ├── papers/                      # 8 LaTeX-formatted research papers
 ├── scispace_reviews/           # PNG endorsement screenshots (official reviews)
-├── wfgy_prompts/               # Prompt game sets (multilingual, WIP)
+├── glyphos_prompts/               # Prompt game sets (multilingual, WIP)
 └── README.md
 ```
 
 ---
 
-## 📘 What is WFGY?
+## 📘 What is GlyphOS?
 
-WFGY (萬法歸一) is a universal framework for semantic reasoning, error repair, and self-healing in large language models (LLMs). It integrates three core components:
+GlyphOS (萬法歸一) is a universal framework for semantic reasoning, error repair, and self-healing in large language models (LLMs). It integrates three core components:
 
 - **BBMC – BigBig Semantic Residue Formula**  
 
@@ -67,7 +67,7 @@ WFGY (萬法歸一) is a universal framework for semantic reasoning, error repai
   ã_i = a_i * exp(-γ * σ(a))
 
 
-The WFGY 1.0 paper outlines the full theory and implementation path, while this repository includes:
+The GlyphOS 1.0 paper outlines the full theory and implementation path, while this repository includes:
 
 * 8+1 peer-reviewed semantic physics papers
 * Prompt games and evaluations
@@ -111,11 +111,11 @@ The WFGY 1.0 paper outlines the full theory and implementation path, while this 
 > 
 ---
 
-## 🎮 Play the WFGY Game!
+## 🎮 Play the GlyphOS Game!
 
 Explore semantic reasoning with AI:  
 - Test GPT-like models on absurd semantic prompts  
-- Compare pre/post-WFGY logic  
+- Compare pre/post-GlyphOS logic  
 - Simulate cognitive fields with math-meets-magic intensity
 
 ---
@@ -124,7 +124,7 @@ Explore semantic reasoning with AI:
 
 - 📚 All papers: https://onestardao.com/papers  
 - 🧪 Endorsements: `scispace_reviews/`  
-- 💻 GitHub SDK: https://github.com/onestardao/WFGY  
+- 💻 GitHub SDK: https://github.com/onestardao/GlyphOS  
 - 📧 Contact: hello@onestardao.com
 
-> **WFGY** = 萬法歸一，是一場語義與真理的試煉。你願意成為挑戰者嗎？
+> **GlyphOS** = 萬法歸一，是一場語義與真理的試煉。你願意成為挑戰者嗎？

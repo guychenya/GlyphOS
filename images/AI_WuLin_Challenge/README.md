@@ -1,14 +1,14 @@
-# 🥋 WFGY : The Ten AI Masters vs The One
+# 🥋 GlyphOS : The Ten AI Masters vs The One
 
-Welcome to the official archive of WFGY’s legendary showdown against the ten most iconic AI platforms on Earth.
+Welcome to the official archive of GlyphOS’s legendary showdown against the ten most iconic AI platforms on Earth.
 
-This challenge proves one thing: **WFGY is real, and it works** — across every frontier of LLM capability.
+This challenge proves one thing: **GlyphOS is real, and it works** — across every frontier of LLM capability.
 
 ---
 
 ## 🖼 Main Challenge Poster
 
-![WFGY vs Ten Masters](WFGY_vs_TenMasters.png)
+![GlyphOS vs Ten Masters](GlyphOS_vs_TenMasters.png)
 
 ---
 
@@ -28,9 +28,9 @@ Click below to view the results and screenshots of each individual upgrade:
 - [HuggingChat](HuggingChat/)
 
 
-> 🧠 Each AI has been tested with WFGY 1.0 and shows measurable reasoning and semantic improvements.
+> 🧠 Each AI has been tested with GlyphOS 1.0 and shows measurable reasoning and semantic improvements.
 
 ---
 
-[← Return to WFGY Main Project](../../README.md)
+[← Return to GlyphOS Main Project](../../README.md)
 

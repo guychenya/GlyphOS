@@ -47,7 +47,7 @@ Pre-configured tasks for common operations:
 - **deploy-netlify**: Deploy to Netlify
 - **build-and-deploy**: Complete build and deployment pipeline
 
-### 5. **WFGY-OS.code-workspace** - Workspace Configuration
+### 5. **GlyphOS-OS.code-workspace** - Workspace Configuration
 Multi-folder workspace with:
 - **Main Project**: Core TXT OS files
 - **Project Images**: Image assets folder
@@ -76,7 +76,7 @@ The workspace includes a custom dark theme with TXT OS branding:
 ### Opening the Workspace
 1. Open VS Code
 2. Go to `File > Open Workspace from File...`
-3. Select `WFGY-OS.code-workspace`
+3. Select `GlyphOS-OS.code-workspace`
 4. Click \"Open Workspace\"
 
 ### Running the Application
@@ -166,7 +166,7 @@ Edit `.vscode/tasks.json` to add custom build or deployment tasks.
 Edit `.vscode/launch.json` to add new debugging scenarios.
 
 ### Workspace Settings
-Edit `WFGY-OS.code-workspace` to modify workspace-specific settings.
+Edit `GlyphOS-OS.code-workspace` to modify workspace-specific settings.
 
 ### Theme Customization
 Modify the `workbench.colorCustomizations` section in the workspace file to change colors.

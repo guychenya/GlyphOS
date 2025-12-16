@@ -8,11 +8,11 @@ verify_manifest.py
 setup.py
 config.yaml
 reproduce.sh
-wfgy_sdk/__init__.py
-wfgy_sdk/cli.py
-wfgy_sdk/initializer.py
-wfgy_sdk/evaluator.py
-wfgy_sdk/reporter.py
+glyphos_sdk/__init__.py
+glyphos_sdk/cli.py
+glyphos_sdk/initializer.py
+glyphos_sdk/evaluator.py
+glyphos_sdk/reporter.py
 benchmarks/all_suites.yaml
 benchmarks/efficiency.yaml
 demo/sample_prompt.txt

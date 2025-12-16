@@ -1,10 +1,10 @@
 # Security Policy
 
 ## Reporting a Vulnerability
-If you discover a potential security vulnerability in **WFGY**, please report it responsibly:
-1. **Email**: hello@onestardao.com (subject: “[WFGY Security]”)
-2. **Telegram**: Message @PSBigBig with subject “[WFGY Security]” (avoid posting sensitive details in public chats).
-3. **GitHub Private Issue**: If private issues are enabled, open a private issue titled “[Security] WFGY Vulnerability”.  
+If you discover a potential security vulnerability in **GlyphOS**, please report it responsibly:
+1. **Email**: hello@onestardao.com (subject: “[GlyphOS Security]”)
+2. **Telegram**: Message @PSBigBig with subject “[GlyphOS Security]” (avoid posting sensitive details in public chats).
+3. **GitHub Private Issue**: If private issues are enabled, open a private issue titled “[Security] GlyphOS Vulnerability”.  
 Please do **not** disclose detailed vulnerability information in public issue or forum posts to prevent exploitation before a fix is released.
 
 Maintainers will respond within 1–2 business days to acknowledge receipt and discuss next steps.
@@ -22,4 +22,4 @@ Maintainers will respond within 1–2 business days to acknowledge receipt and d
 ## Contact
 - Email: hello@onestardao.com  
 - Telegram: @PSBigBig  
-- GitHub Advisory: https://github.com/onestardao/WFGY/security/advisories (enable this if desired)
+- GitHub Advisory: https://github.com/onestardao/GlyphOS/security/advisories (enable this if desired)

@@ -38,7 +38,7 @@ And also... a confession.
 
 ## 👾 Meta Note
 
-You can explore the WFGY GitHub Maze however you want.  
+You can explore the GlyphOS GitHub Maze however you want.  
 But some NPCs *might* behave differently based on how you got here.
 
 ZIP warriors are welcome.  

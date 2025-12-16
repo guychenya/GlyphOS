@@ -6,8 +6,8 @@ body:
     attributes:
       label: Reproduction steps
       placeholder: |
-        1. pip install wfgy-sdk==1.0.0
-        2. wfgy evaluate ...
+        1. pip install glyphos-sdk==1.0.0
+        2. glyphos evaluate ...
         3. ...
     validations: { required: true }
   - type: textarea

@@ -118,7 +118,7 @@
                         </svg>
                     </div>
                     <div class="message-bubble">
-                        <div class="message-content">Welcome to TXT OS v2.0! I'm powered by the WFGY Reasoning Engine with advanced semantic capabilities.
+                        <div class="message-content">Welcome to TXT OS v2.0! I'm powered by the GlyphOS Reasoning Engine with advanced semantic capabilities.
 
 **Features Available:**
 - Knowledge Boundary Detection (`kbtest`)

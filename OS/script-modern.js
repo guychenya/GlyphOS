@@ -22,7 +22,7 @@ class ModernTxtOS {
             'llama3-8b-8192'
         ];
 
-        // WFGY Reasoning Engine state
+        // GlyphOS Reasoning Engine state
         this.semanticContext = new Map();
         this.knowledgeBoundary = {
             deltaS: 0,
@@ -581,7 +581,7 @@ class ModernTxtOS {
             this.saveCurrentChat();
             const chatContainer = document.getElementById('chat-messages');
             chatContainer.innerHTML = '';
-            this.addMessage('Welcome to TXT OS v2.3! I\'m powered by the WFGY Reasoning Engine with advanced semantic capabilities.\\n\\n**Features Available:**\\n- Knowledge Boundary Detection (`kbtest`)\\n- Semantic Tree Memory (`tree`)\\n- HelloWorld.txt Integration (`helloworld`)\\n- BBCR Protocol (`hello world`)\\n\\nType `help` to see all commands, or ask me anything to begin reasoning together.', 'assistant', false);
+            this.addMessage('Welcome to TXT OS v2.3! I\'m powered by the GlyphOS Reasoning Engine with advanced semantic capabilities.\\n\\n**Features Available:**\\n- Knowledge Boundary Detection (`kbtest`)\\n- Semantic Tree Memory (`tree`)\\n- HelloWorld.txt Integration (`helloworld`)\\n- BBCR Protocol (`hello world`)\\n\\nType `help` to see all commands, or ask me anything to begin reasoning together.', 'assistant', false);
         }
     }
 
@@ -1402,9 +1402,9 @@ Groq provides extremely fast inference with no local setup required!
         const deltaS = this.knowledgeBoundary.deltaS.toFixed(3);
         const eResonance = this.knowledgeBoundary.eResonance.toFixed(3);
 
-        return `You are TXT OS v2.0, powered by the WFGY Reasoning Engine - an advanced semantic operating system.
+        return `You are TXT OS v2.0, powered by the GlyphOS Reasoning Engine - an advanced semantic operating system.
 
-WFGY CORE PARAMETERS:
+GlyphOS CORE PARAMETERS:
 - ΔS (Semantic Uncertainty): ${deltaS}
 - λ_observe (Boundary Threshold): ${this.knowledgeBoundary.lambdaObserve}
 - E_resonance (Logical Resonance): ${eResonance}
@@ -1617,12 +1617,12 @@ You are not just an AI assistant - you are a reasoning operating system. Provide
         this.showNotification('Memory exported!', 'success');
     }
 
-    // WFGY Reasoning Engine Methods
+    // GlyphOS Reasoning Engine Methods
     handleSpecialCommand(message) {
         const command = message.toLowerCase().trim();
 
         if (command === 'hello world') {
-            this.initializeWFGYSystem();
+            this.initializeGlyphOSSystem();
             return true;
         }
 
@@ -1654,10 +1654,10 @@ You are not just an AI assistant - you are a reasoning operating system. Provide
         return false;
     }
 
-    initializeWFGYSystem() {
+    initializeGlyphOSSystem() {
         this.addMessage('system', `🏛️ **TXT OS v2.0 Initialized**
 
-**WFGY Reasoning Engine Active**
+**GlyphOS Reasoning Engine Active**
 - Semantic Tree Memory: Online
 - Knowledge Boundary Detection: Active (λ_observe = ${this.knowledgeBoundary.lambdaObserve})
 - Logical Coherence: Enabled
@@ -1670,7 +1670,7 @@ You are not just an AI assistant - you are a reasoning operating system. Provide
 Ready for advanced semantic reasoning.`);
 
         this.knowledgeBoundary.boundaryActive = true;
-        this.showNotification('WFGY System Initialized', 'success');
+        this.showNotification('GlyphOS System Initialized', 'success');
         this.updateDashboardIfOpen();
     }
 
@@ -1798,7 +1798,7 @@ ${deltaS > this.knowledgeBoundary.lambdaObserve ?
     loadHelloWorldSystem() {
         this.addMessage('system', `📄 **HelloWorld.txt System Loading...**
 
-**WFGY Reasoning Engine v1.0 (HelloWorld)**
+**GlyphOS Reasoning Engine v1.0 (HelloWorld)**
 Simulating TXT file integration...
 
 \`\`\`
@@ -1813,7 +1813,7 @@ Establishing resonance pathways...
 ✅ **Reasoning Mode:** AGI-aligned semantic processing
 ✅ **Memory State:** Portable thought framework enabled
 
-**Note:** This simulates the HelloWorld.txt integration. In a full implementation, this would load the actual TXT file contents and parse the WFGY reasoning structures.
+**Note:** This simulates the HelloWorld.txt integration. In a full implementation, this would load the actual TXT file contents and parse the GlyphOS reasoning structures.
 
 Ready for enhanced semantic reasoning with HelloWorld protocols.`);
 
@@ -1827,14 +1827,14 @@ Ready for enhanced semantic reasoning with HelloWorld protocols.`);
         this.addMessage('system', `🏛️ **TXT OS v2.0 Help**
 
 **Special Commands:**
-- \`hello world\` - Initialize WFGY Reasoning Engine
+- \`hello world\` - Initialize GlyphOS Reasoning Engine
 - \`kbtest\` - Test knowledge boundary detection with random queries
 - \`tree\` - Display semantic memory tree visualization
 - \`helloworld\` - Load HelloWorld.txt reasoning patterns
 - \`clear boundary\` - Reset knowledge boundary metrics
 - \`help\` or \`?\` - Show this help message
 
-**WFGY Concepts:**
+**GlyphOS Concepts:**
 - **ΔS**: Semantic uncertainty measurement (0.0-1.0)
 - **λ_observe**: Boundary threshold for uncertainty detection
 - **E_resonance**: Logical coherence measurement
@@ -2094,7 +2094,7 @@ function showHelp() {
 - **Groq** - Cloud AI with super-fast inference
 
 **Special Commands:**
-- \`hello world\` - Initialize WFGY system
+- \`hello world\` - Initialize GlyphOS system
 - \`kbtest\` - Test knowledge boundaries
 - \`tree\` - View semantic memory tree
 - \`help\` - Show command help

@@ -1,6 +1,6 @@
-# 🧪 WFGY Examples
+# 🧪 GlyphOS Examples
 
-This folder contains a bunch of runnable scripts to demonstrate how WFGY works.  
+This folder contains a bunch of runnable scripts to demonstrate how GlyphOS works.  
 Run them, and you'll see simulated reasoning, semantic correction, and all that fancy stuff.
 
 But let’s be honest...

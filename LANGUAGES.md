@@ -2,7 +2,7 @@
 
 Welcome! This project aims to be accessible across cultures and languages.
 
-Below are the currently supported and planned translations for the WFGY framework:
+Below are the currently supported and planned translations for the GlyphOS framework:
 
 ---
 
@@ -58,7 +58,7 @@ We will prioritize translating the `README` and major prompts for your language 
 
 ## 🧭 Project Philosophy
 
-WFGY is not just about code—it's about semantic clarity, cross-cultural reasoning, and humanity's shared path to understanding.
+GlyphOS is not just about code—it's about semantic clarity, cross-cultural reasoning, and humanity's shared path to understanding.
 
 By supporting multiple languages, we aim to:
 
@@ -78,6 +78,6 @@ By supporting multiple languages, we aim to:
 **Together, we make meaning universal. 🌎**
 
 
-![WFGYGate](https://github.com/user-attachments/assets/e9f6e7fb-69b3-4be9-9fa4-d103ef5cd522)
+![GlyphOSGate](https://github.com/user-attachments/assets/e9f6e7fb-69b3-4be9-9fa4-d103ef5cd522)
 
 

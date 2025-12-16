@@ -1,4 +1,4 @@
-name: WFGY-CI
+name: GlyphOS-CI
 on: [push, pull_request]
 
 jobs:

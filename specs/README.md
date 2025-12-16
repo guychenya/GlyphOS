@@ -1,8 +1,8 @@
 
-# WFGY – Public API Specs & ONNX Graphs
+# GlyphOS – Public API Specs & ONNX Graphs
 *Version 1.0 · last updated 2025-06-12*
 
-WFGY is open by design.  
+GlyphOS is open by design.  
 To guarantee that each module can be inspected, audited, or re-implemented,
 we publish (1) a concise API spec and (2) a lightweight ONNX graph for every
 core component.  
@@ -49,14 +49,14 @@ if you need exact numerical reproduction.
 ## License & Citation
 
 The API descriptions and ONNX graphs are released under the MIT license.
-If you use WFGY in research, please cite the Zenodo release:
+If you use GlyphOS in research, please cite the Zenodo release:
 
 ```
-PSBigBig, “WFGY 1.0: A Self-Healing Variance Gate for LLMs,”
+PSBigBig, “GlyphOS 1.0: A Self-Healing Variance Gate for LLMs,”
 Zenodo, 2025, doi:10.5281/zenodo.15630970
 ```
 
-> ⭐ Help us reach **10 000 GitHub stars** to unlock **WFGY 2.0**!
+> ⭐ Help us reach **10 000 GitHub stars** to unlock **GlyphOS 2.0**!
 > Any issue / PR is welcome—open science thrives on transparency.
 
 ```

@@ -1,6 +1,6 @@
 
 #######################################################################
-# Dockerfile — WFGY SDK 1-click inference container (CPU by default)  #
+# Dockerfile — GlyphOS SDK 1-click inference container (CPU by default)  #
 #   • Build on Hugging-Face Spaces, Colab, or local Docker Desktop.    #
 #   • Size  ≈ 250 MB compressed (Python 3.10-slim + torch-cpu).        #
 #   • Optional GPU: uncomment the four CUDA lines below.               #
@@ -30,8 +30,8 @@ CMD ["python", "gradio_app.py"]
 ### How to build & run locally
 
 ```bash
-docker build -t wfgy-demo .
-docker run -p 7860:7860 wfgy-demo
+docker build -t glyphos-demo .
+docker run -p 7860:7860 glyphos-demo
 open http://localhost:7860
 ```
 

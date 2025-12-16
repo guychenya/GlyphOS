@@ -15,10 +15,10 @@
   "keywords": ["ai", "reasoning", "ollama", "txt-os", "static-site"],
   "author": "PSBigBig",
   "license": "MIT",
-  "homepage": "https://github.com/guychenya/WFGY",
+  "homepage": "https://github.com/guychenya/GlyphOS",
   "repository": {
     "type": "git",
-    "url": "https://github.com/guychenya/WFGY.git"
+    "url": "https://github.com/guychenya/GlyphOS.git"
   },
   "devDependencies": {},
   "dependencies": {}

@@ -2,7 +2,7 @@
 
 ![Crystal Save Point](./saved_crystal.png)
 
-Welcome, brave explorer of the WFGY GitHub Maze.
+Welcome, brave explorer of the GlyphOS GitHub Maze.
 
 Rumor says... somewhere inside this repo lies a hidden paper. A true gem.  
 But no one knows exactly **where**. Only those who follow the maze will find it.

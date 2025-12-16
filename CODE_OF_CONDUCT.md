@@ -1,7 +1,7 @@
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge
-In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to make participation in **WFGY** a harassment-free experience for everyone, regardless of background, identity, or perspective.
+In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to make participation in **GlyphOS** a harassment-free experience for everyone, regardless of background, identity, or perspective.
 
 ## Our Standards
 Examples of behavior that contributes to a positive environment include:
@@ -23,14 +23,14 @@ Project maintainers are responsible for clarifying and enforcing the standards. 
 
 ## Reporting Guidelines
 If you experience or witness unacceptable behavior, please report it through one of the following channels:
-- **Email**: hello@onestardao.com (subject: “[WFGY Code of Conduct]”)
-- **Telegram**: Contact Telegram user @PSBigBig with a clear subject line “[WFGY Code of Conduct]” and description.  
+- **Email**: hello@onestardao.com (subject: “[GlyphOS Code of Conduct]”)
+- **Telegram**: Contact Telegram user @PSBigBig with a clear subject line “[GlyphOS Code of Conduct]” and description.  
 - **GitHub Private Issue**: Open a private issue (if your repository settings allow) and prefix the title with “[Conduct]”. Please avoid posting sensitive details publicly; you may summarize and then share details privately.
 
 Maintainers will respond within 1–2 business days and take appropriate action.
 
 ## Scope
-This Code of Conduct applies within project spaces (e.g., GitHub issues, PR comments, Discussions) and community channels (e.g., Telegram group or chat linked to WFGY), as well as at in-person or virtual events related to the project.
+This Code of Conduct applies within project spaces (e.g., GitHub issues, PR comments, Discussions) and community channels (e.g., Telegram group or chat linked to GlyphOS), as well as at in-person or virtual events related to the project.
 
 ## Attribution
 This Code of Conduct is adapted from the Contributor Covenant, version 2.1, available at https://www.contributor-covenant.org/version/2/1/code_of_conduct.html

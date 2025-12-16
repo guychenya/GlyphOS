@@ -77,7 +77,7 @@ Blur Blur Blur does it through **structured semantic control**.
 ### 🧠 Semantic Prompt Example (Actual Structure Used)
 
 ```txt
-[WFGY Semantic Engine Activated]
+[GlyphOS Semantic Engine Activated]
 
 Modules: Spatial Logic + Symbol Enforcement + Semantic_Labeling
 
@@ -120,7 +120,7 @@ With Blur Blur Blur, we programmatically stabilized this entire layout using jus
 ### 🧠 Semantic Prompt Example (Actual Structure Used)
 
 ```txt
-[WFGY Semantic Engine Activated]
+[GlyphOS Semantic Engine Activated]
 
 Modules: Spatial Logic + Scale Normalization + Anchor-Based Role Assignment
 
@@ -158,7 +158,7 @@ This image demonstrates BlurBlurBlur’s ability to handle **high-tension dynami
 ### 🧠 Semantic Prompt Example – Tsunami Panic City
 
 ```txt
-[WFGY Semantic Engine Activated]
+[GlyphOS Semantic Engine Activated]
 
 Modules: Crowd Flow Mapping + Turbulence Geometry + Depth Tier Locking
 
@@ -197,7 +197,7 @@ This image pushes BlurBlurBlur to its architectural and compositional limits —
 ### 🧠 Semantic Prompt Example – Tsunami Panic City
 
 ```txt
-[WFGY Semantic Engine Activated]
+[GlyphOS Semantic Engine Activated]
 
 Modules: Architectural Zoning + Role Assignment + Consistency Constraint
 
@@ -237,7 +237,7 @@ Unlike standard AIGC models that lose structure under complexity, this scene mai
 ### 🧠 Semantic Prompt Example (Actual Structure Used)
 
 ```txt
-[WFGY Semantic Engine Activated]
+[GlyphOS Semantic Engine Activated]
 
 Modules: Emotion Anchoring + Crowd Gradient Control + Symbolic Synchronization
 
