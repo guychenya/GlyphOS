@@ -214,7 +214,7 @@ class UnifiedOS {
 * **OpenAI** (Cloud)
 * **Google Gemini** (Cloud)
 * **OpenRouter** (Cloud)
-                `);
+`.trim());
                 break;
             case 'clear':
                 this.dom.canvas.innerHTML = '';
