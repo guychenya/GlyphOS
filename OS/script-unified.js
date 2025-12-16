@@ -326,16 +326,33 @@ class UnifiedOS {
     }
 
     // --- Rich Content Renderer (Markdown + Math + Mermaid) ---
+    
+    sanitizeMarkdown(text) {
+        if (!text) return '';
+        
+        // Hack: Fix missing newlines before numbered lists
+        // Converts "Text: 1. Item" -> "Text:\n\n1. Item"
+        let clean = text.replace(/([^\n])\s+(\d+\.)\s/g, '$1\n\n$2 ');
+        
+        // Converts "Text: - Item" -> "Text:\n\n- Item"
+        clean = clean.replace(/([^\n])\s+([\-\*])\s/g, '$1\n\n$2 ');
+        
+        return clean;
+    }
+
     renderRichContent(element, markdownText, isFinal = false) {
         if (!window.marked) {
             element.textContent = markdownText;
             return;
         }
 
+        // 0. Sanitize Text (Fix Spacing)
+        const processedTextPre = this.sanitizeMarkdown(markdownText);
+
         // 1. Math Pre-processing: Escape LaTeX to prevent Markdown mangling
         // Store math blocks in a map to restore later
         const mathBlocks = [];
-        let processedText = markdownText;
+        let processedText = processedTextPre;
 
         // Escape $$...$$
         processedText = processedText.replace(/\$\$([\s\S]*?)\$\$/g, (match, tex) => {
@@ -406,7 +423,6 @@ class UnifiedOS {
         const response = await fetch(`${this.ollamaUrl}/api/generate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            // Inject System Prompt
             body: JSON.stringify({ 
                 model, 
                 prompt, 
@@ -421,18 +437,38 @@ class UnifiedOS {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let fullText = '';
+        let buffer = '';
+
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
-            const chunk = decoder.decode(value, { stream: true });
-            const lines = chunk.split('\n');
+            
+            // Append new chunk to buffer
+            buffer += decoder.decode(value, { stream: true });
+            
+            // Split by newline
+            const lines = buffer.split('\n');
+            
+            // Keep the last potentially incomplete line in the buffer
+            buffer = lines.pop(); 
+            
             for (const line of lines) {
-                if (!line) continue;
+                if (!line.trim()) continue;
                 try {
                     const json = JSON.parse(line);
                     if (json.response) { fullText += json.response; onUpdate(fullText); }
-                } catch (e) {}
+                } catch (e) {
+                    console.warn('Ollama Parse Error:', e);
+                }
             }
+        }
+        
+        // Process any remaining buffer
+        if (buffer.trim()) {
+            try {
+                const json = JSON.parse(buffer);
+                if (json.response) { fullText += json.response; onUpdate(fullText); }
+            } catch (e) {}
         }
     }
 
@@ -471,12 +507,18 @@ class UnifiedOS {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let fullText = '';
+        let buffer = '';
 
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
-            const chunk = decoder.decode(value);
-            const lines = chunk.split('\n');
+            
+            // Decode with stream:true to handle multi-byte characters split across chunks
+            buffer += decoder.decode(value, { stream: true });
+            
+            const lines = buffer.split('\n');
+            buffer = lines.pop(); // Keep incomplete line
+            
             for (const line of lines) {
                 if (line.trim().startsWith('data: ')) {
                     const dataStr = line.replace('data: ', '').trim();
@@ -494,11 +536,11 @@ class UnifiedOS {
     async streamGemini(prompt, model, temp, onUpdate) {
         if (!this.keys.gemini) throw new Error('Gemini API Key missing.');
         
-        // Gemini doesn't support system prompts easily in v1beta/models without using the new system_instruction format
-        // For simplicity, we prepend the system prompt to the user message.
         const fullPrompt = `${this.systemPrompt}\n\nUser Query: ${prompt}`;
         
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?key=${this.keys.gemini}`;
+        // For Gemini, we'll use non-streaming for stability as its stream format is complex JSON array
+        // Switching to :generateContent instead of :streamGenerateContent
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.keys.gemini}`;
         
         const response = await fetch(url, {
             method: 'POST',
@@ -509,38 +551,16 @@ class UnifiedOS {
             })
         });
 
-        if (!response.ok) throw new Error(`Gemini API Error: ${response.status}`);
-
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let fullText = '';
-        let buffer = '';
-
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            
-            buffer += decoder.decode(value, { stream: true });
-            
-            if (buffer.startsWith('[')) buffer = buffer.substring(1);
-            if (buffer.endsWith(']')) buffer = buffer.substring(0, buffer.length - 1);
-            
-            const parts = buffer.split(',\n').filter(p => p.trim() !== '');
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(`Gemini API Error: ${err}`);
         }
-        
-        // Fallback: Non-streaming Gemini for stability in this version
-        const simpleResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.keys.gemini}`, {
-             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: fullPrompt }] }],
-                generationConfig: { temperature: temp }
-            })
-        });
-        
-        const json = await simpleResponse.json();
+
+        const json = await response.json();
         if (json.candidates && json.candidates[0].content) {
             onUpdate(json.candidates[0].content.parts[0].text);
+        } else {
+            throw new Error('Gemini returned no content.');
         }
     }
 
