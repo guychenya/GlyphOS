@@ -1,7 +1,7 @@
 /**
  * GlyphOS Unified - Core Logic
  * Implements the text-first, single-canvas operating system concept.
- * Features: Rich Text (Markdown), Tables, Mermaid Diagrams.
+ * Features: Rich Text (Markdown), Tables, Mermaid Diagrams, LaTeX Math.
  */
 
 class UnifiedOS {
@@ -74,7 +74,17 @@ class UnifiedOS {
 
     initRichText() {
         if (window.mermaid) {
-            mermaid.initialize({ startOnLoad: false, theme: 'default' });
+            mermaid.initialize({ 
+                startOnLoad: false, 
+                theme: 'base',
+                securityLevel: 'loose',
+                themeVariables: {
+                    fontFamily: 'Inter',
+                    primaryColor: '#e2e8f0',
+                    primaryTextColor: '#1e293b',
+                    lineColor: '#64748b'
+                }
+            });
         }
         if (window.marked) {
             marked.setOptions({
@@ -305,16 +315,56 @@ class UnifiedOS {
         }
     }
 
+    // --- Rich Content Renderer (Markdown + Math + Mermaid) ---
     renderRichContent(element, markdownText, isFinal = false) {
         if (!window.marked) {
             element.textContent = markdownText;
             return;
         }
 
-        // 1. Render Markdown
-        element.innerHTML = marked.parse(markdownText);
+        // 1. Math Pre-processing: Escape LaTeX to prevent Markdown mangling
+        // Store math blocks in a map to restore later
+        const mathBlocks = [];
+        let processedText = markdownText;
 
-        // 2. Handle Mermaid (only on final pass or specifically detected blocks)
+        // Escape $$...$$
+        processedText = processedText.replace(/\$\$([\s\S]*?)\$\$/g, (match, tex) => {
+            mathBlocks.push({ type: 'display', tex: tex });
+            return `%%%MATH${mathBlocks.length - 1}%%%`;
+        });
+
+        // Escape $...$
+        processedText = processedText.replace(/\$([^\$\n]+?)\$/g, (match, tex) => {
+            mathBlocks.push({ type: 'inline', tex: tex });
+            return `%%%MATH${mathBlocks.length - 1}%%%`;
+        });
+
+        // 2. Render Markdown
+        element.innerHTML = marked.parse(processedText);
+
+        // 3. Restore and Render Math using KaTeX
+        if (window.renderMathInElement) {
+            // Restore placeholders with valid HTML/KaTeX ready content
+            // However, it's safer to traverse text nodes or re-inject.
+            // Simplified approach: Regex replace on innerHTML (careful with XSS, but we control the placeholders)
+            
+            element.innerHTML = element.innerHTML.replace(/%%%MATH(\d+)%%%/g, (match, index) => {
+                const block = mathBlocks[parseInt(index)];
+                if (!block) return match;
+                
+                try {
+                    const html = katex.renderToString(block.tex, {
+                        displayMode: block.type === 'display',
+                        throwOnError: false
+                    });
+                    return html;
+                } catch (e) {
+                    return block.tex;
+                }
+            });
+        }
+
+        // 4. Handle Mermaid (only on final pass or specifically detected blocks)
         if (isFinal || markdownText.includes('```mermaid')) {
             const codeBlocks = element.querySelectorAll('code.language-mermaid');
             codeBlocks.forEach((codeBlock, index) => {
@@ -325,6 +375,7 @@ class UnifiedOS {
                 div.className = 'mermaid';
                 div.id = `mermaid-${Date.now()}-${index}`;
                 div.textContent = source;
+                div.style.textAlign = 'center'; // Center alignment
                 
                 pre.replaceWith(div);
                 
@@ -332,6 +383,7 @@ class UnifiedOS {
                     mermaid.init(undefined, div);
                 } catch (e) {
                     console.warn('Mermaid render error:', e);
+                    div.innerHTML = `<span style="color:red; font-size:0.8em">Diagram Error</span>`;
                 }
             });
         }
