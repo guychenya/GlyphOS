@@ -27,7 +27,7 @@ class UnifiedOS {
             groq: 'mixtral-8x7b-32768',
             openai: 'gpt-3.5-turbo',
             gemini: 'gemini-pro',
-            openrouter: 'anthropic/claude-3-opus'
+            openrouter: 'mistralai/mistral-7b-instruct:free'
         };
         
         // System Prompt to enforce formatting
@@ -474,6 +474,7 @@ class UnifiedOS {
 
     async streamOpenAIStyle(url, key, prompt, model, temp, onUpdate) {
         try {
+            console.log(`[GlyphOS] Calling Provider: ${url} | Model: ${model}`);
             if (!key) throw new Error('API Key missing.');
             
             const headers = {
@@ -561,6 +562,7 @@ class UnifiedOS {
 
     async streamGemini(prompt, model, temp, onUpdate) {
         try {
+            console.log(`[GlyphOS] Calling Gemini: ${model}`);
             if (!this.keys.gemini) throw new Error('Gemini API Key missing.');
             
             // For stability, using non-streaming generateContent
