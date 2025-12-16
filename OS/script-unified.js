@@ -30,6 +30,14 @@ class UnifiedOS {
             openrouter: 'anthropic/claude-3-opus'
         };
         
+        // System Prompt to enforce formatting
+        this.systemPrompt = `You are GlyphOS, an advanced AI operating system interface.
+- Output formatting: Use Markdown for all text.
+- Diagrams: When asked for diagrams, graphs, or charts, YOU MUST use Mermaid.js syntax.
+- Mermaid Rules: ALWAYS enclose Mermaid code in a code block with the 'mermaid' language identifier (\`\`\`mermaid). ALWAYS start the diagram with the correct type declaration (e.g., 'sequenceDiagram', 'graph TD', 'pie').
+- Math: Use LaTeX for mathematics, enclosing equations in $$ for display mode and $ for inline mode.
+- Tone: Be concise, professional, and helpful.`;
+
         this.history = [];
         this.isGenerating = false;
         this.isConnected = false;
@@ -344,10 +352,6 @@ class UnifiedOS {
 
         // 3. Restore and Render Math using KaTeX
         if (window.renderMathInElement) {
-            // Restore placeholders with valid HTML/KaTeX ready content
-            // However, it's safer to traverse text nodes or re-inject.
-            // Simplified approach: Regex replace on innerHTML (careful with XSS, but we control the placeholders)
-            
             element.innerHTML = element.innerHTML.replace(/%%%MATH(\d+)%%%/g, (match, index) => {
                 const block = mathBlocks[parseInt(index)];
                 if (!block) return match;
@@ -400,9 +404,18 @@ class UnifiedOS {
         const response = await fetch(`${this.ollamaUrl}/api/generate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ model, prompt, options: { temperature: temp }, stream: true })
+            // Inject System Prompt
+            body: JSON.stringify({ 
+                model, 
+                prompt, 
+                system: this.systemPrompt,
+                options: { temperature: temp }, 
+                stream: true 
+            })
         });
+        
         if (!response.ok) throw new Error('Ollama connection failed');
+        
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let fullText = '';
@@ -438,7 +451,10 @@ class UnifiedOS {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
-                messages: [{ role: 'user', content: prompt }],
+                messages: [
+                    { role: 'system', content: this.systemPrompt },
+                    { role: 'user', content: prompt }
+                ],
                 model: model,
                 temperature: temp,
                 stream: true
@@ -476,13 +492,17 @@ class UnifiedOS {
     async streamGemini(prompt, model, temp, onUpdate) {
         if (!this.keys.gemini) throw new Error('Gemini API Key missing.');
         
+        // Gemini doesn't support system prompts easily in v1beta/models without using the new system_instruction format
+        // For simplicity, we prepend the system prompt to the user message.
+        const fullPrompt = `${this.systemPrompt}\n\nUser Query: ${prompt}`;
+        
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?key=${this.keys.gemini}`;
         
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
+                contents: [{ parts: [{ text: fullPrompt }] }],
                 generationConfig: { temperature: temp }
             })
         });
@@ -511,7 +531,7 @@ class UnifiedOS {
              method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
+                contents: [{ parts: [{ text: fullPrompt }] }],
                 generationConfig: { temperature: temp }
             })
         });
