@@ -560,33 +560,54 @@ class UnifiedOS {
     }
 
     async streamGemini(prompt, model, temp, onUpdate) {
-        if (!this.keys.gemini) throw new Error('Gemini API Key missing.');
-        
-        const fullPrompt = `${this.systemPrompt}\n\nUser Query: ${prompt}`;
-        
-        // For Gemini, we'll use non-streaming for stability as its stream format is complex JSON array
-        // Switching to :generateContent instead of :streamGenerateContent
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.keys.gemini}`;
-        
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: fullPrompt }] }],
-                generationConfig: { temperature: temp }
-            })
-        });
+        try {
+            if (!this.keys.gemini) throw new Error('Gemini API Key missing.');
+            
+            // For stability, using non-streaming generateContent
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.keys.gemini}`;
+            
+            // Gemini doesn't support system prompt in v1beta easily, so prepend it
+            const fullPrompt = `${this.systemPrompt}\n\nUser Query: ${prompt}`;
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: fullPrompt }] }],
+                    generationConfig: { temperature: temp }
+                })
+            });
 
-        if (!response.ok) {
-            const err = await response.text();
-            throw new Error(`Gemini API Error: ${err}`);
-        }
+            if (!response.ok) {
+                const errText = await response.text();
+                let errMsg = `API Error (${response.status})`;
+                try {
+                    const errJson = JSON.parse(errText);
+                    if (errJson.error && errJson.error.message) {
+                        errMsg += `: ${errJson.error.message}`;
+                    }
+                } catch (e) {
+                    errMsg += `: ${errText}`;
+                }
+                throw new Error(errMsg);
+            }
 
-        const json = await response.json();
-        if (json.candidates && json.candidates[0].content) {
-            onUpdate(json.candidates[0].content.parts[0].text);
-        } else {
-            throw new Error('Gemini returned no content.');
+            const json = await response.json();
+            
+            if (json.candidates && json.candidates.length > 0 && json.candidates[0].content) {
+                const text = json.candidates[0].content.parts[0].text;
+                onUpdate(text);
+            } else {
+                // Check for safety blocks
+                if (json.promptFeedback && json.promptFeedback.blockReason) {
+                    throw new Error(`Blocked by safety filters: ${json.promptFeedback.blockReason}`);
+                }
+                throw new Error('Gemini returned no content (possibly filtered).');
+            }
+            
+        } catch (error) {
+            onUpdate(`**⚠️ Gemini Error:** ${error.message}`);
+            console.error('Gemini Error:', error);
         }
     }
 
