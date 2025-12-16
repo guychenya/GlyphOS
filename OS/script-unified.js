@@ -24,7 +24,7 @@ class UnifiedOS {
         // Default Models
         this.models = {
             ollama: 'llama2',
-            groq: 'llama3-8b-8192',
+            groq: 'llama-3.1-8b-instant',
             openai: 'gpt-3.5-turbo',
             gemini: 'gemini-pro',
             openrouter: 'mistralai/mistral-7b-instruct:free'
@@ -718,7 +718,7 @@ class UnifiedOS {
 
     getDefaultModels(provider) {
         switch(provider) {
-            case 'groq': return ['mixtral-8x7b-32768', 'llama2-70b-4096', 'gemma-7b-it'];
+            case 'groq': return ['llama-3.1-8b-instant', 'llama-3.1-70b-versatile', 'llama3-70b-8192'];
             case 'openai': return ['gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'];
             case 'gemini': return ['gemini-pro', 'gemini-1.5-pro'];
             case 'openrouter': return ['anthropic/claude-3-opus', 'anthropic/claude-3-sonnet', 'google/gemini-pro-1.5'];
