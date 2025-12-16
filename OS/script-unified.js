@@ -525,11 +525,24 @@ class UnifiedOS {
                     if (dataStr === '[DONE]') break;
                     try {
                         const json = JSON.parse(dataStr);
-                        const content = json.choices && json.choices[0].delta.content;
-                        if (content) { fullText += content; onUpdate(fullText); }
-                    } catch (e) {}
+                        // Check for valid content in delta
+                        if (json.choices && json.choices.length > 0 && json.choices[0].delta) {
+                            const content = json.choices[0].delta.content;
+                            if (content) { 
+                                fullText += content; 
+                                onUpdate(fullText); 
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Stream Parse Error:', e);
+                    }
                 }
             }
+        }
+        
+        // Check if we received anything
+        if (!fullText) {
+            throw new Error('Provider returned empty response (Stream ended without content).');
         }
     }
 
