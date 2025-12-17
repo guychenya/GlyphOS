@@ -30,6 +30,10 @@ The new **GlyphOS Unified Interface** transforms your interaction with AI into a
 **[Launch GlyphOS Unified](OS/)** (Local / Self-Hosted)  
 **[Live Demo](https://glyphos.reliatrack.org/)**
 
+> **Note:** This UI is inspired by the original TXTOS concept, enhancing it with a modern interface. The live demo is deployed on Netlify for easy access, requiring no local installation.
+
+![TXT_to_OS_console_demo](./OS/images/TXT_to_OS_console.gif)
+
 ### Key Features
 
 *   **⚡ Text-First Command Bar**: Control everything from a single input line. Use `/` for commands and `@` to switch providers instantly.
