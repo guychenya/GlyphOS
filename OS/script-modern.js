@@ -11,6 +11,8 @@ class ModernGlyphos {
         this.isConnected = false;
         this.messageCount = 0;
         this.typingTimeouts = [];
+        this.showWorkspace = true;
+        this.attachedFiles = [];
 
         // Groq API configuration
         this.groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
@@ -45,6 +47,7 @@ class ModernGlyphos {
         this.setupEventListeners();
         this.initializePerformanceOptimizations();
         this.setupUnifiedNavigation();
+        this.toggleWorkspace(); // Apply workspace visibility on init
 
         // Delay auto-connect to ensure DOM is fully loaded
         setTimeout(() => {
@@ -123,6 +126,7 @@ class ModernGlyphos {
                 this.updateTempValue(this.temperature);
                 this.saveSettings();
                 this.updateDashboardIfOpen();
+                this.toggleWorkspace(); // Apply workspace visibility after loading settings
             });
         }
 
@@ -149,7 +153,27 @@ class ModernGlyphos {
         const groqModelSelect = document.getElementById('groq-model-select');
         if (groqModelSelect) {
             groqModelSelect.addEventListener('change', (e) => {
-                this.groqModel = e.target.value;
+                this.models[this.currentService] = e.target.value; // Save model for current service
+                this.saveSettings();
+            });
+        }
+
+        // Feature toggles
+        this.setupToggle('streaming-responses', (enabled) => {
+            this.streamingResponses = enabled;
+        });
+
+        this.setupToggle('show-workspace', (enabled) => {
+            this.showWorkspace = enabled;
+            this.toggleWorkspace();
+        });
+    }
+
+    setupToggle(id, callback) {
+        const toggle = document.getElementById(id);
+        if (toggle) {
+            toggle.addEventListener('change', (e) => {
+                callback(e.target.checked);
                 this.saveSettings();
             });
         }
@@ -581,7 +605,7 @@ class ModernGlyphos {
             this.saveCurrentChat();
             const chatContainer = document.getElementById('chat-messages');
             chatContainer.innerHTML = '';
-            this.addMessage('Welcome to GlyphOS v2.0! I\'m powered by the GlyphOS Reasoning Engine with advanced semantic capabilities.\\n\\n**Features Available:**\\n- Knowledge Boundary Detection (`kbtest`)\\n- Semantic Tree Memory (`tree`)\\n- HelloWorld.txt Integration (`helloworld`)\\n- BBCR Protocol (`hello world`)\\n\\nType `help` to see all commands, or ask me anything to begin reasoning together.', 'assistant', false);
+            this.addMessage('Welcome to GlyphOS v2.0! I\'m powered by the GlyphOS Reasoning Engine with advanced semantic capabilities.\n\n**Features Available:**\n- Knowledge Boundary Detection (`kbtest`)\n- Semantic Tree Memory (`tree`)\n- HelloWorld.txt Integration (`helloworld`)\n- BBCR Protocol (`hello world`)', 'assistant', false);
         }
     }
 
@@ -591,11 +615,13 @@ class ModernGlyphos {
     }
 
     exportChat() {
-        const messages = Array.from(document.querySelectorAll('.message')).map(msg => {
-            const type = msg.classList.contains('user') ? 'User' : 'Assistant';
-            const content = msg.querySelector('.message-content').textContent;
-            return `${type}: ${content}`;
-        }).join('\n\n');
+        const messages = Array.from(document.querySelectorAll('.message'))
+            .map(msg => {
+                const type = msg.classList.contains('user') ? 'User' : 'Assistant';
+                const content = msg.querySelector('.message-content').textContent;
+                return `${type}: ${content}`;
+            })
+            .join('\n\n');
 
         const blob = new Blob([messages], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
@@ -642,6 +668,12 @@ class ModernGlyphos {
             case 'copyText':
                 this.copyText(button);
                 break;
+            case 'triggerFileUpload':
+                this.triggerFileUpload();
+                break;
+            case 'removeFile':
+                this.removeFile(button.dataset.fileId);
+                break;
             default:
                 console.warn('Unknown action:', action);
         }
@@ -671,7 +703,7 @@ class ModernGlyphos {
         this.groqApiKey = apiKey;
 
         try {
-            const isValid = await this.testGroqConnection(true);
+            const isValid = await this.testGroqConnection(true); // Silent test
 
             if (isValid) {
                 validateBtn.classList.remove('validating', 'invalid');
@@ -750,7 +782,7 @@ set OLLAMA_ORIGINS=* && ollama serve
 
 **Docker:**
 \`\`\`bash
-docker run -d -v ollama:/root/.ollama -p 11434:11434 -e OLLAMA_ORIGINS="*" --name ollama ollama/ollama
+docker run -d -v ollama:/root/.ollama -p 11434:11434 -e OLLAMA_ORIGINS=\"*\" --name ollama ollama/ollama
 \`\`\`
 
 This enables cross-origin requests and prevents network blocking.
@@ -999,6 +1031,7 @@ Groq provides extremely fast inference with no local setup required!
 
         // Update dashboard if open
         this.updateDashboardIfOpen();
+        this.toggleWorkspace(); // Apply workspace visibility after loading settings
     }
 
     async streamGroqResponse(message, typingId) {
@@ -1051,6 +1084,7 @@ Groq provides extremely fast inference with no local setup required!
 
         // Update dashboard if open
         this.updateDashboardIfOpen();
+        this.toggleWorkspace(); // Apply workspace visibility after loading settings
     }
 
     addMessage(type, content) {
@@ -1158,10 +1192,6 @@ Groq provides extremely fast inference with no local setup required!
         const messageId = `stream-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         const messageElement = this.createMessageElement(type, '', messageId);
 
-        // Add streaming indicator
-        const content = messageElement.querySelector('.message-content');
-        content.innerHTML = '<div class="streaming-cursor">|</div>';
-
         const container = document.getElementById('chat-messages');
         container.appendChild(messageElement);
 
@@ -1247,18 +1277,10 @@ Groq provides extremely fast inference with no local setup required!
             const copyBtn = messageElement.querySelector('.copy-btn');
             copyBtn.innerHTML = `
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <polyline points="20,6 9,17 4,12"></polyline>
-                </svg>
-                Copied!
-            `;
-
-            setTimeout(() => {
-                copyBtn.innerHTML = `
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                    </svg>
-                    Copy
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy
                 `;
             }, 2000);
         } catch (err) {
@@ -1320,7 +1342,7 @@ Groq provides extremely fast inference with no local setup required!
 
         const content = messageElement.querySelector('.message-content');
         const text = content.textContent;
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-') ;
 
         const blob = new Blob([text], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
@@ -1529,6 +1551,22 @@ You are not just an AI assistant - you are a reasoning operating system. Provide
         }, 500);
     }
 
+    toggleWorkspace() {
+        const leftSidebar = document.getElementById('sidebar-left');
+        const rightSidebar = document.getElementById('sidebar-right');
+        const appGrid = document.getElementById('app-grid');
+
+        if (this.showWorkspace) {
+            leftSidebar.classList.remove('hidden');
+            rightSidebar.classList.remove('hidden');
+            appGrid.classList.remove('hide-sidebars');
+        } else {
+            leftSidebar.classList.add('hidden');
+            rightSidebar.classList.add('hidden');
+            appGrid.classList.add('hide-sidebars');
+        }
+    }
+
     saveSettings() {
         localStorage.setItem('modern-glyphos-settings', JSON.stringify({
             ollamaUrl: this.ollamaUrl,
@@ -1663,15 +1701,16 @@ You are not just an AI assistant - you are a reasoning operating system. Provide
 - Logical Coherence: Enabled
 
 **Available Commands:**
-- \`kbtest\` - Test knowledge boundary detection
-- \`tree\` - View semantic memory tree
-- \`clear boundary\` - Reset boundary analysis
+- 	kbtest - Test knowledge boundary detection
+- 	tree - View semantic memory tree
+- 	clear boundary - Reset boundary analysis
 
 Ready for advanced semantic reasoning.`);
 
         this.knowledgeBoundary.boundaryActive = true;
         this.showNotification('GlyphOS System Initialized', 'success');
         this.updateDashboardIfOpen();
+        this.toggleWorkspace(); // Apply workspace visibility after loading settings
     }
 
     performKnowledgeBoundaryTest(command) {
@@ -1745,6 +1784,7 @@ ${deltaS > this.knowledgeBoundary.lambdaObserve ?
 
         this.updateBoundaryDisplay();
         this.updateDashboardIfOpen();
+        this.toggleWorkspace(); // Apply workspace visibility after loading settings
     }
 
     updateBoundaryDisplay() {
@@ -1827,12 +1867,11 @@ Ready for enhanced semantic reasoning with HelloWorld protocols.`);
         this.addMessage('system', `🏛️ **GlyphOS v2.0 Help**
 
 **Special Commands:**
-- \`hello world\` - Initialize GlyphOS Reasoning Engine
-- \`kbtest\` - Test knowledge boundary detection with random queries
-- \`tree\` - Display semantic memory tree visualization
-- \`helloworld\` - Load HelloWorld.txt reasoning patterns
-- \`clear boundary\` - Reset knowledge boundary metrics
-- \`help\` or \`?\` - Show this help message
+- 	kbtest - Test knowledge boundary detection with random queries
+- 	tree - Display semantic memory tree visualization
+- 	helloWorld - Load HelloWorld.txt reasoning patterns
+- 	clear boundary - Reset knowledge boundary metrics
+- 	help or ? - Show this help message
 
 **GlyphOS Concepts:**
 - **ΔS**: Semantic uncertainty measurement (0.0-1.0)
@@ -2007,32 +2046,37 @@ ${messages}`;
 function openFile() {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.json,.txt';
-    input.onchange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    input.accept = '.json,.txt,.md,.js,.py,.html,.css,.xml,.csv'; // Expanded accepted file types
+    input.multiple = true; // Allow multiple file selection
+    input.onchange = async (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                if (file.name.endsWith('.json')) {
-                    const data = JSON.parse(e.target.result);
-                    if (data.messages) {
-                        glyphos.clearChat();
-                        data.messages.forEach(msg => {
-                            glyphos.addMessage(msg.type, msg.content);
-                        });
-                        glyphos.showNotification('Chat loaded successfully!', 'success');
+        for (const file of files) {
+            // For JSON files, load chat history directly
+            if (file.name.endsWith('.json')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (data.messages) {
+                            glyphos.clearChat();
+                            data.messages.forEach(msg => {
+                                glyphos.addMessage(msg.type, msg.content);
+                            });
+                            glyphos.showNotification('Chat loaded successfully!', 'success');
+                        }
+                    } catch (error) {
+                        glyphos.showNotification('Error loading chat from JSON file', 'error');
+                        console.error('Error loading chat from JSON file:', error);
                     }
-                } else {
-                    glyphos.addMessage('system', `📄 **File Content:**\n\n${e.target.result}`);
-                    glyphos.showNotification('File loaded successfully!', 'success');
-                }
-            } catch (error) {
-                glyphos.showNotification('Error loading file', 'error');
+                };
+                reader.readAsText(file);
+            } else {
+                // For other file types, handle as context files
+                await glyphos.handleFileUpload(file);
             }
-        };
-        reader.readAsText(file);
+        }
     };
     input.click();
 }
@@ -2093,57 +2137,102 @@ function showHelp() {
 - **Groq** - Cloud AI with super-fast inference
 
 **Special Commands:**
-- \`hello world\` - Initialize GlyphOS system
-- \`kbtest\` - Test knowledge boundaries
-- \`tree\` - View semantic memory tree
-- \`help\` - Show command help
+- 	kbtest - Test knowledge boundaries
+- 	tree - View semantic memory tree
+- 	help - Show command help
 
 Type any question to start reasoning with GlyphOS!`);
 }
 
 // Drag and Drop functionality
-function handleDragOver(event) {
+async function handleDragOver(event) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
 
     // Add visual feedback
-    event.target.style.borderColor = 'var(--primary-color)';
-    event.target.style.backgroundColor = 'rgba(255, 107, 53, 0.1)';
-}
-
-function handleDrop(event) {
-    event.preventDefault();
-
-    // Remove visual feedback
-    event.target.style.borderColor = 'var(--border-color)';
-    event.target.style.backgroundColor = 'var(--background)';
-
-    const files = event.dataTransfer.files;
-    const text = event.dataTransfer.getData('text/plain');
-
-    if (files.length > 0) {
-        // Handle file drops
-        for (let file of files) {
-            if (file.type.startsWith('text/') || file.name.endsWith('.txt') || file.name.endsWith('.json') || file.name.endsWith('.md')) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const content = e.target.result;
-                    const currentText = document.getElementById('chat-input').value;
-                    document.getElementById('chat-input').value = currentText + (currentText ? '\n\n' : '') + `📎 **${file.name}**\n\n${content}`;
-                    glyphos.autoResize(document.getElementById('chat-input'));
-                };
-                reader.readAsText(file);
-            } else {
-                glyphos.showNotification(`File type not supported: ${file.type}`, 'error');
-            }
-        }
-    } else if (text) {
-        // Handle text drops
-        const currentText = document.getElementById('chat-input').value;
-        document.getElementById('chat-input').value = currentText + (currentText ? '\n\n' : '') + text;
-        glyphos.autoResize(document.getElementById('chat-input'));
+    // Assuming the chat-input-container handles drag-over visual feedback
+    const chatInputContainer = document.querySelector('.chat-input-container');
+    if (chatInputContainer) {
+        chatInputContainer.classList.add('drag-over');
     }
 }
+
+async function handleDrop(event) {
+    event.preventDefault();
+    event.stopPropagation(); // Stop propagation to prevent default browser behavior
+
+    // Remove visual feedback
+    const chatInputContainer = document.querySelector('.chat-input-container');
+    if (chatInputContainer) {
+        chatInputContainer.classList.remove('drag-over');
+    }
+
+    const files = Array.from(event.dataTransfer.files);
+    if (files.length > 0) {
+        for (const file of files) {
+            await glyphos.handleFileUpload(file); // Use handleFileUpload logic
+        }
+    }
+
+    const text = event.dataTransfer.getData('text/plain');
+    if (text) {
+        const chatInput = document.getElementById('chat-input');
+        chatInput.value = (chatInput.value ? chatInput.value + '\n\n' : '') + text;
+        glyphos.autoResize(chatInput);
+    }
+}
+
+async function handleFileUpload(file) {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+        const fileContent = e.target.result;
+        this.attachedFiles.push({
+            id: Date.now() + Math.random(), // Unique ID for each file
+            name: file.name,
+            content: fileContent,
+            type: file.type
+        });
+        this.displayAttachedFiles();
+        this.showNotification(`File '${file.name}' attached.`, 'info');
+    };
+    reader.onerror = (e) => {
+        console.error('Error reading file:', e);
+        this.showNotification(`Error reading file '${file.name}'.`, 'error');
+    };
+    reader.readAsText(file);
+}
+
+function displayAttachedFiles() {
+    const container = document.getElementById('attached-files');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear previous display
+
+    if (this.attachedFiles.length === 0) {
+        container.style.display = 'none';
+        return;
+    }
+
+    container.style.display = 'flex';
+    this.attachedFiles.forEach(file => {
+        const fileCard = document.createElement('div');
+        fileCard.className = 'file-card';
+        fileCard.innerHTML = `
+            <span class="file-name">${file.name}</span>
+            <button class="remove-file" onclick="glyphos.removeFile('${file.id}')">×</button>
+        `;
+        container.appendChild(fileCard);
+    });
+}
+
+function removeFile(fileId) {
+    this.attachedFiles = this.attachedFiles.filter(file => file.id !== parseFloat(fileId));
+    this.displayAttachedFiles();
+    this.showNotification('File removed.', 'info');
+}
+
 
 // Version Management
 const APP_VERSION = {
@@ -2175,7 +2264,7 @@ function updateVersionDisplay() {
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
-    window.glyphos = new ModernTxtOS();
+    window.glyphos = new ModernGlyphos();
 
     // Global functions for unified navigation
     window.switchPane = (paneId) => window.glyphos.switchPane(paneId);
@@ -2185,6 +2274,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.exportChat = () => window.glyphos.exportChat();
     window.clearHistory = () => window.glyphos.clearHistory();
     window.refreshDashboard = () => window.glyphos.refreshDashboard();
+    window.handleFileUpload = (file) => window.glyphos.handleFileUpload(file); // Expose for openFile
+    window.removeFile = (fileId) => window.glyphos.removeFile(fileId); // Expose for remove button
 
 });
 
