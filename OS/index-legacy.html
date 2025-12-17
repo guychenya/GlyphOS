@@ -338,10 +338,10 @@
     <script src="script-modern-v2.js"></script>
 <script>
         window.addEventListener('load', function() {
-            if (window.txtOS && typeof window.txtOS.autoConnectService === 'function') {
-                window.txtOS.autoConnectService();
+            if (window.glyphos && typeof window.glyphos.autoConnectService === 'function') {
+                window.glyphos.autoConnectService();
             } else {
-                console.warn('txtOS not initialized or autoConnectService not found.');
+                console.warn('glyphos not initialized or autoConnectService not found.');
             }
         });
     </script>

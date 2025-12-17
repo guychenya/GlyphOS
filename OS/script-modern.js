@@ -1,5 +1,5 @@
 // Modern GlyphOS - Ultra-fast AI Reasoning System
-class ModernTxtOS {
+class ModernGlyphos {
     constructor() {
         this.ollamaUrl = 'http://127.0.0.1:11434';
         this.groqApiKey = '';
@@ -601,7 +601,7 @@ class ModernTxtOS {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `txtost-chat-${new Date().toISOString().slice(0, 10)}.txt`;
+        a.download = `glyphos-chat-${new Date().toISOString().slice(0, 10)}.txt`;
         a.click();
         URL.revokeObjectURL(url);
     }
@@ -1530,7 +1530,7 @@ You are not just an AI assistant - you are a reasoning operating system. Provide
     }
 
     saveSettings() {
-        localStorage.setItem('modern-txt-os-settings', JSON.stringify({
+        localStorage.setItem('modern-glyphos-settings', JSON.stringify({
             ollamaUrl: this.ollamaUrl,
             groqApiKey: this.groqApiKey,
             currentService: this.currentService,
@@ -1541,7 +1541,7 @@ You are not just an AI assistant - you are a reasoning operating system. Provide
     }
 
     loadSettings() {
-        const saved = localStorage.getItem('modern-txt-os-settings');
+        const saved = localStorage.getItem('modern-glyphos-settings');
         if (saved) {
             const settings = JSON.parse(saved);
             this.ollamaUrl = settings.ollamaUrl || this.ollamaUrl;
@@ -1904,7 +1904,7 @@ function switchMainTab(tabName) {
 function handleKeyPress(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
-        txtOS.sendMessage();
+        glyphos.sendMessage();
     }
 }
 
@@ -1914,7 +1914,7 @@ function autoResize(textarea) {
 }
 
 // Add autoResize method to class for consistency
-ModernTxtOS.prototype.autoResize = function(textarea) {
+ModernGlyphos.prototype.autoResize = function(textarea) {
     autoResize(textarea);
 };
 
@@ -1923,29 +1923,29 @@ function updateTempValue(value) {
 }
 
 function sendMessage() {
-    txtOS.sendMessage();
+    glyphos.sendMessage();
 }
 
 function testConnection() {
-    txtOS.testConnection();
+    glyphos.testConnection();
 }
 
 function clearChat() {
-    txtOS.clearChat();
+    glyphos.clearChat();
 }
 
 function exportMemory() {
-    txtOS.exportMemory();
+    glyphos.exportMemory();
 }
 
 function switchService() {
-    txtOS.switchService();
+    glyphos.switchService();
 }
 
 // Toolbar Functions
 function newChat() {
-    txtOS.clearChat();
-    txtOS.showNotification('New chat started', 'info');
+    glyphos.clearChat();
+    glyphos.showNotification('New chat started', 'info');
 
     // Focus the input for immediate typing
     setTimeout(() => {
@@ -1962,9 +1962,9 @@ function saveChat() {
             content: msg.querySelector('.message-content').textContent,
             timestamp: Date.now()
         })),
-        memoryTree: txtOS.memoryTree,
-        service: txtOS.currentService,
-        model: txtOS.currentService === 'groq' ? txtOS.groqModel : txtOS.currentModel
+        memoryTree: glyphos.memoryTree,
+        service: glyphos.currentService,
+        model: glyphos.currentService === 'groq' ? glyphos.groqModel : glyphos.currentModel
     };
 
     const blob = new Blob([JSON.stringify(chatData, null, 2)], { type: 'application/json' });
@@ -1975,7 +1975,7 @@ function saveChat() {
     a.click();
     URL.revokeObjectURL(url);
 
-    txtOS.showNotification('Chat saved successfully!', 'success');
+    glyphos.showNotification('Chat saved successfully!', 'success');
 }
 
 function exportChat() {
@@ -1988,8 +1988,8 @@ function exportChat() {
         .join('\n\n');
 
             const exportData = `GlyphOS Chat Export
-    Generated: ${new Date().toLocaleString()}Service: ${txtOS.currentService === 'groq' ? 'Groq' : 'Ollama'}
-Model: ${txtOS.currentService === 'groq' ? txtOS.groqModel : txtOS.currentModel}
+    Generated: ${new Date().toLocaleString()}Service: ${glyphos.currentService === 'groq' ? 'Groq' : 'Ollama'}
+Model: ${glyphos.currentService === 'groq' ? glyphos.groqModel : glyphos.currentModel}
 
 ${messages}`;
 
@@ -1997,11 +1997,11 @@ ${messages}`;
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `chat-export-${new Date().toISOString().split('T')[0]}.txt`;
+    a.download = `glyphos-chat-export-${new Date().toISOString().split('T')[0]}.txt`;
     a.click();
     URL.revokeObjectURL(url);
 
-    txtOS.showNotification('Chat exported successfully!', 'success');
+    glyphos.showNotification('Chat exported successfully!', 'success');
 }
 
 function openFile() {
@@ -2018,18 +2018,18 @@ function openFile() {
                 if (file.name.endsWith('.json')) {
                     const data = JSON.parse(e.target.result);
                     if (data.messages) {
-                        txtOS.clearChat();
+                        glyphos.clearChat();
                         data.messages.forEach(msg => {
-                            txtOS.addMessage(msg.type, msg.content);
+                            glyphos.addMessage(msg.type, msg.content);
                         });
-                        txtOS.showNotification('Chat loaded successfully!', 'success');
+                        glyphos.showNotification('Chat loaded successfully!', 'success');
                     }
                 } else {
-                    txtOS.addMessage('system', `📄 **File Content:**\n\n${e.target.result}`);
-                    txtOS.showNotification('File loaded successfully!', 'success');
+                    glyphos.addMessage('system', `📄 **File Content:**\n\n${e.target.result}`);
+                    glyphos.showNotification('File loaded successfully!', 'success');
                 }
             } catch (error) {
-                txtOS.showNotification('Error loading file', 'error');
+                glyphos.showNotification('Error loading file', 'error');
             }
         };
         reader.readAsText(file);
@@ -2057,9 +2057,9 @@ function toggleSearch() {
     });
 
     if (found) {
-        txtOS.showNotification(`Found "${searchQuery}" in chat`, 'success');
+        glyphos.showNotification(`Found "${searchQuery}" in chat`, 'success');
     } else {
-        txtOS.showNotification(`No results for "${searchQuery}"`, 'info');
+        glyphos.showNotification(`No results for "${searchQuery}"`, 'info');
     }
 }
 
@@ -2067,11 +2067,11 @@ function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     const isDark = document.body.classList.contains('dark-mode');
     localStorage.setItem('dark-mode', isDark);
-    txtOS.showNotification(`${isDark ? 'Dark' : 'Light'} mode activated`, 'info');
+    glyphos.showNotification(`${isDark ? 'Dark' : 'Light'} mode activated`, 'info');
 }
 
 function showHelp() {
-    txtOS.addMessage('system', `🏛️ **GlyphOS v2.0 Help & Shortcuts**
+    glyphos.addMessage('system', `🏛️ **GlyphOS v2.0 Help & Shortcuts**
 
 **Toolbar Icons:**
 - ➕ **New Chat** - Start a fresh conversation
@@ -2130,18 +2130,18 @@ function handleDrop(event) {
                     const content = e.target.result;
                     const currentText = document.getElementById('chat-input').value;
                     document.getElementById('chat-input').value = currentText + (currentText ? '\n\n' : '') + `📎 **${file.name}**\n\n${content}`;
-                    txtOS.autoResize(document.getElementById('chat-input'));
+                    glyphos.autoResize(document.getElementById('chat-input'));
                 };
                 reader.readAsText(file);
             } else {
-                txtOS.showNotification(`File type not supported: ${file.type}`, 'error');
+                glyphos.showNotification(`File type not supported: ${file.type}`, 'error');
             }
         }
     } else if (text) {
         // Handle text drops
         const currentText = document.getElementById('chat-input').value;
         document.getElementById('chat-input').value = currentText + (currentText ? '\n\n' : '') + text;
-        txtOS.autoResize(document.getElementById('chat-input'));
+        glyphos.autoResize(document.getElementById('chat-input'));
     }
 }
 
@@ -2175,16 +2175,16 @@ function updateVersionDisplay() {
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
-    window.txtOS = new ModernTxtOS();
+    window.glyphos = new ModernTxtOS();
 
     // Global functions for unified navigation
-    window.switchPane = (paneId) => window.txtOS.switchPane(paneId);
-    window.switchDashboardTab = (tabId) => window.txtOS.switchDashboardTab(tabId);
-    window.newChat = () => window.txtOS.newChat();
-    window.saveChat = () => window.txtOS.saveChat();
-    window.exportChat = () => window.txtOS.exportChat();
-    window.clearHistory = () => window.txtOS.clearHistory();
-    window.refreshDashboard = () => window.txtOS.refreshDashboard();
+    window.switchPane = (paneId) => window.glyphos.switchPane(paneId);
+    window.switchDashboardTab = (tabId) => window.glyphos.switchDashboardTab(tabId);
+    window.newChat = () => window.glyphos.newChat();
+    window.saveChat = () => window.glyphos.saveChat();
+    window.exportChat = () => window.glyphos.exportChat();
+    window.clearHistory = () => window.glyphos.clearHistory();
+    window.refreshDashboard = () => window.glyphos.refreshDashboard();
 
 });
 
@@ -2218,7 +2218,7 @@ async function validateGroqApiKey() {
     const apiKey = apiKeyInput.value.trim();
 
     if (!apiKey) {
-        txtOS.showNotification('Please enter your Groq API key first', 'error');
+        glyphos.showNotification('Please enter your Groq API key first', 'error');
         return;
     }
 
@@ -2228,11 +2228,11 @@ async function validateGroqApiKey() {
     validateBtn.classList.add('validating');
 
     // Store the current API key temporarily
-    const originalApiKey = txtOS.groqApiKey;
-    txtOS.groqApiKey = apiKey;
+    const originalApiKey = glyphos.groqApiKey;
+    glyphos.groqApiKey = apiKey;
 
     try {
-        const isValid = await txtOS.testGroqConnection(true); // Silent test
+        const isValid = await glyphos.testGroqConnection(true); // Silent test
 
         if (isValid) {
             // Success state
@@ -2247,8 +2247,8 @@ async function validateGroqApiKey() {
             `;
 
             // Save the validated API key
-            txtOS.saveSettings();
-            txtOS.showNotification('API key is valid!', 'success');
+            glyphos.saveSettings();
+            glyphos.showNotification('API key is valid!', 'success');
 
             // Reset button after 3 seconds
             setTimeout(() => {
@@ -2269,8 +2269,8 @@ async function validateGroqApiKey() {
             `;
 
             // Restore original API key
-            txtOS.groqApiKey = originalApiKey;
-            txtOS.showNotification('Invalid API key. Please check and try again.', 'error');
+            glyphos.groqApiKey = originalApiKey;
+            glyphos.showNotification('Invalid API key. Please check and try again.', 'error');
 
             // Reset button after 3 seconds
             setTimeout(() => {
@@ -2291,8 +2291,8 @@ async function validateGroqApiKey() {
         `;
 
         // Restore original API key
-        txtOS.groqApiKey = originalApiKey;
-        txtOS.showNotification('Error validating API key: ' + error.message, 'error');
+        glyphos.groqApiKey = originalApiKey;
+        glyphos.showNotification('Error validating API key: ' + error.message, 'error');
 
         // Reset button after 3 seconds
         setTimeout(() => {
@@ -2381,7 +2381,7 @@ function stopDashboardUpdates() {
 }
 
 function updateDashboardData() {
-    if (!txtOS) return;
+    if (!glyphos) return;
 
     // Update Semantic Core KPIs
     updateSemanticKPIs();
@@ -2395,7 +2395,7 @@ function updateDashboardData() {
 
 function updateSemanticKPIs() {
     // ΔS (Semantic Uncertainty)
-    const deltaS = txtOS.knowledgeBoundary.deltaS || 0;
+    const deltaS = glyphos.knowledgeBoundary.deltaS || 0;
     const deltaSRing = document.getElementById('delta-s-ring');
     const deltaSValue = document.getElementById('delta-s-value');
 
@@ -2416,7 +2416,7 @@ function updateSemanticKPIs() {
     }
 
     // λ_observe (Boundary Threshold)
-    const lambda = txtOS.knowledgeBoundary.lambdaObserve || 0.7;
+    const lambda = glyphos.knowledgeBoundary.lambdaObserve || 0.7;
     const lambdaBar = document.getElementById('lambda-bar');
     const lambdaValue = document.getElementById('lambda-value');
 
@@ -2426,7 +2426,7 @@ function updateSemanticKPIs() {
     }
 
     // E_resonance (Logical Resonance)
-    const resonance = txtOS.knowledgeBoundary.eResonance || 0;
+    const resonance = glyphos.knowledgeBoundary.eResonance || 0;
     const resonanceRing = document.getElementById('resonance-ring');
     const resonanceValue = document.getElementById('resonance-value');
 
@@ -2442,7 +2442,7 @@ function updateSemanticKPIs() {
     const boundaryMonitors = document.getElementById('boundary-monitors');
 
     if (boundaryStatus && boundaryMonitors) {
-        const isActive = txtOS.knowledgeBoundary.boundaryActive;
+        const isActive = glyphos.knowledgeBoundary.boundaryActive;
         boundaryStatus.textContent = isActive ? 'ACTIVE' : 'INACTIVE';
         boundaryStatus.className = `status-badge ${isActive ? 'available' : ''}`;
         boundaryMonitors.textContent = isActive ? '1' : '0';
@@ -2455,9 +2455,9 @@ function updateReasoningProtocols() {
     const bbcrPivots = document.getElementById('bbcr-pivots');
 
     if (bbcrStatus && bbcrPivots) {
-        const isActive = txtOS.knowledgeBoundary.boundaryActive;
+        const isActive = glyphos.knowledgeBoundary.boundaryActive;
         bbcrStatus.className = isActive ? 'protocol-indicator active' : 'protocol-indicator';
-        bbcrPivots.textContent = txtOS.reasoningChain ? txtOS.reasoningChain.length : 0;
+        bbcrPivots.textContent = glyphos.reasoningChain ? glyphos.reasoningChain.length : 0;
     }
 
     // Semantic Tree
@@ -2466,7 +2466,7 @@ function updateReasoningProtocols() {
     const treeNodes = document.getElementById('tree-nodes');
 
     if (treeCount && treeDepth && treeNodes) {
-        const nodeCount = txtOS.memoryTree ? txtOS.memoryTree.length : 0;
+        const nodeCount = glyphos.memoryTree ? glyphos.memoryTree.length : 0;
         treeCount.textContent = nodeCount;
         treeDepth.textContent = Math.ceil(nodeCount / 3);
 
@@ -2484,7 +2484,7 @@ function updateReasoningProtocols() {
     // Resonance Amplification
     const amplificationLevel = document.getElementById('amplification-level');
     if (amplificationLevel) {
-        const resonance = txtOS.knowledgeBoundary.eResonance || 0;
+        const resonance = glyphos.knowledgeBoundary.eResonance || 0;
         const amplification = 1 + (resonance * 2); // 1.0x to 3.0x
         amplificationLevel.textContent = `${amplification.toFixed(1)}x`;
     }
@@ -2496,7 +2496,7 @@ function updateOperationalKPIs() {
     const tempDisplay = document.getElementById('temp-display');
 
     if (tempFill && tempDisplay) {
-        const temperature = txtOS.temperature || 0.2;
+        const temperature = glyphos.temperature || 0.2;
         tempFill.style.height = `${temperature * 100}%`;
         tempDisplay.textContent = temperature.toFixed(1);
     }
@@ -2506,7 +2506,7 @@ function updateOperationalKPIs() {
     const detectionFill = document.getElementById('detection-fill');
 
     if (hallucinationStatus && detectionFill) {
-        const isEnabled = txtOS.knowledgeBoundary.boundaryActive;
+        const isEnabled = glyphos.knowledgeBoundary.boundaryActive;
         hallucinationStatus.textContent = isEnabled ? 'ENABLED' : 'DISABLED';
         hallucinationStatus.className = `status-badge ${isEnabled ? 'available' : ''}`;
         detectionFill.style.width = isEnabled ? '85%' : '0%';
@@ -2518,7 +2518,7 @@ function updateOperationalKPIs() {
     const memoryNodes = document.getElementById('memory-nodes');
 
     if (exportStatus && memorySize && memoryNodes) {
-        const nodeCount = txtOS.memoryTree ? txtOS.memoryTree.length : 0;
+        const nodeCount = glyphos.memoryTree ? glyphos.memoryTree.length : 0;
         const sizeKB = Math.max(1, Math.round(nodeCount * 0.5)); // Estimate size
 
         exportStatus.textContent = nodeCount > 0 ? 'AVAILABLE' : 'EMPTY';
@@ -2536,9 +2536,9 @@ function updateActivityChart() {
     if (!activityBars) return;
 
     const bars = activityBars.querySelectorAll('.bar');
-    const messageCount = txtOS.messageCount || 0;
-    const memoryCount = txtOS.memoryTree ? txtOS.memoryTree.length : 0;
-    const reasoningCount = txtOS.reasoningChain ? txtOS.reasoningChain.length : 0;
+    const messageCount = glyphos.messageCount || 0;
+    const memoryCount = glyphos.memoryTree ? glyphos.memoryTree.length : 0;
+    const reasoningCount = glyphos.reasoningChain ? glyphos.reasoningChain.length : 0;
 
     // Generate some dynamic activity data
     const maxValue = Math.max(10, messageCount, memoryCount, reasoningCount);

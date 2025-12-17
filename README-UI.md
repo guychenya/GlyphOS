@@ -1,6 +1,6 @@
-# TXT OS Web UI
+# GlyphOS Web UI
 
-A modern web interface for the TXT OS AI reasoning system with Ollama integration.
+A modern web interface for the GlyphOS AI reasoning system with Ollama integration.
 
 ## Features
 
@@ -34,7 +34,7 @@ A modern web interface for the TXT OS AI reasoning system with Ollama integratio
 - Chat history is maintained throughout the session
 
 ### Special Commands
-- `hello world` - Initialize TXT OS with full feature set
+- `hello world` - Initialize Glyphos with full feature set
 - `kbtest` - Run knowledge boundary detection test
 
 ### Features
@@ -121,6 +121,6 @@ Modify `script.js` to add:
 - Multi-model comparison
 - Advanced memory search
 - Custom knowledge boundary rules
-- Integration with TXT modules (Blur, Blow, Blah)
+- Integration with Glyphos modules (Blur, Blow, Blah)
 - Real-time collaboration features
 - Voice input/output support

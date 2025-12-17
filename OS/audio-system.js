@@ -1,7 +1,7 @@
 // Advanced Audio System for GlyphOS
 // Sophisticated sound design with Web Audio API
 
-class TxtOSAudioSystem {
+class GlyphosAudioSystem {
     constructor() {
         this.audioContext = null;
         this.masterGain = null;
@@ -27,7 +27,7 @@ class TxtOSAudioSystem {
 
     setupAudioSettings() {
         // Load audio preferences
-        const savedSettings = localStorage.getItem('txtos-audio-settings');
+        const savedSettings = localStorage.getItem('glyphos-audio-settings');
         if (savedSettings) {
             const settings = JSON.parse(savedSettings);
             this.enabled = settings.enabled !== false;
@@ -41,7 +41,7 @@ class TxtOSAudioSystem {
     }
 
     saveAudioSettings() {
-        localStorage.setItem('txtos-audio-settings', JSON.stringify({
+        localStorage.setItem('glyphos-audio-settings', JSON.stringify({
             enabled: this.enabled,
             volume: this.volume
         }));

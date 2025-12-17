@@ -1,5 +1,5 @@
 // Advanced GlyphOS - Modern UI with Enhanced Features
-class ModernTxtOS {
+class ModernGlyphos {
     constructor() {
         this.isConnected = false;
         this.currentService = 'ollama';
@@ -414,7 +414,7 @@ class ModernTxtOS {
 
     // THEME MANAGEMENT
     initializeTheme() {
-        const savedTheme = localStorage.getItem('txtos-theme');
+        const savedTheme = localStorage.getItem('glyphos-theme');
         if (savedTheme) {
             this.theme = savedTheme;
         } else {
@@ -435,7 +435,7 @@ class ModernTxtOS {
     toggleTheme() {
         this.theme = this.theme === 'light' ? 'dark' : 'light';
         this.applyTheme();
-        localStorage.setItem('txtos-theme', this.theme);
+        localStorage.setItem('glyphos-theme', this.theme);
         
         // Play theme toggle sound
         if (window.audioSystem) {
@@ -818,7 +818,7 @@ class ModernTxtOS {
         fileDiv.innerHTML = `
             <span class="file-name">${fileObj.name}</span>
             <span class="file-size">(${this.formatFileSize(fileObj.size)})</span>
-            <button class="remove-file" onclick="txtOS.removeFile('${fileObj.id}')">×</button>
+            <button class="remove-file" onclick="glyphos.removeFile('${fileObj.id}')">×</button>
         `;
         uploadedFilesDiv.appendChild(fileDiv);
     }
@@ -1084,7 +1084,7 @@ class ModernTxtOS {
     }
 
     loadChatHistory() {
-        const saved = localStorage.getItem('txtos-chat-history');
+        const saved = localStorage.getItem('glyphos-chat-history');
         if (saved) {
             try {
                 this.chatHistory = JSON.parse(saved);
@@ -1096,7 +1096,7 @@ class ModernTxtOS {
     }
 
     saveChatHistory() {
-        localStorage.setItem('txtos-chat-history', JSON.stringify(this.chatHistory));
+        localStorage.setItem('glyphos-chat-history', JSON.stringify(this.chatHistory));
     }
 
     updateHistoryUI() {
@@ -1105,8 +1105,8 @@ class ModernTxtOS {
         
         historyList.innerHTML = `
             <div class="history-actions">
-                <button class="history-btn" onclick="txtOS.startNewChat()">New Chat</button>
-                <button class="history-btn danger" onclick="txtOS.clearHistory()">Clear All</button>
+                <button class="history-btn" onclick="glyphos.startNewChat()">New Chat</button>
+                <button class="history-btn danger" onclick="glyphos.clearHistory()">Clear All</button>
             </div>
         `;
         
@@ -1266,7 +1266,7 @@ class ModernTxtOS {
     }
 
     loadSettings() {
-        const saved = localStorage.getItem('txtos-modern-settings');
+        const saved = localStorage.getItem('glyphos-modern-settings');
         if (saved) {
             try {
                 const settings = JSON.parse(saved);
@@ -1341,11 +1341,11 @@ class ModernTxtOS {
             ambientFocus: this.ambientFocus
         };
         
-        localStorage.setItem('txtos-modern-settings', JSON.stringify(settings));
+        localStorage.setItem('glyphos-modern-settings', JSON.stringify(settings));
     }
 }
 
 // Initialize the modern GlyphOS
 document.addEventListener('DOMContentLoaded', () => {
-    window.txtOS = new ModernTxtOS();
+    window.glyphos = new ModernTxtOS();
 });

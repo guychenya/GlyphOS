@@ -1,5 +1,5 @@
 // Enhanced Clean GlyphOS - Multi-Provider with File Upload and History
-class CleanTxtOS {
+class CleanGlyphos {
     constructor() {
         this.isConnected = false;
         this.currentService = 'ollama';
@@ -233,7 +233,7 @@ class CleanTxtOS {
         fileDiv.innerHTML = `
             <span class="file-name">${fileObj.name}</span>
             <span class="file-size">(${this.formatFileSize(fileObj.size)})</span>
-            <button class="remove-file" onclick="txtOS.removeFile('${fileObj.id}')">×</button>
+            <button class="remove-file" onclick="glyphos.removeFile('${fileObj.id}')">×</button>
         `;
         uploadedFilesDiv.appendChild(fileDiv);
     }
@@ -299,7 +299,7 @@ class CleanTxtOS {
     }
 
     loadChatHistory() {
-        const saved = localStorage.getItem('txtos-chat-history');
+        const saved = localStorage.getItem('glyphos-chat-history');
         if (saved) {
             try {
                 this.chatHistory = JSON.parse(saved);
@@ -311,7 +311,7 @@ class CleanTxtOS {
     }
 
     saveChatHistory() {
-        localStorage.setItem('txtos-chat-history', JSON.stringify(this.chatHistory));
+        localStorage.setItem('glyphos-chat-history', JSON.stringify(this.chatHistory));
     }
 
     updateHistoryUI() {
@@ -320,8 +320,8 @@ class CleanTxtOS {
         
         historyList.innerHTML = `
             <div class="history-actions">
-                <button class="history-btn" onclick="txtOS.startNewChat()">New Chat</button>
-                <button class="history-btn danger" onclick="txtOS.clearHistory()">Clear All</button>
+                <button class="history-btn" onclick="glyphos.startNewChat()">New Chat</button>
+                <button class="history-btn danger" onclick="glyphos.clearHistory()">Clear All</button>
             </div>
         `;
         
@@ -771,7 +771,7 @@ class CleanTxtOS {
 
     // SETTINGS PERSISTENCE
     loadSettings() {
-        const saved = localStorage.getItem('txtos-clean-settings');
+        const saved = localStorage.getItem('glyphos-clean-settings');
         if (saved) {
             try {
                 const settings = JSON.parse(saved);
@@ -826,11 +826,11 @@ class CleanTxtOS {
             showHistory: this.showHistory
         };
         
-        localStorage.setItem('txtos-clean-settings', JSON.stringify(settings));
+        localStorage.setItem('glyphos-clean-settings', JSON.stringify(settings));
     }
 }
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
-    window.txtOS = new CleanTxtOS();
+    window.glyphos = new CleanTxtOS();
 });

@@ -1,5 +1,5 @@
-// TXT OS - JavaScript Implementation
-class TxtOS {
+// Glyphos - JavaScript Implementation
+class Glyphos {
     constructor() {
         this.ollamaUrl = 'http://127.0.0.1:11435';
         this.currentModel = 'llama2';
@@ -132,7 +132,7 @@ class TxtOS {
         
         // Special commands
         if (message.toLowerCase() === 'hello world') {
-            this.initializeTxtOS();
+            this.initializeGlyphos();
             return;
         }
         
@@ -193,7 +193,7 @@ class TxtOS {
     }
 
     buildSystemPrompt() {
-        return `You are TXT OS, an AI reasoning system with semantic memory and knowledge boundary detection.
+        return `You are Glyphos, an AI reasoning system with semantic memory and knowledge boundary detection.
 
 Core Features:
 - Semantic Tree Memory: Remember context and reasoning patterns
@@ -328,8 +328,8 @@ Safety Mode: Active`;
         }
     }
 
-    initializeTxtOS() {
-        this.addSystemMessage('🏛️ TXT OS initialized successfully!');
+    initializeGlyphos() {
+        this.addSystemMessage('🏛️ Glyphos initialized successfully!');
         this.addSystemMessage('📊 Semantic Tree Memory: Active');
         this.addSystemMessage('🛡️ Knowledge Boundary Detection: Enabled');
         this.addSystemMessage('🧠 Reasoning Enhancement: +22.4% accuracy boost');
@@ -401,7 +401,7 @@ Safety Mode: Active`;
             <div class="system-message">
                 <div class="message-icon">🏛️</div>
                 <div class="message-content">
-                    <strong>TXT OS initialized</strong><br>
+                    <strong>Glyphos initialized</strong><br>
                     Type "hello world" to begin or "kbtest" to test knowledge boundaries
                 </div>
             </div>
@@ -474,13 +474,13 @@ Safety Mode: Active`;
     }
 }
 
-// Initialize TXT OS when DOM is loaded
+// Initialize Glyphos when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.txtOS = new TxtOS();
+    window.glyphos = new Glyphos();
 });
 
 // Add some utility functions for advanced features
-window.TxtOSUtils = {
+window.GlyphosUtils = {
     // Semantic similarity calculation
     calculateSimilarity(text1, text2) {
         const words1 = text1.toLowerCase().split(' ');
