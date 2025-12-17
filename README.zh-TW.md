@@ -20,7 +20,7 @@
 >🚀 文明啟動器是一個持續進化的系列計畫：GlyphOS 1.0 + 2.0 + 3.0 才是完整的文明啟動藍圖。  
 >目前開放的僅為「火種」階段，敬請期待全面升級！
 >
-> 🚧 **[GlyphOS OS 臨時入口連結，全球唯一TXT-Based 作業系統 ](https://github.com/onestardao/GlyphOS/blob/main/OS/README.zh-TW.md)**  
+> 🚧 **[Glyphos Unified 臨時入口連結，全球唯一 Glyphos-Based 作業系統 ](https://github.com/onestardao/GlyphOS/blob/main/OS/README.zh-TW.md)**  
 > HelloWorld.txt（v1.0）已正式上線，完整說明文件仍在整理中。
 
 
