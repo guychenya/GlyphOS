@@ -79,6 +79,7 @@ class UnifiedOS {
             historyList: document.getElementById('history-list'),
             onboarding: document.getElementById('onboarding-card'),
             canvas: document.getElementById('canvas-content'),
+            toggleLeftSidebarBtn: document.getElementById('toggle-left-sidebar-btn'),
 
             // Command Input
             cmdInputArea: document.querySelector('.command-input-area'), 
@@ -100,6 +101,7 @@ class UnifiedOS {
             chkStream: document.getElementById('chk-stream'),
             chkFocus: document.getElementById('chk-focus'),
             themeToggle: document.getElementById('theme-toggle'),
+            toggleRightSidebarBtn: document.getElementById('toggle-right-sidebar-btn'),
             
             // Status Bar
             statusBar: document.getElementById('status-bar'),
@@ -191,6 +193,9 @@ class UnifiedOS {
             this.dom.fileUploadHidden.addEventListener('change', (e) => this.handleFileUpload(e.target.files));
         }
         // History item click is handled by renderHistoryList
+        if (this.dom.toggleLeftSidebarBtn) {
+            this.dom.toggleLeftSidebarBtn.addEventListener('click', () => this.toggleSidebar('left'));
+        }
 
         // Control Panel - Provider Change
         this.dom.providerSelect.addEventListener('change', (e) => {
@@ -247,6 +252,9 @@ class UnifiedOS {
 
         // Control Panel - Theme Toggle
         this.dom.themeToggle.addEventListener('click', () => this.toggleTheme());
+        if (this.dom.toggleRightSidebarBtn) {
+            this.dom.toggleRightSidebarBtn.addEventListener('click', () => this.toggleSidebar('right'));
+        }
 
         // Global Keyboard Shortcuts
         document.addEventListener('keydown', (e) => this.handleGlobalKeyboardShortcuts(e));
@@ -566,10 +574,8 @@ class UnifiedOS {
         if (!text) return '';
         
         // Hack: Fix missing newlines before numbered lists
-        let clean = text.replace(/([^
-])\s+(\d+\.)\s/g, '$1\n\n$2 ');
-        clean = clean.replace(/([^
-])\s+([\-\*])\s/g, '$1\n\n$2 '); // For bullet points
+        let clean = text.replace(/([^\n])\s+(\d+\.)\s/g, '$1\n\n$2 ');
+        clean = clean.replace(/([^\n])\s+([\-\*])\s/g, '$1\n\n$2 '); // For bullet points
 
         return clean;
     }
@@ -1436,7 +1442,7 @@ class UnifiedOS {
             reader.onload = (e) => {
                 const content = e.target.result;
                 const fileBlock = `
-                    
+
 ```text
 File: ${file.name} (${(file.size / 1024).toFixed(2)} KB)
 Content:
@@ -1464,16 +1470,18 @@ ${content.substring(0, 500)}${content.length > 500 ? '...' : ''}
             this.dom.onboarding.classList.add('hidden');
         }
     }
+    
+    // Toggle sidebar visibility
+    toggleSidebar(side) {
+        if (side === 'left') {
+            this.dom.appGrid.classList.toggle('left-collapsed');
+        } else if (side === 'right') {
+            this.dom.appGrid.classList.toggle('right-collapsed');
+        }
+    }
 }
 
 // Global initialization
 window.addEventListener('DOMContentLoaded', () => {
     window.os = new UnifiedOS();
-
-    // Set global functions for external HTML calls if any (e.g. from onclick attributes)
-    // These should ideally be avoided for better event handling but might exist in legacy HTML.
-    window.toggleSidebar = (side) => {
-        if (side === 'left') window.os.dom.appGrid.classList.toggle('left-collapsed');
-        if (side === 'right') window.os.dom.appGrid.classList.toggle('right-collapsed');
-    };
 });
