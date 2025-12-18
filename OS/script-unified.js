@@ -59,29 +59,29 @@ class UnifiedOS {
         };
 
         // DOM Elements
-        this.dom = {}; // Will be populated in initDomElements
-        this.initDomElements(); // Call to populate dom object
+        this.dom = {}; 
+        this.initDomElements(); // Call to populate dom object *before* init()
         this.init();
     }
 
     initDomElements() {
         this.dom = {
             // Header
-            viewDocsBtn: document.getElementById('view-docs-btn'),
+            viewDocsLink: document.getElementById('view-docs-link'),
             startTypingBtn: document.getElementById('start-typing-btn'),
             enterRunBtn: document.getElementById('enter-run-btn'),
 
             // Workspace
             workspace: document.getElementById('workspace'),
-            newThreadBtn: document.getElementById('new-thread-btn'),
-            uploadContextBtn: document.getElementById('upload-context-btn'),
+            newThreadBtn: document.querySelector('.workspace-actions button:first-child'), // New Thread button
+            uploadContextBtnLabel: document.querySelector('.workspace-actions label[for="file-upload-hidden"]'), // Upload Context button is a label
             fileUploadHidden: document.getElementById('file-upload-hidden'),
             historyList: document.getElementById('history-list'),
             onboarding: document.getElementById('onboarding-card'),
             canvas: document.getElementById('canvas-content'),
 
             // Command Input
-            cmdInputArea: document.querySelector('.command-input-area'), // Get the area itself
+            cmdInputArea: document.querySelector('.command-input-area'), 
             cmdInput: document.getElementById('cmd-input'),
             clearCmdBtn: document.querySelector('.clear-cmd-btn'),
             runCmdBtn: document.querySelector('.run-cmd-btn'),
@@ -115,7 +115,7 @@ class UnifiedOS {
 
     init() {
         this.loadSettings();
-        this.applyTheme();
+        this.applyTheme(); // Apply theme before setting up listeners
         this.setupListeners();
         this.updateUI();
         this.initRichText();
@@ -123,6 +123,7 @@ class UnifiedOS {
         
         // Auto-connect
         this.checkConnection();
+        this.showWelcome(); // Show welcome/onboarding based on history
     }
 
     initRichText() {
@@ -169,17 +170,27 @@ class UnifiedOS {
         if (this.dom.runCmdBtn) {
             this.dom.runCmdBtn.addEventListener('click', () => this.processCommandInput());
         }
+        // Handle clicks on command history items
+        this.dom.cmdHistoryDropdown.addEventListener('click', (e) => {
+            const item = e.target.closest('.history-dropdown-item');
+            if (item) {
+                this.dom.cmdInput.value = item.dataset.command;
+                this.hideCommandHistory();
+                this.dom.cmdInput.focus();
+                this.processCommandInput(); 
+            }
+        });
+
 
         // Workspace Actions
         if (this.dom.newThreadBtn) {
             this.dom.newThreadBtn.addEventListener('click', () => this.createNewThread());
         }
-        if (this.dom.uploadContextBtn) {
-            this.dom.uploadContextBtn.addEventListener('click', () => this.dom.fileUploadHidden.click());
-        }
-        if (this.dom.fileUploadHidden) {
+        if (this.dom.uploadContextBtnLabel) {
+            // The actual file input change listener is handled here
             this.dom.fileUploadHidden.addEventListener('change', (e) => this.handleFileUpload(e.target.files));
         }
+        // History item click is handled by renderHistoryList
 
         // Control Panel - Provider Change
         this.dom.providerSelect.addEventListener('change', (e) => {
@@ -231,6 +242,7 @@ class UnifiedOS {
             this.ambientFocusMode = e.target.checked;
             this.dom.indicatorFocus.classList.toggle('hidden', !this.ambientFocusMode);
             this.saveSettings();
+            this.setFocusMode(false); // Reapply focus mode state
         });
 
         // Control Panel - Theme Toggle
@@ -251,40 +263,42 @@ class UnifiedOS {
             e.preventDefault();
             this.handleCommand('help');
         }
+        // Cmd/Ctrl + Enter: Execute command (already handled in handleCommandInputKey for input)
     }
 
     handleCommandInputKey(e) {
         const cmdInput = this.dom.cmdInput;
         const historyDropdown = this.dom.cmdHistoryDropdown;
+        const items = Array.from(historyDropdown.children);
 
-        if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+        // Cmd/Ctrl + Enter for immediate execution
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
             e.preventDefault();
             this.processCommandInput();
             return;
         }
+        // Enter key for submission (without Shift for new line)
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             this.processCommandInput();
             return;
         }
 
-        if (historyDropdown.classList.contains('visible')) {
-            const items = Array.from(historyDropdown.children);
-            if (items.length > 0) {
-                if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    this.commandHistoryIndex = (this.commandHistoryIndex <= 0) ? items.length - 1 : this.commandHistoryIndex - 1;
-                    this.highlightCommandHistoryItem(items);
-                } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    this.commandHistoryIndex = (this.commandHistoryIndex >= items.length - 1) ? 0 : this.commandHistoryIndex + 1;
-                    this.highlightCommandHistoryItem(items);
-                } else if (e.key === 'Escape') {
-                    e.preventDefault();
-                    this.hideCommandHistory();
-                    cmdInput.blur();
-                }
+        if (historyDropdown.classList.contains('visible') && items.length > 0) {
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                this.commandHistoryIndex = (this.commandHistoryIndex <= 0) ? items.length - 1 : this.commandHistoryIndex - 1;
+                this.highlightCommandHistoryItem(items);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.commandHistoryIndex = (this.commandHistoryIndex >= items.length - 1) ? 0 : this.commandHistoryIndex + 1;
+                this.highlightCommandHistoryItem(items);
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                this.hideCommandHistory();
+                cmdInput.blur();
             }
+            return; // Prevent further processing if history is active
         }
     }
 
@@ -303,25 +317,19 @@ class UnifiedOS {
         if (this.commandHistory.length === 0) return;
 
         const historyHtml = this.commandHistory.map((cmd, index) => `
-            <div class="history-dropdown-item" data-command="${cmd}" data-index="${index}">${cmd}</div>
+            <div class="history-dropdown-item" data-command="${cmd}" data-index="${index}" tabindex="0" role="option" aria-selected="false">${cmd}</div>
         `).join('');
 
         this.dom.cmdHistoryDropdown.innerHTML = historyHtml;
         this.dom.cmdHistoryDropdown.classList.add('visible');
         this.commandHistoryIndex = -1; // Reset index
-
-        Array.from(this.dom.cmdHistoryDropdown.children).forEach(item => {
-            item.addEventListener('click', (e) => {
-                this.dom.cmdInput.value = e.target.dataset.command;
-                this.hideCommandHistory();
-                this.dom.cmdInput.focus();
-                this.processCommandInput(); // Optionally auto-run on click
-            });
-        });
+        this.dom.cmdHistoryDropdown.setAttribute('aria-expanded', 'true');
+        this.dom.cmdHistoryDropdown.setAttribute('aria-activedescendant', '');
     }
 
     hideCommandHistory() {
         this.dom.cmdHistoryDropdown.classList.remove('visible');
+        this.dom.cmdHistoryDropdown.setAttribute('aria-expanded', 'false');
     }
 
     updateCommandInputButtons() {
@@ -354,6 +362,7 @@ class UnifiedOS {
             if (this.commandHistory.length > 5) { // Keep last 5
                 this.commandHistory.pop();
             }
+            this.saveSettings(); // Save updated command history
         }
         this.dom.cmdInput.value = ''; // Clear input after processing
         this.updateCommandInputButtons();
@@ -444,7 +453,9 @@ class UnifiedOS {
             case 'clear':
                 this.dom.canvas.innerHTML = '';
                 this.history = [];
+                this.saveSettings(); // Save empty history
                 this.toast('Chat history cleared.', 'info');
+                this.showWelcome();
                 break;
             case 'key':
                 // Usage: /key <provider> <key>
@@ -476,7 +487,9 @@ class UnifiedOS {
                 this.dom.canvas.innerHTML = '';
                 this.dom.onboarding.classList.remove('hidden');
                 this.hasStarted = false;
+                this.saveSettings(); // Save empty history
                 this.toast('Context and memory reset. Welcome back!', 'info');
+                this.renderHistoryList();
                 break;
             default:
                 this.toast(`Unknown command: 
@@ -602,7 +615,7 @@ class UnifiedOS {
             });
         }
 
-        // Handle Mermaid & Code Actions (Only on final render for performance)
+        // 4. Handle Mermaid & Code Actions (Only on final render for performance)
         if (isFinal) {
             // Mermaid Diagrams
             element.querySelectorAll('pre code.language-mermaid').forEach(async (codeBlock, index) => {
@@ -1062,7 +1075,9 @@ class UnifiedOS {
 
     updateStatusBar(isGenerating, statusText = null, statusState = null) {
         this.dom.statusSpinner.classList.toggle('hidden', !isGenerating);
-        this.dom.runCmdBtn.disabled = isGenerating;
+        if (this.dom.runCmdBtn) { // Check if runCmdBtn exists (it should after initDomElements)
+            this.dom.runCmdBtn.disabled = isGenerating;
+        }
         this.dom.statusText.textContent = statusText || (isGenerating ? 'Running...' : 'Ready');
         this.dom.statusProvider.textContent = this.provider.charAt(0).toUpperCase() + this.provider.slice(1);
         this.dom.statusProvider.classList.toggle('status-badge-connected', statusState === 'connected');
@@ -1150,28 +1165,29 @@ class UnifiedOS {
 
         toggle.innerHTML = ''; // Clear existing icons
 
+        let lightActive = '';
+        let darkActive = '';
+        let systemActive = '';
+        let justify = 'flex-start';
+
         if (this.theme === 'light') {
-            toggle.innerHTML = `
-                <span class="theme-icon light active" aria-hidden="true" title="Light Theme">☀️</span>
-                <span class="theme-icon dark" aria-hidden="true" title="Dark Theme">🌙</span>
-                <span class="theme-icon system" aria-hidden="true" title="System Theme">💻</span>
-            `;
-            toggle.style.justifyContent = 'flex-start';
+            lightActive = 'active';
         } else if (this.theme === 'dark') {
-            toggle.innerHTML = `
-                <span class="theme-icon light" aria-hidden="true" title="Light Theme">☀️</span>
-                <span class="theme-icon dark active" aria-hidden="true" title="Dark Theme">🌙</span>
-                <span class="theme-icon system" aria-hidden="true" title="System Theme">💻</span>
-            `;
-            toggle.style.justifyContent = 'center';
+            darkActive = 'active';
+            justify = 'center'; // Center dark icon
         } else { // system
-            toggle.innerHTML = `
-                <span class="theme-icon light" aria-hidden="true" title="Light Theme">☀️</span>
-                <span class="theme-icon dark" aria-hidden="true" title="Dark Theme">🌙</span>
-                <span class="theme-icon system active" aria-hidden="true" title="System Theme">💻</span>
-            `;
-            toggle.style.justifyContent = 'flex-end';
+            systemActive = 'active';
+            justify = 'flex-end'; // End system icon
         }
+        
+        // Update the style of the themeToggle directly for positioning
+        toggle.style.justifyContent = justify;
+
+        toggle.innerHTML = `
+            <span class="theme-icon light ${lightActive}" aria-hidden="true" title="Light Theme">☀️</span>
+            <span class="theme-icon dark ${darkActive}" aria-hidden="true" title="Dark Theme">🌙</span>
+            <span class="theme-icon system ${systemActive}" aria-hidden="true" title="System Theme">💻</span>
+        `;
     }
 
 
@@ -1192,13 +1208,19 @@ class UnifiedOS {
     loadSettings() {
         const data = localStorage.getItem('glyphos_settings');
         if (data) {
-            const settings = JSON.parse(data);
-            this.provider = settings.provider || 'ollama';
-            this.style = settings.style || 'balanced';
-            this.theme = settings.theme || 'system';
-            this.streamResponses = settings.streamResponses !== undefined ? settings.streamResponses : true;
-            this.ambientFocusMode = settings.ambientFocusMode !== undefined ? settings.ambientFocusMode : true;
-            if (settings.models) this.models = { ...this.models, ...settings.models };
+            try {
+                const settings = JSON.parse(data);
+                this.provider = settings.provider || 'ollama';
+                this.style = settings.style || 'balanced';
+                this.theme = settings.theme || 'system';
+                this.streamResponses = settings.streamResponses !== undefined ? settings.streamResponses : true;
+                this.ambientFocusMode = settings.ambientFocusMode !== undefined ? settings.ambientFocusMode : true;
+                if (settings.models) this.models = { ...this.models, ...settings.models };
+            } catch (e) {
+                console.error("Error parsing settings from localStorage:", e);
+                // Reset to defaults if parsing fails
+                this.resetSettingsToDefaults();
+            }
         }
 
         const cmdHistory = localStorage.getItem('glyphos_command_history');
@@ -1210,6 +1232,37 @@ class UnifiedOS {
                 this.commandHistory = [];
             }
         }
+
+        this.history = JSON.parse(localStorage.getItem('glyphos_chat_history') || '[]');
+        if (!Array.isArray(this.history)) {
+            console.error("Invalid chat history in localStorage, resetting.");
+            this.history = [];
+            localStorage.removeItem('glyphos_chat_history');
+        }
+    }
+    
+    resetSettingsToDefaults() {
+        this.provider = 'ollama';
+        this.model = 'llama2';
+        this.style = 'balanced';
+        this.theme = 'system';
+        this.streamResponses = true;
+        this.ambientFocusMode = true;
+        this.keys = { groq: '', openai: '', gemini: '', openrouter: '' };
+        this.models = { // Reset default models too
+            ollama: 'llama2',
+            groq: 'llama-3.1-8b-instant',
+            openai: 'gpt-3.5-turbo',
+            gemini: 'gemini-pro',
+            openrouter: 'mistralai/mistral-7b-instruct:free'
+        };
+        this.commandHistory = [];
+        this.history = [];
+        localStorage.removeItem('glyphos_settings');
+        localStorage.removeItem('glyphos_command_history');
+        localStorage.removeItem('glyphos_chat_history');
+        Object.keys(this.keys).forEach(key => localStorage.removeItem(`glyphos_${key}_key`));
+        this.toast('Settings reset to defaults.', 'info');
     }
 
     toast(message, type = 'info') {
@@ -1231,7 +1284,8 @@ class UnifiedOS {
 
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        toast.setAttribute('role', 'alert');
+        toast.setAttribute('role', 'status'); // Changed to status for better screen reader announcement
+        toast.setAttribute('aria-live', 'polite');
         toast.innerHTML = `
             <span>${message}</span>
             <button class="toast-close-btn" onclick="this.closest('.toast').remove()" aria-label="Close notification">&times;</button>
@@ -1247,25 +1301,35 @@ class UnifiedOS {
 
     // --- History Management ---
     createNewThread() {
-        this.history.unshift({
+        // Mark current active thread as saved if it exists
+        const currentActive = this.history.find(thread => thread.status === 'active');
+        if (currentActive) {
+            currentActive.status = 'saved';
+        }
+
+        const newThread = {
             id: `thread-${Date.now()}`,
             title: 'New Thread',
             lastActivity: Date.now(),
             provider: this.provider,
             status: 'active', // can be 'active', 'saved', 'empty'
             messages: []
-        });
+        };
+        this.history.unshift(newThread); // Add to beginning
+        this.saveSettings(); // Persist new thread
         this.renderHistoryList();
-        this.loadThread(this.history[0].id);
+        this.loadThread(newThread.id);
         this.toast('New thread created.', 'info');
+        this.dom.onboarding.classList.add('hidden'); // Hide onboarding when a new thread is created
     }
 
     saveThreadToHistory(userPrompt, assistantResponse, provider) {
-        // Find the active thread or create a new one
         let activeThread = this.history.find(thread => thread.status === 'active');
-        if (!activeThread) {
-            this.createNewThread();
-            activeThread = this.history[0];
+
+        // If no active thread, or if it's an empty 'New Thread', create one
+        if (!activeThread || activeThread.messages.length === 0) {
+            this.createNewThread(); // This will make a new thread active
+            activeThread = this.history[0]; // Get the newly created active thread
         }
 
         // Add messages to the active thread
@@ -1276,12 +1340,15 @@ class UnifiedOS {
         activeThread.lastActivity = Date.now();
         activeThread.provider = provider; // Update provider for the thread
 
-        // Update thread title if it's still 'New Thread'
-        if (activeThread.title === 'New Thread') {
+        // Update thread title if it's still generic
+        if (activeThread.title === 'New Thread' || activeThread.title === 'Welcome Session') {
             activeThread.title = userPrompt.substring(0, 30) + (userPrompt.length > 30 ? '...' : '');
+            if (activeThread.title.trim() === '') { // Fallback if prompt is empty
+                activeThread.title = "Empty Prompt Chat";
+            }
         }
 
-        localStorage.setItem('glyphos_chat_history', JSON.stringify(this.history));
+        this.saveSettings(); // Persist updated thread
         this.renderHistoryList();
     }
 
@@ -1290,15 +1357,26 @@ class UnifiedOS {
 
         const fragment = document.createDocumentFragment();
 
-        // Create new thread button for mobile/compact view if needed
-        // For now, it's a static button in HTML, so we just render list items
-        
+        // Welcome Session is part of the initial HTML, not dynamically rendered here unless cleared
+        if (this.history.length === 0 && !this.hasStarted) {
+            this.dom.historyList.innerHTML = `
+                <li class="history-item active" role="button" tabindex="0" aria-label="Welcome Session">
+                    <span class="history-title">Welcome Session</span>
+                    <span class="history-meta">Just now</span>
+                    <span class="history-provider-icon">GlyphOS</span>
+                </li>
+            `;
+            return;
+        }
+
+        this.dom.historyList.innerHTML = ''; // Clear previous, except for static welcome if present
+
         this.history.forEach(thread => {
             const li = document.createElement('li');
             li.className = `history-item ${thread.status === 'active' ? 'active' : ''}`;
             li.setAttribute('role', 'button');
             li.setAttribute('tabindex', '0');
-            li.setAttribute('aria-label', `Chat thread: ${thread.title}`);
+            li.setAttribute('aria-label', `Chat thread: ${thread.title}, last activity ${this.formatTimeAgo(thread.lastActivity)}`);
             li.dataset.threadId = thread.id;
             li.innerHTML = `
                 <span class="history-title">${thread.title}</span>
@@ -1309,11 +1387,11 @@ class UnifiedOS {
             fragment.appendChild(li);
         });
 
-        this.dom.historyList.innerHTML = ''; // Clear previous
         this.dom.historyList.appendChild(fragment);
     }
 
     loadThread(threadId) {
+        // Mark all other threads as saved, activate this one
         this.history.forEach(thread => {
             thread.status = (thread.id === threadId) ? 'active' : 'saved';
         });
@@ -1328,8 +1406,9 @@ class UnifiedOS {
             });
             this.scrollToBottom();
             this.toast(`Loaded thread: "${activeThread.title}"`, 'info');
-            localStorage.setItem('glyphos_chat_history', JSON.stringify(this.history));
+            this.saveSettings(); // Save updated history status
             this.renderHistoryList();
+            this.hasStarted = true; // Mark as started if loading a thread
         }
     }
 
@@ -1350,6 +1429,8 @@ class UnifiedOS {
 
 
     handleFileUpload(files) {
+        if (!files || files.length === 0) return;
+
         for (const file of files) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -1358,9 +1439,10 @@ class UnifiedOS {
                     
 ```text
 File: ${file.name} (${(file.size / 1024).toFixed(2)} KB)
-Content:\n${content.substring(0, 500)}...
+Content:
+${content.substring(0, 500)}${content.length > 500 ? '...' : ''}
 ```
-                    `;
+`;
                 this.appendBlock('system', `📄 Uploaded: **${file.name}**\n\n${fileBlock}`);
                 this.toast(`File "${file.name}" uploaded.`, 'success');
             };
@@ -1369,11 +1451,14 @@ Content:\n${content.substring(0, 500)}...
             };
             reader.readAsText(file);
         }
+        // Clear the file input's value to allow re-uploading the same file
+        this.dom.fileUploadHidden.value = ''; 
     }
 
     // --- Onboarding and Welcome ---
     showWelcome() {
-        if (this.history.length === 0 && !this.hasStarted) {
+        const hasHistory = this.history.some(thread => thread.messages && thread.messages.length > 0);
+        if (!hasHistory && !this.hasStarted) {
             this.dom.onboarding.classList.remove('hidden');
         } else {
             this.dom.onboarding.classList.add('hidden');
@@ -1385,13 +1470,10 @@ Content:\n${content.substring(0, 500)}...
 window.addEventListener('DOMContentLoaded', () => {
     window.os = new UnifiedOS();
 
-    // Initial check for onboarding
-    window.os.showWelcome();
+    // Set global functions for external HTML calls if any (e.g. from onclick attributes)
+    // These should ideally be avoided for better event handling but might exist in legacy HTML.
+    window.toggleSidebar = (side) => {
+        if (side === 'left') window.os.dom.appGrid.classList.toggle('left-collapsed');
+        if (side === 'right') window.os.dom.appGrid.classList.toggle('right-collapsed');
+    };
 });
-
-// Set global functions for external HTML calls if any (e.g. from onclick attributes)
-// These should ideally be avoided for better event handling but might exist in legacy HTML.
-window.toggleSidebar = (side) => {
-    if (side === 'left') window.os.dom.appGrid.classList.toggle('left-collapsed');
-    if (side === 'right') window.os.dom.appGrid.classList.toggle('right-collapsed');
-};
