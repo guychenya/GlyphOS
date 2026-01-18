@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Dokploy Deployment
-        run: curl -X POST "http://157.173.126.133:3000/api/deploy/axOwUS_tyxmPomNDHGEEG"
+        run: curl -X POST "http://157.173.126.133:3000/api/deploy/XYDSWOh4Sez-ZBc9lZ5cs"
