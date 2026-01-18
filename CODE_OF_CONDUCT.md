@@ -1,36 +1,41 @@
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge
-In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to make participation in **GlyphOS** a harassment-free experience for everyone, regardless of background, identity, or perspective.
+
+In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to make participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
 ## Our Standards
-Examples of behavior that contributes to a positive environment include:
-- Using welcoming and inclusive language.
-- Being respectful of differing viewpoints and experiences.
-- Gracefully accepting constructive criticism.
-- Focusing on what is best for the community.
-- Showing empathy toward other community members.
 
-Examples of unacceptable behavior include:
-- Harassment, discriminatory comments, or exclusionary remarks related to age, gender, sexual orientation, race, religion, disability, or other personal characteristics.
-- Personal insults, derogatory jokes, or demeaning remarks.
-- Public or private harassment of any contributor.
-- Sharing inappropriate or confidential private information without consent.
-- Other unprofessional or disrespectful conduct.
+Examples of behavior that contributes to creating a positive environment include:
 
-## Enforcement Responsibilities
-Project maintainers are responsible for clarifying and enforcing the standards. Maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that violate this Code of Conduct.
+* Using welcoming and inclusive language
+* Being respectful of differing viewpoints and experiences
+* Gracefully accepting constructive criticism
+* Focusing on what is best for the community
+* Showing empathy towards other community members
 
-## Reporting Guidelines
-If you experience or witness unacceptable behavior, please report it through one of the following channels:
-- **Email**: hello@onestardao.com (subject: “[GlyphOS Code of Conduct]”)
-- **Telegram**: Contact Telegram user @PSBigBig with a clear subject line “[GlyphOS Code of Conduct]” and description.  
-- **GitHub Private Issue**: Open a private issue (if your repository settings allow) and prefix the title with “[Conduct]”. Please avoid posting sensitive details publicly; you may summarize and then share details privately.
+Examples of unacceptable behavior by participants include:
 
-Maintainers will respond within 1–2 business days and take appropriate action.
+* The use of sexualized language or imagery and unwelcome sexual attention or advances
+* Trolling, insulting/derogatory comments, and personal or political attacks
+* Public or private harassment
+* Publishing others' private information, such as a physical or electronic address, without explicit permission
+* Other conduct which could reasonably be considered inappropriate in a professional setting
+
+## Comparison with other Communities
+
+We strive to be a friendly and welcoming community. We are not a place for hate speech, discrimination, or harassment. We are a place for collaboration, learning, and growth.
+
+## Enforcement
+
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident.
 
 ## Scope
-This Code of Conduct applies within project spaces (e.g., GitHub issues, PR comments, Discussions) and community channels (e.g., Telegram group or chat linked to GlyphOS), as well as at in-person or virtual events related to the project.
+
+This Code of Conduct applies within all project spaces, and it also applies when an individual is representing the project or its community in public spaces. Examples of representing a project or community include using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event. Representation of a project may be further defined and clarified by project maintainers.
 
 ## Attribution
-This Code of Conduct is adapted from the Contributor Covenant, version 2.1, available at https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
+
+This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4, available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
+
+[homepage]: https://www.contributor-covenant.org
