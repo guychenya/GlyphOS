@@ -13,10 +13,10 @@ class UnifiedOS {
         this.theme = 'system'; // 'light' | 'dark' | 'system'
         this.streamResponses = true;
         this.ambientFocusMode = true;
-        
+
         // Configuration & Keys
         this.ollamaUrl = 'http://127.0.0.1:11434';
-        
+
         this.keys = {
             groq: localStorage.getItem('glyphos_groq_key') || '',
             openai: localStorage.getItem('glyphos_openai_key') || '',
@@ -32,7 +32,7 @@ class UnifiedOS {
             gemini: 'gemini-pro',
             openrouter: 'mistralai/mistral-7b-instruct:free'
         };
-        
+
         // System Prompt to enforce formatting
         this.systemPrompt = `You are GlyphOS, an advanced AI operating system interface.
 - Format: Use strict Markdown.
@@ -59,7 +59,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
         };
 
         // DOM Elements
-        this.dom = {}; 
+        this.dom = {};
         this.initDomElements(); // Call to populate dom object *before* init()
         this.init();
     }
@@ -82,7 +82,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
             toggleLeftSidebarBtn: document.getElementById('toggle-left-sidebar-btn'),
 
             // Command Input
-            cmdInputArea: document.querySelector('.command-input-area'), 
+            cmdInputArea: document.querySelector('.command-input-area'),
             cmdInput: document.getElementById('cmd-input'),
             clearCmdBtn: document.querySelector('.clear-cmd-btn'),
             runCmdBtn: document.querySelector('.run-cmd-btn'),
@@ -102,7 +102,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
             chkFocus: document.getElementById('chk-focus'),
             themeToggle: document.getElementById('theme-toggle'),
             toggleRightSidebarBtn: document.getElementById('toggle-right-sidebar-btn'),
-            
+
             // Status Bar
             statusBar: document.getElementById('status-bar'),
             statusText: document.getElementById('status-text'),
@@ -122,7 +122,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
         this.updateUI();
         this.initRichText();
         this.renderHistoryList();
-        
+
         // Auto-connect
         this.checkConnection();
         this.showWelcome(); // Show welcome/onboarding based on history
@@ -131,7 +131,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
     initRichText() {
         if (window.mermaid) {
             mermaid.initialize({
-                startOnLoad: false, 
+                startOnLoad: false,
                 theme: 'base',
                 securityLevel: 'loose',
                 themeVariables: {
@@ -179,7 +179,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                 this.dom.cmdInput.value = item.dataset.command;
                 this.hideCommandHistory();
                 this.dom.cmdInput.focus();
-                this.processCommandInput(); 
+                this.processCommandInput();
             }
         });
 
@@ -211,7 +211,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
             if (key) {
                 const originalIcon = this.dom.saveKeyBtn.innerHTML;
                 this.dom.saveKeyBtn.innerHTML = '...';
-                
+
                 try {
                     if (this.provider !== 'ollama') {
                         await this.validateProviderConnection(this.provider, key);
@@ -404,7 +404,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
 
         // 3. Normal Chat Generation
         this.appendBlock('user', text);
-        
+
         if (!this.isConnected && !tempProvider) {
             if (this.provider !== 'ollama' && !this.keys[this.provider]) {
                 this.toast(`Missing API Key for ${this.provider}. Use the Control Panel or 
@@ -413,8 +413,8 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                 return;
             }
             if (this.provider === 'ollama') {
-                 this.toast('Ollama is offline. Ensure Ollama server is running with CORS enabled.', 'error');
-                 return;
+                this.toast('Ollama is offline. Ensure Ollama server is running with CORS enabled.', 'error');
+                return;
             }
         }
 
@@ -422,7 +422,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
     }
 
     handleCommand(cmd, args) {
-        switch(cmd) {
+        switch (cmd) {
             case 'help':
                 this.appendBlock('system', `
 ## 🛠️ Command Reference
@@ -475,7 +475,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                             this.keys[provider] = key;
                             localStorage.setItem(`glyphos_${provider}_key`, key);
                             this.toast(`API Key for ${provider} verified and updated.`, 'success');
-                            
+
                             if (this.provider === provider) {
                                 this.dom.apiKeyInput.value = key;
                                 this.checkConnection();
@@ -484,7 +484,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                             this.toast(`API Key validation failed for ${provider}: ${err.message}`, 'error');
                         });
                     } else {
-                         this.toast(`Unknown provider: ${provider}. Supported: groq, openai, gemini, openrouter.`, 'warning');
+                        this.toast(`Unknown provider: ${provider}. Supported: groq, openai, gemini, openrouter.`, 'warning');
                     }
                 } else {
                     this.toast('Usage: `/key <provider> <your_api_key>`\nExample: `/key openai sk-1234...`', 'info');
@@ -515,12 +515,12 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
         const activeProvider = overrideProvider || this.provider;
         const temp = this.tempPresets[this.style];
         const activeModel = this.models[activeProvider];
-        
+
         // Create response block
         const responseId = 'resp-' + Date.now();
         this.appendBlock('assistant', '', responseId);
         const contentEl = document.getElementById(responseId).querySelector('.block-content');
-        
+
         let fullResponseText = '';
 
         // Helper for streaming updates
@@ -531,7 +531,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
         };
 
         try {
-            switch(activeProvider) {
+            switch (activeProvider) {
                 case 'ollama':
                     await this.streamOllama(prompt, activeModel, temp, onUpdate);
                     break;
@@ -560,7 +560,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
             this.isGenerating = false;
             this.updateStatusBar(false);
             this.setFocusMode(false);
-            
+
             // Final render pass
             this.renderRichContent(contentEl, fullResponseText, true);
             this.scrollToBottom();
@@ -569,10 +569,10 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
     }
 
     // --- Rich Content Renderer (Markdown + Math + Mermaid) ---
-    
+
     sanitizeMarkdown(text) {
         if (!text) return '';
-        
+
         // Hack: Fix missing newlines before numbered lists
         let clean = text.replace(/([^\n])\s+(\d+\.)\s/g, '$1\n\n$2 ');
         clean = clean.replace(/([^\n])\s+([\-\*])\s/g, '$1\n\n$2 '); // For bullet points
@@ -614,9 +614,9 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                         throwOnError: false,
                         trust: true // Trust HTML for KaTeX
                     });
-                } catch (e) { 
+                } catch (e) {
                     console.error('KaTeX rendering error:', e);
-                    return `<span class="math-error" title="${e.message}">${block.tex}</span>`; 
+                    return `<span class="math-error" title="${e.message}">${block.tex}</span>`;
                 }
             });
         }
@@ -628,15 +628,15 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                 const pre = codeBlock.parentElement;
                 const source = codeBlock.textContent;
                 const uniqueId = `mermaid-${Date.now()}-${index}`;
-                
+
                 const container = document.createElement('div');
                 container.className = 'mermaid-container';
-                
+
                 const div = document.createElement('div');
                 div.className = 'mermaid';
                 div.id = uniqueId;
                 div.textContent = source;
-                
+
                 const toolbar = document.createElement('div');
                 toolbar.className = 'content-toolbar';
                 toolbar.innerHTML = `
@@ -648,7 +648,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                 container.appendChild(div);
                 container.appendChild(toolbar);
                 pre.replaceWith(container);
-                
+
                 try {
                     await mermaid.init({ mermaid: { theme: this.theme === 'dark' ? 'dark' : 'default' } }, `#${uniqueId}`);
                 } catch (e) {
@@ -681,19 +681,19 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
     }
 
     // --- Helper Actions ---
-    
+
     downloadMermaid(id) {
         const svg = document.getElementById(id).querySelector('svg');
         if (!svg) {
             this.toast('Could not find diagram to download.', 'error');
             return;
         }
-        
+
         const serializer = new XMLSerializer();
         const source = serializer.serializeToString(svg);
         const blob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
         const url = URL.createObjectURL(blob);
-        
+
         const a = document.createElement('a');
         a.href = url;
         a.download = `diagram-${Date.now()}.svg`;
@@ -720,7 +720,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
         const code = wrapper.querySelector('code').textContent;
         const blob = new Blob([code], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
-        
+
         const a = document.createElement('a');
         a.href = url;
         a.download = `code-${Date.now()}.txt`;
@@ -742,18 +742,18 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    model, 
-                    prompt: fullPrompt, 
-                    options: { temperature: temp }, 
-                    stream: true 
+                    model,
+                    prompt: fullPrompt,
+                    options: { temperature: temp },
+                    stream: true
                 })
             });
-            
+
             if (!response.ok) {
                 const errorBody = await response.json();
                 throw new Error(errorBody.error || 'Ollama connection failed');
             }
-            
+
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
             let fullText = '';
@@ -762,11 +762,11 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-                
+
                 buffer += decoder.decode(value, { stream: true });
                 const lines = buffer.split('\n');
-                buffer = lines.pop(); 
-                
+                buffer = lines.pop();
+
                 for (const line of lines) {
                     if (!line.trim()) continue;
                     try {
@@ -777,12 +777,12 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                     }
                 }
             }
-            
+
             if (buffer.trim()) { // Process any remaining buffer
                 try {
                     const json = JSON.parse(buffer);
                     if (json.response) { fullText += json.response; onUpdate(fullText); }
-                } catch (e) {}
+                } catch (e) { }
             }
             if (!fullText) throw new Error('Empty response from Ollama.');
 
@@ -794,7 +794,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
     async streamOpenAIStyle(url, key, prompt, model, temp, onUpdate) {
         try {
             if (!key) throw new Error('API Key missing.');
-            
+
             const headers = {
                 'Authorization': `Bearer ${key}`,
                 'Content-Type': 'application/json'
@@ -850,11 +850,11 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                     }
                     break;
                 }
-                
+
                 buffer += decoder.decode(value, { stream: true });
                 const lines = buffer.split('\n');
-                buffer = lines.pop(); 
-                
+                buffer = lines.pop();
+
                 for (const line of lines) {
                     if (line.trim().startsWith('data: ')) {
                         const dataStr = line.replace('data: ', '').trim();
@@ -867,9 +867,9 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                     }
                 }
             }
-            
+
             if (!fullText) throw new Error('Empty response from provider.');
-            
+
         } catch (error) {
             throw new Error(`Stream Error: ${error.message}`);
         }
@@ -878,10 +878,10 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
     async streamGemini(prompt, model, temp, onUpdate) {
         try {
             if (!this.keys.gemini) throw new Error('Gemini API Key missing.');
-            
+
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?key=${this.keys.gemini}`;
             const fullPrompt = `${this.systemPrompt}\n\nUser Query: ${prompt}`;
-            
+
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -929,7 +929,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                 }
             }
             if (!fullText) throw new Error('Empty response from Gemini.');
-            
+
         } catch (error) {
             throw new Error(`Gemini Stream Error: ${error.message}`);
         }
@@ -962,7 +962,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
     async validateProviderConnection(provider, key) {
         let url = '';
         let headers = { 'Authorization': `Bearer ${key}` };
-        
+
         switch (provider) {
             case 'openai':
                 url = 'https://api.openai.com/v1/models';
@@ -999,7 +999,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                 try {
                     const data = await response.json();
                     msg = data.error?.message || msg;
-                } catch(e) {}
+                } catch (e) { }
                 throw new Error(msg);
             }
             return true;
@@ -1010,9 +1010,9 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
 
     async checkConnection() {
         this.updateStatusBar(false, 'Checking...', 'pending'); // Show spinner, checking status
-        
+
         const p = this.provider;
-        
+
         if (p === 'ollama') {
             try {
                 const res = await fetch(`${this.ollamaUrl}/api/tags`);
@@ -1052,7 +1052,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
     }
 
     getDefaultModels(provider) {
-        switch(provider) {
+        switch (provider) {
             case 'groq': return ['llama-3.1-8b-instant', 'llama-3.1-70b-versatile', 'gemma-7b-it'];
             case 'openai': return ['gpt-4o', 'gpt-4-turbo', 'gpt-3.5-turbo'];
             case 'gemini': return ['gemini-pro', 'gemini-1.5-pro'];
@@ -1104,7 +1104,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
 
     updateUI() {
         this.dom.providerSelect.value = this.provider;
-        
+
         // Handle API Key Input Visibility
         if (this.provider === 'ollama') {
             this.dom.apiKeyContainer.classList.add('hidden');
@@ -1113,7 +1113,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
             this.dom.apiKeyInput.value = this.keys[this.provider] || '';
             this.dom.apiKeyInput.placeholder = `Enter ${this.provider.charAt(0).toUpperCase() + this.provider.slice(1)} Key`;
         }
-        
+
         // Update Style Radios
         this.dom.tempFocused.checked = (this.style === 'focused');
         this.dom.tempBalanced.checked = (this.style === 'balanced');
@@ -1126,8 +1126,8 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
         this.dom.indicatorFocus.classList.toggle('hidden', !this.ambientFocusMode);
 
         // Update Theme Toggle visual
-        document.documentElement.setAttribute('data-theme', this.theme === 'system' 
-            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') 
+        document.documentElement.setAttribute('data-theme', this.theme === 'system'
+            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
             : this.theme);
         this.updateThemeToggleVisual();
         this.updateCommandInputButtons(); // Initial state for buttons
@@ -1185,7 +1185,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
             systemActive = 'active';
             justify = 'flex-end'; // End system icon
         }
-        
+
         // Update the style of the themeToggle directly for positioning
         toggle.style.justifyContent = justify;
 
@@ -1246,7 +1246,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
             localStorage.removeItem('glyphos_chat_history');
         }
     }
-    
+
     resetSettingsToDefaults() {
         this.provider = 'ollama';
         this.model = 'llama2';
@@ -1429,7 +1429,7 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
         if (hours < 24) return `${hours}h ago`;
         const days = Math.floor(hours / 24);
         if (days < 30) return `${days}d ago`;
-        
+
         return new Date(timestamp).toLocaleDateString();
     }
 
@@ -1443,11 +1443,11 @@ mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
                 const content = e.target.result;
                 const fileBlock = `
 
-```text
+[File Content Preview]
 File: ${file.name} (${(file.size / 1024).toFixed(2)} KB)
 Content:
 ${content.substring(0, 500)}${content.length > 500 ? '...' : ''}
-```
+-----------------------
 `;
                 this.appendBlock('system', `📄 Uploaded: **${file.name}**\n\n${fileBlock}`);
                 this.toast(`File "${file.name}" uploaded.`, 'success');
@@ -1458,7 +1458,7 @@ ${content.substring(0, 500)}${content.length > 500 ? '...' : ''}
             reader.readAsText(file);
         }
         // Clear the file input's value to allow re-uploading the same file
-        this.dom.fileUploadHidden.value = ''; 
+        this.dom.fileUploadHidden.value = '';
     }
 
     // --- Onboarding and Welcome ---
@@ -1470,7 +1470,7 @@ ${content.substring(0, 500)}${content.length > 500 ? '...' : ''}
             this.dom.onboarding.classList.add('hidden');
         }
     }
-    
+
     // Toggle sidebar visibility
     toggleSidebar(side) {
         if (side === 'left') {
