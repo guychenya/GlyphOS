@@ -98,10 +98,11 @@ body {
         "header header header"
         "main main main"
         "footer footer footer";
-    grid-template-columns: 1fr; /* Default single column for mobile/stacked */
-    grid-template-rows: auto 1fr auto; /* Header, main content, footer */
-    height: 100%;
-    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: 100vh; /* Ensure full viewport height */
+    width: 100vw;
+    overflow: hidden; /* Prevent scrolling on the grid itself */
 }
 
 /* --- Header --- */
