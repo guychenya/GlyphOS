@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "build": "echo 'Static site - no build needed'",
-    "start": "npx serve OS -p 80",
+    "start": "npx serve OS -l ${PORT:-3000}",
     "test": "echo 'No tests needed for static site'"
   },
   "engines": {
