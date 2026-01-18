@@ -4,7 +4,11 @@
 FROM nginx:alpine
 
 # Copy the static site files to Nginx's html directory
-COPY OS /usr/share/nginx/html
+# The trailing slash ensures we copy the contents, not the folder itself
+COPY OS/ /usr/share/nginx/html/
+
+# Ensure permissions are correct (readable by everyone)
+RUN chmod -R 755 /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
