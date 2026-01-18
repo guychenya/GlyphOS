@@ -3,7 +3,7 @@
 
 GlyphOS is a streamlined, text-first operating system designed to transform your interaction with AI. By unifying multiple intelligence providers into a single, responsive canvas, it offers a distraction-free environment for deep reasoning and rapid execution.
 
-![GlyphOS Logo](./OS/images/logo.png)
+
 
 ## 🌌 The Concept
 At its core, GlyphOS is built upon the concept of a **powerful underlying engine** capable of managing complex reasoning tasks. It abstracts away the complexity of switching between tools and models, presenting a unified interface where text is the primary method of control.
