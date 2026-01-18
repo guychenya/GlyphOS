@@ -5,14 +5,20 @@
   "main": "index.html",
   "scripts": {
     "build": "echo 'Static site - no build needed'",
-    "start": "echo 'Static HTML site'",
+    "start": "npx serve OS -p 80",
     "test": "echo 'No tests needed for static site'"
   },
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=7.0.0"
   },
-  "keywords": ["ai", "reasoning", "ollama", "glyphos", "static-site"],
+  "keywords": [
+    "ai",
+    "reasoning",
+    "ollama",
+    "glyphos",
+    "static-site"
+  ],
   "author": "PSBigBig",
   "license": "MIT",
   "homepage": "https://github.com/guychenya/GlyphOS",
@@ -21,5 +27,7 @@
     "url": "https://github.com/guychenya/GlyphOS.git"
   },
   "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
 }
