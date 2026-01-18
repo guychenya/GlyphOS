@@ -40,7 +40,7 @@ class UnifiedOS {
 - Structure: Use paragraphs and vertical spacing for readability. Do not output dense blocks of text.
 - Examples: When explaining concepts, show the RENDERED result, not the raw code block, unless asked for code.
 - Diagrams: Use Mermaid.js syntax inside 
-```mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
+mermaid blocks. Supported types: sequenceDiagram, graph TD, mindmap, pie, gantt.
 - Math: Use LaTeX inside $$ (display) or $ (inline).
 - Tone: Be concise, professional, and helpful.`;
 
