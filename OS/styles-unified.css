@@ -454,6 +454,44 @@ body {
     border-color: var(--accent);
 }
 
+.api-key-row {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.api-key-row .setting-input {
+    flex: 1;
+}
+
+.save-btn {
+    padding: var(--space-sm) var(--space-md);
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background var(--transition);
+}
+
+.save-btn:hover {
+    background: var(--accent-hover);
+}
+
+.setting-hint {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    margin-top: var(--space-xs);
+}
+
+.logo-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+}
+
 .temp-buttons {
     display: flex;
     gap: var(--space-xs);
